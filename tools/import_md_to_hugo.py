@@ -6,7 +6,7 @@ import sys
 
 
 # ============================================================
-# 0. 输出编码处理：减少 VS Code / Code Runner 中文乱码
+# 0. 输出编码处理：减少 PowerShell / VS Code 中文乱码
 # ============================================================
 
 try:
@@ -17,20 +17,49 @@ except Exception:
 
 
 # ============================================================
-# 1. 基础配置：主要修改这里
+# 1. 基础配置：主要改这里
 # ============================================================
 
-# 原始 Obsidian Markdown 教程目录
-SOURCE_DIR = Path(r"E:\Obsidian\Pro_01\02_Learning\Python爬虫流程控制_V2\阶段04网页数据来源判断")
+# 你的 Obsidian 笔记根目录
+# 改成你真实的“随记”所在目录
+SOURCE_DIR = Path(r"E:\Obsidian\Pro_03\article")
 
-# Hugo 文章导入目标目录
-DEST_DIR = Path(r"D:\HugoBlog\myblog\content\posts\python-crawler-workflow")
+# 导入到 Hugo 的目标目录
+# 建议随记统一放到 content/posts/notes
+DEST_DIR = Path(r"D:\HugoBlog\myblog\content\posts\notes")
 
-# 默认分类
-BASE_CATEGORY = "爬虫与数据处理"
+# 只导入这些相对路径
+# 可以写文件，也可以写文件夹
+#
+# 示例 1：只导入一个文件
+# INCLUDE_RELATIVE_PATHS = [
+#     "随记/今天的想法.md",
+# ]
+#
+# 示例 2：导入一个文件夹
+# INCLUDE_RELATIVE_PATHS = [
+#     "随记",
+# ]
+#
+# 示例 3：导入多个文件或文件夹
+# INCLUDE_RELATIVE_PATHS = [
+#     "随记",
+#     "临时笔记/AI感想.md",
+# ]
+#
+# 如果留空 []，就会导入 SOURCE_DIR 下所有 .md，不推荐
+INCLUDE_RELATIVE_PATHS = [
+    ".",
+]
+
+# 博客分类
+BASE_CATEGORY = "随记"
 
 # 默认标签
-DEFAULT_TAGS = ["Python", "爬虫", "数据处理"]
+DEFAULT_TAGS = ["随记"]
+
+# 是否根据文件夹自动生成标签
+AUTO_TAGS_FROM_FOLDERS = True
 
 # 是否复制图片资源
 COPY_IMAGE_ASSETS = True
@@ -38,25 +67,21 @@ COPY_IMAGE_ASSETS = True
 # 允许复制的图片格式
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
 
-# 当前是修复模式，建议直接全量处理
-# 如果你想先测试，可以改成 20
-TEST_LIMIT = None
+# 测试模式：先只处理前 5 篇
+# 确认没问题后改成 None
+TEST_LIMIT = 5
 
 # 如果目标文件已经存在，是否覆盖
-# 这次需要覆盖，因为之前导入的副本有 Front Matter 解析问题
 OVERWRITE_EXISTING = True
 
 # 是否统一重新生成 Hugo Front Matter
-# 建议保持 True
 FORCE_REGENERATE_HUGO_FRONT_MATTER = True
 
 # 是否剥离原文顶部已有的 Obsidian/YAML/TOML Front Matter
-# 建议保持 True，否则博客正文可能会显示原来的 metadata
 STRIP_EXISTING_SOURCE_FRONT_MATTER = True
 
 # 是否清空目标目录后重新导入
-# 默认 False，更安全
-# 如果你确认目标目录只存放这批导入文章，可以改成 True
+# 默认 False，避免误删
 CLEAN_DEST_BEFORE_IMPORT = False
 
 
@@ -86,7 +111,6 @@ IGNORE_FILE_PREFIXES = (
     "~$",
 )
 
-# 常见 Front Matter 字段，用于判断 --- 块到底是不是元数据
 COMMON_FRONT_MATTER_KEYS = {
     "title",
     "date",
@@ -117,7 +141,6 @@ COMMON_FRONT_MATTER_KEYS = {
 # ============================================================
 
 def is_relative_to(child: Path, parent: Path) -> bool:
-    """兼容性判断：child 是否位于 parent 下面。"""
     try:
         child.resolve().relative_to(parent.resolve())
         return True
@@ -125,34 +148,31 @@ def is_relative_to(child: Path, parent: Path) -> bool:
         return False
 
 
-def is_ignored_path(rel_path: Path) -> bool:
+def normalize_rel_path(path_text: str) -> Path:
     """
-    判断某个相对路径是否应该被忽略。
-    rel_path 必须是相对于 SOURCE_DIR 的路径。
+    统一处理 Windows / Obsidian 路径写法。
     """
+    return Path(path_text.replace("/", "\\"))
 
+
+def is_ignored_path(rel_path: Path) -> bool:
     parts = rel_path.parts
 
-    # 忽略隐藏目录，例如 .obsidian、.git
     if IGNORE_HIDDEN_DIRS:
         for part in parts[:-1]:
             if part.startswith("."):
                 return True
 
-    # 忽略指定目录
     for part in parts[:-1]:
         if part in IGNORE_DIR_NAMES:
             return True
 
-    # 忽略隐藏文件
     if IGNORE_HIDDEN_FILES and rel_path.name.startswith("."):
         return True
 
-    # 忽略指定文件
     if rel_path.name in IGNORE_FILE_NAMES:
         return True
 
-    # 忽略临时文件
     if rel_path.name.startswith(IGNORE_FILE_PREFIXES):
         return True
 
@@ -160,11 +180,6 @@ def is_ignored_path(rel_path: Path) -> bool:
 
 
 def read_text_safely(path: Path) -> str:
-    """
-    尽量兼容 UTF-8 和常见中文编码。
-    Obsidian 默认通常是 UTF-8。
-    """
-
     for enc in ("utf-8-sig", "utf-8", "gb18030"):
         try:
             return path.read_text(encoding=enc)
@@ -175,13 +190,10 @@ def read_text_safely(path: Path) -> str:
 
 
 def toml_escape(value: str) -> str:
-    """转义 TOML 字符串。"""
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
 def toml_array(items) -> str:
-    """生成 TOML 数组，并去重。"""
-
     result = []
 
     for item in items:
@@ -193,17 +205,21 @@ def toml_array(items) -> str:
 
 
 def clean_label(name: str) -> str:
-    """
-    清理文件夹名，用于生成 tags/categories。
-
-    示例：
-    01_需求澄清与任务入口 -> 需求澄清与任务入口
-    030_客户原始需求 -> 客户原始需求
-    """
-
     name = name.strip()
     name = re.sub(r"^\d+[_\-\s]*", "", name)
     return name.strip()
+
+
+def make_safe_slug_from_filename(file_path: Path) -> str:
+    """
+    生成一个简单 slug。
+    中文标题也可以发布，但 URL 不好看。
+    这里不强制英文 slug，避免乱改。
+    """
+    stem = file_path.stem.strip()
+    stem = re.sub(r"^\d+[_\-\s]*", "", stem)
+    stem = stem.replace(" ", "-")
+    return stem
 
 
 # ============================================================
@@ -211,24 +227,7 @@ def clean_label(name: str) -> str:
 # ============================================================
 
 def get_top_delimited_block(text: str):
-    """
-    获取文件顶部的 --- 或 +++ 包裹块。
-
-    返回：
-    {
-        "delimiter": "---" or "+++",
-        "block": 中间内容,
-        "body": 去掉该块后的正文
-    }
-
-    如果文件顶部没有这种块，返回 None。
-
-    注意：
-    这里只是提取，不代表这个块一定是合法 Front Matter。
-    """
-
     text = text.lstrip("\ufeff")
-
     lines = text.splitlines(keepends=True)
 
     if not lines:
@@ -240,8 +239,6 @@ def get_top_delimited_block(text: str):
         return None
 
     delimiter = first_line
-
-    # 只在前 120 行内找结束符，避免误判超长正文
     max_scan_lines = min(len(lines), 120)
 
     for i in range(1, max_scan_lines):
@@ -258,68 +255,38 @@ def get_top_delimited_block(text: str):
 
 
 def is_plausible_front_matter_block(block: str, delimiter: str) -> bool:
-    """
-    判断顶部 --- / +++ 块是否像真正的 Front Matter。
-
-    核心目的：
-    - 合法 Obsidian/YAML/TOML 元数据：剥离
-    - 普通 Markdown 分割线和正文：不要误删
-    """
-
     if not block.strip():
         return False
 
-    # 如果出现 Markdown 标题，大概率不是纯元数据
+    # 如果块里有 Markdown 标题，大概率不是元数据
     if re.search(r"^\s*#{1,6}\s+", block, flags=re.MULTILINE):
         return False
 
-    # TOML Front Matter：常见形式是 key = value
     if delimiter == "+++":
-        toml_key_lines = re.findall(
+        keys = re.findall(
             r"^\s*([A-Za-z_][A-Za-z0-9_\-]*)\s*=",
             block,
             flags=re.MULTILINE,
         )
-        if not toml_key_lines:
-            return False
-
-        lower_keys = {k.lower() for k in toml_key_lines}
-        if lower_keys & COMMON_FRONT_MATTER_KEYS:
-            return True
-
-        return len(toml_key_lines) >= 2
-
-    # YAML Front Matter：常见形式是 key: value
-    if delimiter == "---":
-        yaml_key_lines = re.findall(
+    else:
+        keys = re.findall(
             r"^\s*([A-Za-z_][A-Za-z0-9_\-]*)\s*:",
             block,
             flags=re.MULTILINE,
         )
 
-        if not yaml_key_lines:
-            return False
+    if not keys:
+        return False
 
-        lower_keys = {k.lower() for k in yaml_key_lines}
+    lower_keys = {k.lower() for k in keys}
 
-        # 有常见元数据字段，认为是 Front Matter
-        if lower_keys & COMMON_FRONT_MATTER_KEYS:
-            return True
+    if lower_keys & COMMON_FRONT_MATTER_KEYS:
+        return True
 
-        # 至少两个英文 key，也比较像元数据
-        if len(yaml_key_lines) >= 2:
-            return True
-
-    return False
+    return len(keys) >= 2
 
 
 def extract_simple_meta_from_block(block: str, delimiter: str) -> dict:
-    """
-    从已有 Front Matter 中提取少量字段。
-    目前主要提取 title，避免已有标题丢失。
-    不做复杂 YAML/TOML 完整解析，降低依赖。
-    """
-
     meta = {}
 
     if delimiter == "---":
@@ -345,16 +312,6 @@ def extract_simple_meta_from_block(block: str, delimiter: str) -> dict:
 
 
 def normalize_source_markdown(text: str):
-    """
-    处理原始 Markdown：
-
-    1. 如果顶部是可信的 Obsidian/YAML/TOML Front Matter：
-       - 提取 title 等少量信息
-       - 从正文中剥离这个块
-    2. 如果顶部只是普通 --- 分割线：
-       - 不剥离，保留正文
-    """
-
     text = text.lstrip("\ufeff")
 
     if not STRIP_EXISTING_SOURCE_FRONT_MATTER:
@@ -378,22 +335,12 @@ def normalize_source_markdown(text: str):
 
 
 # ============================================================
-# 5. 标题、排序、分类生成
+# 5. 标题、标签、Front Matter 生成
 # ============================================================
 
 def extract_title_from_markdown(body_text: str, file_path: Path, source_meta: dict) -> str:
-    """
-    标题优先级：
-
-    1. 原有 Front Matter 里的 title
-    2. 正文里的一级标题
-    3. 文件名
-    """
-
-    meta_title = source_meta.get("title")
-
-    if meta_title:
-        return meta_title.strip()
+    if source_meta.get("title"):
+        return source_meta["title"].strip()
 
     for line in body_text.splitlines():
         match = re.match(r"^#\s+(.+?)\s*$", line)
@@ -407,31 +354,21 @@ def extract_title_from_markdown(body_text: str, file_path: Path, source_meta: di
     return title or file_path.stem
 
 
-def extract_weight_from_filename(file_path: Path):
-    """
-    从文件名前缀提取排序权重。
+def build_tags(rel_path: Path):
+    tags = list(DEFAULT_TAGS)
 
-    示例：
-    030_客户原始需求如何转成爬虫任务.md -> weight = 30
-    """
+    if AUTO_TAGS_FROM_FOLDERS:
+        for part in rel_path.parent.parts:
+            label = clean_label(part)
+            if label:
+                tags.append(label)
 
-    match = re.match(r"^(\d+)", file_path.stem)
-
-    if match:
-        return int(match.group(1))
-
-    return None
+    return tags
 
 
 def build_hugo_front_matter(body_text: str, src_file: Path, rel_path: Path, source_meta: dict) -> str:
-    """
-    生成 Hugo TOML Front Matter。
-    """
-
     title = extract_title_from_markdown(body_text, src_file, source_meta)
 
-    # 用原文件最后修改时间作为发布时间
-    # 生成 TOML 可识别的 datetime
     date_value = (
         datetime
         .fromtimestamp(src_file.stat().st_mtime)
@@ -439,23 +376,7 @@ def build_hugo_front_matter(body_text: str, src_file: Path, rel_path: Path, sour
         .isoformat(timespec="seconds")
     )
 
-    # 根据父级文件夹生成标签
-    folder_labels = [
-        clean_label(part)
-        for part in rel_path.parent.parts
-        if clean_label(part)
-    ]
-
-    # categories 不宜过多，保持博客分类干净
-    categories = [BASE_CATEGORY]
-
-    if folder_labels:
-        categories.append(folder_labels[0])
-
-    # tags 可以更细，用于保留原来的目录信息
-    tags = DEFAULT_TAGS + folder_labels
-
-    weight = extract_weight_from_filename(src_file)
+    tags = build_tags(rel_path)
 
     lines = [
         "+++",
@@ -463,81 +384,119 @@ def build_hugo_front_matter(body_text: str, src_file: Path, rel_path: Path, sour
         f"date = {date_value}",
         "draft = false",
         f"tags = {toml_array(tags)}",
-        f"categories = {toml_array(categories)}",
+        f'categories = {toml_array([BASE_CATEGORY])}',
+        "+++",
     ]
-
-    if weight is not None:
-        lines.append(f"weight = {weight}")
-
-    lines.append("+++")
 
     return "\n".join(lines) + "\n\n"
 
 
 # ============================================================
-# 6. 文件收集与资源复制
+# 6. 文件收集
 # ============================================================
 
-def collect_markdown_files():
+def collect_markdown_files_from_include_paths():
     """
-    收集需要导入的 Markdown 文件，并过滤掉 .obsidian 等目录。
+    根据 INCLUDE_RELATIVE_PATHS 收集 Markdown 文件。
     """
 
-    all_md_files = sorted(SOURCE_DIR.rglob("*.md"))
+    if not INCLUDE_RELATIVE_PATHS:
+        print("警告：INCLUDE_RELATIVE_PATHS 为空，将扫描 SOURCE_DIR 下所有 Markdown。")
+        candidates = sorted(SOURCE_DIR.rglob("*.md"))
+    else:
+        candidates = []
 
-    valid_md_files = []
+        for item in INCLUDE_RELATIVE_PATHS:
+            rel_item = normalize_rel_path(item)
+            full_path = SOURCE_DIR / rel_item
 
-    for path in all_md_files:
+            if not full_path.exists():
+                print(f"警告：指定路径不存在，已跳过：{full_path}")
+                continue
+
+            if full_path.is_file():
+                if full_path.suffix.lower() == ".md":
+                    candidates.append(full_path)
+                else:
+                    print(f"警告：不是 Markdown 文件，已跳过：{full_path}")
+
+            elif full_path.is_dir():
+                candidates.extend(sorted(full_path.rglob("*.md")))
+
+    valid_files = []
+    ignored_count = 0
+
+    for path in candidates:
         rel_path = path.relative_to(SOURCE_DIR)
 
         if is_ignored_path(rel_path):
+            ignored_count += 1
             continue
 
-        valid_md_files.append(path)
+        valid_files.append(path)
 
-    ignored_count = len(all_md_files) - len(valid_md_files)
+    # 去重并排序
+    valid_files = sorted(set(valid_files))
 
     if TEST_LIMIT is not None:
-        valid_md_files = valid_md_files[:TEST_LIMIT]
+        valid_files = valid_files[:TEST_LIMIT]
 
-    return valid_md_files, ignored_count, len(all_md_files)
+    return valid_files, ignored_count, len(candidates)
+
+
+def get_included_root_dirs():
+    """
+    用于复制图片时缩小扫描范围。
+    """
+    roots = []
+
+    if not INCLUDE_RELATIVE_PATHS:
+        return [SOURCE_DIR]
+
+    for item in INCLUDE_RELATIVE_PATHS:
+        rel_item = normalize_rel_path(item)
+        full_path = SOURCE_DIR / rel_item
+
+        if full_path.exists():
+            if full_path.is_file():
+                roots.append(full_path.parent)
+            else:
+                roots.append(full_path)
+
+    return roots
 
 
 def copy_image_assets():
-    """
-    复制图片资源。
-
-    注意：
-    这里只复制图片文件，不自动修复 Obsidian 的 ![[图片.png]] 语法。
-    """
-
     copied_asset_count = 0
     ignored_asset_count = 0
 
     if not COPY_IMAGE_ASSETS:
         return copied_asset_count, ignored_asset_count
 
-    for src_file in SOURCE_DIR.rglob("*"):
-        if not src_file.is_file():
-            continue
+    roots = get_included_root_dirs()
 
-        rel_path = src_file.relative_to(SOURCE_DIR)
+    for root in roots:
+        for src_file in root.rglob("*"):
+            if not src_file.is_file():
+                continue
 
-        if is_ignored_path(rel_path):
-            ignored_asset_count += 1
-            continue
+            rel_path = src_file.relative_to(SOURCE_DIR)
 
-        if src_file.suffix.lower() not in IMAGE_EXTS:
-            continue
+            if is_ignored_path(rel_path):
+                ignored_asset_count += 1
+                continue
 
-        dest_file = DEST_DIR / rel_path
-        dest_file.parent.mkdir(parents=True, exist_ok=True)
+            if src_file.suffix.lower() not in IMAGE_EXTS:
+                continue
 
-        if dest_file.exists() and not OVERWRITE_EXISTING:
-            continue
+            dest_file = DEST_DIR / rel_path
+            dest_file.parent.mkdir(parents=True, exist_ok=True)
 
-        shutil.copy2(src_file, dest_file)
-        copied_asset_count += 1
+            if dest_file.exists() and not OVERWRITE_EXISTING:
+                continue
+
+            shutil.copy2(src_file, dest_file)
+            copied_asset_count += 1
 
     return copied_asset_count, ignored_asset_count
 
@@ -547,10 +506,6 @@ def copy_image_assets():
 # ============================================================
 
 def safety_check():
-    """
-    防止明显危险的路径配置。
-    """
-
     if not SOURCE_DIR.exists():
         raise SystemExit(f"原始目录不存在：{SOURCE_DIR}")
 
@@ -565,11 +520,6 @@ def safety_check():
 
 
 def clean_destination_dir():
-    """
-    可选：清空目标目录。
-    默认不启用，避免误删。
-    """
-
     if not CLEAN_DEST_BEFORE_IMPORT:
         return
 
@@ -585,14 +535,14 @@ def clean_destination_dir():
 
 def main():
     print("=" * 70)
-    print("Obsidian Markdown -> Hugo posts 导入脚本")
+    print("随记 Markdown -> Hugo posts 导入脚本")
     print("=" * 70)
     print(f"原始目录：{SOURCE_DIR}")
     print(f"目标目录：{DEST_DIR}")
+    print(f"只导入这些路径：{INCLUDE_RELATIVE_PATHS}")
     print(f"测试限制：{TEST_LIMIT}")
     print(f"覆盖已有文件：{OVERWRITE_EXISTING}")
-    print(f"统一生成 Hugo Front Matter：{FORCE_REGENERATE_HUGO_FRONT_MATTER}")
-    print(f"剥离原文 Front Matter：{STRIP_EXISTING_SOURCE_FRONT_MATTER}")
+    print(f"分类：{BASE_CATEGORY}")
     print("=" * 70)
 
     safety_check()
@@ -600,7 +550,7 @@ def main():
 
     DEST_DIR.mkdir(parents=True, exist_ok=True)
 
-    md_files, ignored_md_count, all_md_count = collect_markdown_files()
+    md_files, ignored_md_count, candidate_count = collect_markdown_files_from_include_paths()
 
     copied_md_count = 0
     skipped_existing_count = 0
@@ -627,9 +577,6 @@ def main():
             if stripped:
                 stripped_source_fm_count += 1
 
-            # 关键策略：
-            # 不信任原始 Obsidian 文档的 --- 块。
-            # 导入到 Hugo 的副本，一律使用自己生成的 TOML Front Matter。
             if FORCE_REGENERATE_HUGO_FRONT_MATTER:
                 hugo_front_matter = build_hugo_front_matter(
                     body_text=body_text,
@@ -659,7 +606,7 @@ def main():
     print("=" * 70)
     print("导入完成")
     print("=" * 70)
-    print(f"原始 Markdown 总数：{all_md_count}")
+    print(f"候选 Markdown 数量：{candidate_count}")
     print(f"已忽略 Markdown 数量：{ignored_md_count}")
     print(f"本次实际处理 Markdown 数量：{len(md_files)}")
     print(f"复制 Markdown 数量：{copied_md_count}")
@@ -683,9 +630,10 @@ def main():
             print(f"还有 {len(error_records) - 20} 个错误未显示。")
 
     if TEST_LIMIT is not None:
-        print("当前是测试模式。确认本地预览正常后，把 TEST_LIMIT 改成 None 再全量导入。")
+        print("当前是测试模式，只处理部分文章。")
+        print("确认本地预览正常后，把 TEST_LIMIT 改成 None 再全量导入。")
 
-    print("下一步建议：运行 hugo 检查构建是否通过。")
+    print("下一步：运行 hugo 检查构建。")
 
 
 if __name__ == "__main__":

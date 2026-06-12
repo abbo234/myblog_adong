@@ -1,3 +1,14 @@
+---
+title: "文章标题"
+date: "2026-06-12T19:10:25+08:00"
+draft: false
+categories:
+  - "随记"
+tags:
+  - "v2rayNG"
+  - "Android"
+summary: "这是一篇 v2rayNG 安卓端使用手册记录。"
+---
 # v2rayNG 在小米安卓手机上的小白使用手册
 
 > 适用对象：小米 / Redmi / POCO 安卓手机用户  
