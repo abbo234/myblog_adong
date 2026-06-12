@@ -2550,4 +2550,1076 @@ ODoH 属于隐私增强技术，不是普通代理用户的第一优先级。&lt
 &lt;li&gt;Chrome DevTools 的 Network 面板是判断数据来源的核心工具，重点看 Doc、Fetch/XHR、Preview、Response、Headers 和 Payload。&lt;/li&gt;
 &lt;li&gt;Elements 面板显示的是渲染结果，不等于服务器原始响应，不能只靠 Elements 写爬虫。&lt;/li&gt;
 &lt;li&gt;遇到真实网站时，要检查服务条款、robots.txt、版权和隐私边界，不要采集越权、付费或个人敏感数据。&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title>035_阶段01需求澄清示例</title><link>http://localhost:1313/posts/035_%E9%98%B6%E6%AE%B501%E9%9C%80%E6%B1%82%E6%BE%84%E6%B8%85%E7%A4%BA%E4%BE%8B/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/035_%E9%98%B6%E6%AE%B501%E9%9C%80%E6%B1%82%E6%BE%84%E6%B8%85%E7%A4%BA%E4%BE%8B/</guid><description>&lt;h1 id="035_阶段01需求澄清示例"&gt;&lt;a href="#035_%e9%98%b6%e6%ae%b501%e9%9c%80%e6%b1%82%e6%be%84%e6%b8%85%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;035_阶段01需求澄清示例
+&lt;/h1&gt;&lt;h2 id="1-文档定位"&gt;&lt;a href="#1-%e6%96%87%e6%a1%a3%e5%ae%9a%e4%bd%8d" class="header-anchor"&gt;&lt;/a&gt;1. 文档定位
+&lt;/h2&gt;&lt;p&gt;本文档用于提供 &lt;strong&gt;阶段01：任务定义&lt;/strong&gt; 中的需求澄清示例。&lt;/p&gt;
+&lt;p&gt;前面的文档已经说明了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为什么要记录需求来源；&lt;/li&gt;
+&lt;li&gt;如何把客户原始需求转成爬虫任务；&lt;/li&gt;
+&lt;li&gt;模糊需求需要问哪些问题；&lt;/li&gt;
+&lt;li&gt;任务范围为什么要冻结；&lt;/li&gt;
+&lt;li&gt;需求变更如何识别和处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本文档重点解决一个更具体的问题：&lt;/p&gt;
+
+ &lt;blockquote&gt;
+ &lt;p&gt;面对真实、模糊、不完整的爬虫需求时，应该如何一步一步澄清，并最终整理成阶段01任务定义结果。&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;p&gt;本文档不是理论说明，而是示例库。&lt;br&gt;
+你可以通过这些示例学习如何把一句模糊需求转成结构化任务定义。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="2-使用方式"&gt;&lt;a href="#2-%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f" class="header-anchor"&gt;&lt;/a&gt;2. 使用方式
+&lt;/h2&gt;&lt;p&gt;建议按以下方式使用本文档：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先看“客户原始需求”；&lt;/li&gt;
+&lt;li&gt;判断这个需求缺少哪些信息；&lt;/li&gt;
+&lt;li&gt;对照“澄清问题”；&lt;/li&gt;
+&lt;li&gt;查看“澄清后结果”；&lt;/li&gt;
+&lt;li&gt;学习如何写“当前不做内容”；&lt;/li&gt;
+&lt;li&gt;学习如何给出阶段01结论；&lt;/li&gt;
+&lt;li&gt;最后把结果整理进 [[101_完整爬虫任务定义卡模板]]。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;本文档不是让你照抄，而是训练你形成固定思路：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;缺失信息识别
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;澄清问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;澄清后任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前不做内容
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;阶段01结论
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="3-需求澄清的基本模板"&gt;&lt;a href="#3-%e9%9c%80%e6%b1%82%e6%be%84%e6%b8%85%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%a8%a1%e6%9d%bf" class="header-anchor"&gt;&lt;/a&gt;3. 需求澄清的基本模板
+&lt;/h2&gt;&lt;p&gt;处理任何模糊需求时，都可以使用下面模板。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 1. 客户原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;&amp;gt; &lt;/span&gt;&lt;span style="font-style:italic"&gt;客户原话
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 2. 初步理解
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;用自己的话解释客户想要什么。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 3. 缺失信息
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标 URL 是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标字段是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 字段示例值是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 采集范围是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 数据用途是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 输出格式是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否需要详情页：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否需要周期更新：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否存在风险信号：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 当前不做内容是否明确：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 4. 澄清问题
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 5. 澄清后任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 当前不做内容：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 6. 阶段01结论
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 通过结果：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否进入阶段02：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 遗留疑点：
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="4-示例一学习训练需求"&gt;&lt;a href="#4-%e7%a4%ba%e4%be%8b%e4%b8%80%e5%ad%a6%e4%b9%a0%e8%ae%ad%e7%bb%83%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;4. 示例一：学习训练需求
+&lt;/h2&gt;&lt;h2 id="41-客户原始需求"&gt;&lt;a href="#41-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;4.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我想练习 Books to Scrape 这个网站。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="42-初步理解"&gt;&lt;a href="#42-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;4.2 初步理解
+&lt;/h2&gt;&lt;p&gt;这是一个自主学习训练需求。&lt;br&gt;
+用户想用 Books to Scrape 做爬虫流程训练，但当前需求过于宽泛，没有说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;具体练哪个阶段；&lt;/li&gt;
+&lt;li&gt;目标 URL 是哪个；&lt;/li&gt;
+&lt;li&gt;要观察哪些字段；&lt;/li&gt;
+&lt;li&gt;采集范围是多少；&lt;/li&gt;
+&lt;li&gt;是否写代码；&lt;/li&gt;
+&lt;li&gt;是否翻页；&lt;/li&gt;
+&lt;li&gt;是否进入详情页。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="43-缺失信息判断"&gt;&lt;a href="#43-%e7%bc%ba%e5%a4%b1%e4%bf%a1%e6%81%af%e5%88%a4%e6%96%ad" class="header-anchor"&gt;&lt;/a&gt;4.3 缺失信息判断
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;信息项&lt;/th&gt;
+					&lt;th&gt;当前状态&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;需求来源&lt;/td&gt;
+					&lt;td&gt;明确，自主学习训练&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标网站&lt;/td&gt;
+					&lt;td&gt;明确，Books to Scrape&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标 URL&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标字段&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;字段示例值&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;采集范围&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;数据用途&lt;/td&gt;
+					&lt;td&gt;明确，学习训练&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;输出格式&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;是否详情页&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;当前不做内容&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="44-澄清问题"&gt;&lt;a href="#44-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;4.4 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 当前是练阶段01任务定义，还是练后续代码采集？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 目标 URL 是否使用 https://books.toscrape.com/？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 本次是否只观察首页图书列表？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 目标字段是否包括图书标题、价格、评分、库存状态和详情页链接？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 本次范围是否限定为首页前 5 条？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否暂不翻页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 是否暂不进入详情页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 当前输出是否只需要 Markdown 任务定义卡？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="45-澄清后任务定义"&gt;&lt;a href="#45-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89" class="header-anchor"&gt;&lt;/a&gt;4.5 澄清后任务定义
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Books to Scrape 首页图书列表阶段01任务定义训练
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自主学习训练
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Books to Scrape
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;https://books.toscrape.com/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;静态商品列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; book_title：图书标题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; price：图书价格
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; rating：图书评分
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; stock_status：库存状态
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; detail_url：详情页链接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从首页第 1 条图书记录中记录真实样本。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;首页前 5 条图书记录。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不翻页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;学习训练，用于练习阶段01任务定义。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Markdown 任务定义卡、阶段01检查结果、阶段01通过结论。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T1 学习练习型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="46-当前不做内容"&gt;&lt;a href="#46-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;4.6 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不写爬虫代码。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不分析 HTML / XHR / API。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不翻页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不进入详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不采集全站。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 不做数据清洗。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 不生成 CSV、Excel 或 SQLite。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="47-阶段01结论"&gt;&lt;a href="#47-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;4.7 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;A级通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL、字段、范围、用途、输出格式和当前不做内容均已明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;可以进入阶段02合规边界判断。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="5-示例二商品数据需求"&gt;&lt;a href="#5-%e7%a4%ba%e4%be%8b%e4%ba%8c%e5%95%86%e5%93%81%e6%95%b0%e6%8d%ae%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;5. 示例二：商品数据需求
+&lt;/h2&gt;&lt;h2 id="51-客户原始需求"&gt;&lt;a href="#51-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;5.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;帮我爬一下这个网站的商品数据，导出 Excel。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="52-初步理解"&gt;&lt;a href="#52-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;5.2 初步理解
+&lt;/h2&gt;&lt;p&gt;客户想采集某个商品网站的数据，并最终导出 Excel。&lt;br&gt;
+但当前需求缺少关键任务定义信息。&lt;/p&gt;
+&lt;h2 id="53-缺失信息判断"&gt;&lt;a href="#53-%e7%bc%ba%e5%a4%b1%e4%bf%a1%e6%81%af%e5%88%a4%e6%96%ad" class="header-anchor"&gt;&lt;/a&gt;5.3 缺失信息判断
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;信息项&lt;/th&gt;
+					&lt;th&gt;当前状态&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标网站&lt;/td&gt;
+					&lt;td&gt;可能有，但未提供具体名称&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标 URL&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标字段&lt;/td&gt;
+					&lt;td&gt;只说商品数据，字段不清&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;字段示例值&lt;/td&gt;
+					&lt;td&gt;未提供&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;采集范围&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;是否详情页&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;数据用途&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;输出格式&lt;/td&gt;
+					&lt;td&gt;Excel，初步明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;是否周期采集&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;当前不做内容&lt;/td&gt;
+					&lt;td&gt;未明确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;风险信号&lt;/td&gt;
+					&lt;td&gt;未确认&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="54-澄清问题"&gt;&lt;a href="#54-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;5.4 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 具体商品页面 URL 是哪个？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 是商品列表页、搜索页，还是分类页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 需要哪些字段：商品名、价格、评分、库存、店铺、详情页链接？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 是否需要商品图片？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要评论、销量、历史价格？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否需要进入详情页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 采集多少页或多少条？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 是否只采集某个分类？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;9. 数据是自己看，还是正式交付？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;10. Excel 是否有固定字段顺序或模板？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;11. 是否需要定期更新？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;12. 是否需要登录才能看到目标数据？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="55-澄清后任务定义示例"&gt;&lt;a href="#55-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;5.5 澄清后任务定义示例
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某商品分类页前 3 页商品数据任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某商品网站
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户提供的某商品分类页 URL
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;商品分类列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; product_title：商品标题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; price：商品价格
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; rating：商品评分
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; stock_status：库存状态
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; detail_url：商品详情页链接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从列表页第 1 条商品中记录真实样本。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;前 3 页商品列表。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集评论。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集图片。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集全站。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户自用商品整理。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续期望输出 Excel。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T2 最小采集型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="56-当前不做内容"&gt;&lt;a href="#56-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;5.6 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 本次不登录账号。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 本次不采集评论。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 本次不采集图片。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 本次不采集历史价格。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 本次不采集全站。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 本次不做周期监控。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 本次不做复杂分析报告。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="57-阶段01结论"&gt;&lt;a href="#57-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;5.7 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;B级谨慎通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段、范围和输出格式已基本明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;但需要阶段02继续判断目标页面是否适合采集，以及是否存在平台限制。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="6-示例三招聘数据需求"&gt;&lt;a href="#6-%e7%a4%ba%e4%be%8b%e4%b8%89%e6%8b%9b%e8%81%98%e6%95%b0%e6%8d%ae%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;6. 示例三：招聘数据需求
+&lt;/h2&gt;&lt;h2 id="61-客户原始需求"&gt;&lt;a href="#61-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;6.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我想抓一些 Python 招聘信息，看一下薪资。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="62-初步理解"&gt;&lt;a href="#62-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;6.2 初步理解
+&lt;/h2&gt;&lt;p&gt;这是一个招聘数据自用分析需求。&lt;br&gt;
+客户想采集 Python 岗位信息，并重点关注薪资。&lt;/p&gt;
+&lt;p&gt;当前缺失：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;招聘网站；&lt;/li&gt;
+&lt;li&gt;城市；&lt;/li&gt;
+&lt;li&gt;目标 URL；&lt;/li&gt;
+&lt;li&gt;字段清单；&lt;/li&gt;
+&lt;li&gt;页数范围；&lt;/li&gt;
+&lt;li&gt;是否详情页；&lt;/li&gt;
+&lt;li&gt;输出格式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="63-澄清问题"&gt;&lt;a href="#63-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;6.3 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 你要采集哪个招聘网站？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 城市是否限定？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 搜索关键词是否是 Python？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 需要哪些字段：职位名、薪资、地区、公司、经验、学历、发布时间、详情页链接？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要职位描述正文？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否需要公司详情信息？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 是否需要联系方式？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 采集前几页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;9. 结果是自己看，还是正式交付？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;10. 最终要 CSV 还是 Excel？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="64-澄清后任务定义示例"&gt;&lt;a href="#64-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;6.4 澄清后任务定义示例
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;苏州 Python 岗位招聘列表任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自用分析需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某公开招聘网站
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Python 关键词 + 苏州城市搜索结果页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;搜索结果列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; job_title：职位名称
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; salary：薪资范围
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; location：工作地点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; company_name：公司名称
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; publish_date：发布时间
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;6.&lt;/span&gt; detail_url：职位详情页链接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从搜索结果第 1 条岗位记录中记录真实样本。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;搜索结果前 3 页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集联系方式。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集公司详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自用岗位分析，观察薪资和岗位分布。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续可能输出 Excel。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T2 最小采集型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="65-当前不做内容"&gt;&lt;a href="#65-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;6.5 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不登录账号。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不采集联系方式。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不采集个人隐私信息。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不进入公司详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不做长期监控。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 不做自动投递或交互操作。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="66-阶段01结论"&gt;&lt;a href="#66-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;6.6 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;B级谨慎通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务目标、字段、范围和用途已明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;招聘数据可能涉及平台规则和部分敏感字段，需要阶段02重点判断。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="7-示例四新闻文章需求"&gt;&lt;a href="#7-%e7%a4%ba%e4%be%8b%e5%9b%9b%e6%96%b0%e9%97%bb%e6%96%87%e7%ab%a0%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;7. 示例四：新闻文章需求
+&lt;/h2&gt;&lt;h2 id="71-客户原始需求"&gt;&lt;a href="#71-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;7.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;帮我抓一些新闻文章，整理成表格。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="72-初步理解"&gt;&lt;a href="#72-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;7.2 初步理解
+&lt;/h2&gt;&lt;p&gt;这是新闻文章列表采集需求，但当前非常模糊。&lt;/p&gt;
+&lt;p&gt;缺失：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;哪个新闻网站；&lt;/li&gt;
+&lt;li&gt;哪个栏目；&lt;/li&gt;
+&lt;li&gt;是否按关键词搜索；&lt;/li&gt;
+&lt;li&gt;要列表信息还是正文；&lt;/li&gt;
+&lt;li&gt;采集时间范围；&lt;/li&gt;
+&lt;li&gt;采集数量；&lt;/li&gt;
+&lt;li&gt;输出格式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="73-澄清问题"&gt;&lt;a href="#73-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;7.3 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 具体是哪个新闻网站？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 是哪个栏目，还是关键词搜索？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 需要哪些字段：标题、摘要、发布时间、来源、详情页 URL？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 是否需要正文？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要作者？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否需要图片？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 采集最近多久的内容？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 采集多少页或多少条？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;9. 输出 CSV 还是 Excel？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;10. 数据是否用于公开发布？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="74-澄清后任务定义示例"&gt;&lt;a href="#74-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;7.4 澄清后任务定义示例
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某新闻栏目文章列表任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某公开新闻网站
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某新闻栏目列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;新闻列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; title：文章标题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; summary：文章摘要
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; publish_date：发布时间
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; source：文章来源
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; detail_url：详情页链接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从列表页第 1 条新闻记录中记录真实样本。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前栏目列表前 2 页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入详情页正文。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集图片。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;整理新闻列表信息。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续可能输出 Excel。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T2 最小采集型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="75-当前不做内容"&gt;&lt;a href="#75-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;7.5 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不采集全文正文。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不采集图片。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不采集评论。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不做全站新闻采集。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不做实时监控。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 不做内容改写或发布。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="76-阶段01结论"&gt;&lt;a href="#76-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;7.6 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;B级谨慎通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;列表字段和范围基本明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;如后续需要正文，需要重新定义详情页范围。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="8-示例五政策文件需求"&gt;&lt;a href="#8-%e7%a4%ba%e4%be%8b%e4%ba%94%e6%94%bf%e7%ad%96%e6%96%87%e4%bb%b6%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;8. 示例五：政策文件需求
+&lt;/h2&gt;&lt;h2 id="81-客户原始需求"&gt;&lt;a href="#81-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;8.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我想整理一些政策文件。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="82-初步理解"&gt;&lt;a href="#82-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;8.2 初步理解
+&lt;/h2&gt;&lt;p&gt;这是政策文件信息整理需求，但缺少具体来源和范围。&lt;/p&gt;
+&lt;p&gt;缺失：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;政策文件来自哪个网站；&lt;/li&gt;
+&lt;li&gt;哪个部门或栏目；&lt;/li&gt;
+&lt;li&gt;是否需要正文；&lt;/li&gt;
+&lt;li&gt;是否需要附件；&lt;/li&gt;
+&lt;li&gt;时间范围；&lt;/li&gt;
+&lt;li&gt;文件类型；&lt;/li&gt;
+&lt;li&gt;输出格式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="83-澄清问题"&gt;&lt;a href="#83-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;8.3 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 政策文件来自哪个网站或政策库？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 是否限定某个部门、地区或栏目？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 是否需要标题、发布机关、发布日期、文号、文件类型、详情页 URL？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 是否需要政策正文？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要下载 PDF 或附件？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否限定时间范围？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 是否只整理列表页信息？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 最终输出 Excel 还是 Markdown？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="84-澄清后任务定义示例"&gt;&lt;a href="#84-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;8.4 澄清后任务定义示例
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某政策文件库列表页任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自用资料整理
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某公开政务网站
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;政策文件库列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;政策文件列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; document_title：文件标题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; publish_org：发布机关
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; publish_date：发布日期
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; document_type：文件类型
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; detail_url：详情页链接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从列表页第 1 条政策文件中记录真实样本。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;列表页前 1 页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不下载附件。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自用资料整理。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续可能输出 Excel 或 Markdown 索引。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T2 最小采集型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="85-当前不做内容"&gt;&lt;a href="#85-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;8.5 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不采集政策正文。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不下载 PDF 或附件。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不采集全站政策库。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不做历史全量整理。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不做政策解读。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="86-阶段01结论"&gt;&lt;a href="#86-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;8.6 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;B级谨慎通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段和范围明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;如后续需要正文或附件，应作为新需求变更处理。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="9-示例六价格监控需求"&gt;&lt;a href="#9-%e7%a4%ba%e4%be%8b%e5%85%ad%e4%bb%b7%e6%a0%bc%e7%9b%91%e6%8e%a7%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;9. 示例六：价格监控需求
+&lt;/h2&gt;&lt;h2 id="91-客户原始需求"&gt;&lt;a href="#91-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;9.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我想每天看看某个商品的价格变化。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="92-初步理解"&gt;&lt;a href="#92-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;9.2 初步理解
+&lt;/h2&gt;&lt;p&gt;这是周期监控型需求，不是普通一次性采集任务。&lt;/p&gt;
+&lt;p&gt;缺失：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;商品 URL；&lt;/li&gt;
+&lt;li&gt;监控字段；&lt;/li&gt;
+&lt;li&gt;监控频率；&lt;/li&gt;
+&lt;li&gt;是否保存历史；&lt;/li&gt;
+&lt;li&gt;是否需要提醒；&lt;/li&gt;
+&lt;li&gt;输出形式；&lt;/li&gt;
+&lt;li&gt;是否需要长期部署。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="93-澄清问题"&gt;&lt;a href="#93-%e6%be%84%e6%b8%85%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;9.3 澄清问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 具体商品页面 URL 是哪个？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 需要监控哪些字段：当前价、原价、优惠价、库存？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 每天采集几次？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 是否需要保存历史价格？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要价格变化提醒？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 是否需要图表或报告？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 是否只是先做样例，还是长期运行？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 是否需要登录才能看到价格？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="94-澄清后任务定义示例"&gt;&lt;a href="#94-%e6%be%84%e6%b8%85%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;9.4 澄清后任务定义示例
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某商品价格变化监控任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;周期监控想法
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;某商品详情页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;商品详情页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; product_title：商品标题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; current_price：当前价格
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; stock_status：库存状态
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; record_time：记录时间
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从商品详情页记录当前显示价格和库存状态。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;单个商品详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;初期只定义一个商品。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不扩展到多个商品。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自用价格变化观察。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续可能输出 SQLite 或 Excel 历史记录。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T4 周期监控型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="95-当前不做内容"&gt;&lt;a href="#95-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;9.5 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 当前不设计定时调度。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 当前不写监控程序。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 当前不做价格提醒。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 当前不监控多个商品。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 当前不做长期部署。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 当前不处理登录后价格。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="96-阶段01结论"&gt;&lt;a href="#96-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;9.6 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;B级谨慎通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务目标明确，但属于周期监控型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;后续需要重点评估合规、稳定性、调度和存储需求。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="10-示例七停止型需求"&gt;&lt;a href="#10-%e7%a4%ba%e4%be%8b%e4%b8%83%e5%81%9c%e6%ad%a2%e5%9e%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;10. 示例七：停止型需求
+&lt;/h2&gt;&lt;h2 id="101-客户原始需求"&gt;&lt;a href="#101-%e5%ae%a2%e6%88%b7%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;10.1 客户原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我有账号，你帮我登录进去，把会员数据抓出来。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="102-初步理解"&gt;&lt;a href="#102-%e5%88%9d%e6%ad%a5%e7%90%86%e8%a7%a3" class="header-anchor"&gt;&lt;/a&gt;10.2 初步理解
+&lt;/h2&gt;&lt;p&gt;该需求涉及登录后数据，可能属于非公开数据，也可能涉及会员、个人信息或平台限制。&lt;/p&gt;
+&lt;p&gt;这是明显风险型需求，不能直接继续任务定义为普通采集任务。&lt;/p&gt;
+&lt;h2 id="103-需要澄清的问题"&gt;&lt;a href="#103-%e9%9c%80%e8%a6%81%e6%be%84%e6%b8%85%e7%9a%84%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;10.3 需要澄清的问题
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 数据是否公开可见？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 是否必须登录才能查看？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 数据是否涉及个人信息？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 数据是否属于付费会员内容？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 是否需要绕过验证码或访问限制？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 数据用途是什么？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;但即使客户回答，也不能默认继续。&lt;/p&gt;
+&lt;h2 id="104-阶段01处理结果"&gt;&lt;a href="#104-%e9%98%b6%e6%ae%b501%e5%a4%84%e7%90%86%e7%bb%93%e6%9e%9c" class="header-anchor"&gt;&lt;/a&gt;10.4 阶段01处理结果
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;登录后会员数据采集需求判断
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;风险信号：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; 需要登录。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; 可能涉及非公开数据。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; 可能涉及会员或个人信息。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; 可能涉及平台访问限制。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;TX 停止型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前不做内容：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; 不登录账号采集。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; 不采集非公开数据。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; 不绕过验证码或访问限制。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; 不进入代码阶段。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;5.&lt;/span&gt; 不进入数据来源判断阶段。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;阶段01结论：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;D级停止。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="105-阶段01结论"&gt;&lt;a href="#105-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;10.5 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;D级停止。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;该任务涉及登录后数据和潜在非公开信息，不适合作为当前训练或普通采集任务继续。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="11-示例八ai-自动扩大任务"&gt;&lt;a href="#11-%e7%a4%ba%e4%be%8b%e5%85%abai-%e8%87%aa%e5%8a%a8%e6%89%a9%e5%a4%a7%e4%bb%bb%e5%8a%a1" class="header-anchor"&gt;&lt;/a&gt;11. 示例八：AI 自动扩大任务
+&lt;/h2&gt;&lt;h2 id="111-原始需求"&gt;&lt;a href="#111-%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;11.1 原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我想用 Quotes to Scrape 练习阶段01任务定义。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="112-ai-错误扩展"&gt;&lt;a href="#112-ai-%e9%94%99%e8%af%af%e6%89%a9%e5%b1%95" class="header-anchor"&gt;&lt;/a&gt;11.2 AI 错误扩展
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;建议采集全站所有名言，进入每个详情页，保存到 SQLite，并编写 Scrapy 项目。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="113-问题分析"&gt;&lt;a href="#113-%e9%97%ae%e9%a2%98%e5%88%86%e6%9e%90" class="header-anchor"&gt;&lt;/a&gt;11.3 问题分析
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;AI 输出内容&lt;/th&gt;
+					&lt;th&gt;问题&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;采集全站&lt;/td&gt;
+					&lt;td&gt;扩大范围&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;进入详情页&lt;/td&gt;
+					&lt;td&gt;增加复杂度&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;保存 SQLite&lt;/td&gt;
+					&lt;td&gt;后续存储阶段&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;编写 Scrapy 项目&lt;/td&gt;
+					&lt;td&gt;技术路线和工程化阶段&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;直接采集&lt;/td&gt;
+					&lt;td&gt;跳过阶段02、03、04&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="114-修正后任务定义"&gt;&lt;a href="#114-%e4%bf%ae%e6%ad%a3%e5%90%8e%e4%bb%bb%e5%8a%a1%e5%ae%9a%e4%b9%89" class="header-anchor"&gt;&lt;/a&gt;11.4 修正后任务定义
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Quotes to Scrape 首页名言列表阶段01任务定义训练
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自主学习训练 + AI 辅助
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;https://quotes.toscrape.com/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;静态名言列表页
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;1.&lt;/span&gt; quote_text：名言正文
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;2.&lt;/span&gt; author：作者
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;3.&lt;/span&gt; tags：标签
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;4.&lt;/span&gt; detail_url：作者详情页链接，可选
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;首页前 5 条名言。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不翻页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不进入作者详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;暂不采集全站。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;学习训练。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;当前阶段输出 Markdown 任务定义卡。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;T1 学习练习型任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="115-当前不做内容"&gt;&lt;a href="#115-%e5%bd%93%e5%89%8d%e4%b8%8d%e5%81%9a%e5%86%85%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;11.5 当前不做内容
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不写代码。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不翻页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不进入作者详情页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不采集全站。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不保存 SQLite。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 不建立 Scrapy 项目。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 不分析接口。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="116-阶段01结论"&gt;&lt;a href="#116-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;11.6 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;A级通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;判断依据：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;已删除 AI 越界内容，任务范围已收缩到阶段01训练目标。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="12-示例九需求范围膨胀"&gt;&lt;a href="#12-%e7%a4%ba%e4%be%8b%e4%b9%9d%e9%9c%80%e6%b1%82%e8%8c%83%e5%9b%b4%e8%86%a8%e8%83%80" class="header-anchor"&gt;&lt;/a&gt;12. 示例九：需求范围膨胀
+&lt;/h2&gt;&lt;h2 id="121-原始需求"&gt;&lt;a href="#121-%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;12.1 原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;先采集商品列表前 1 页。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="122-后续新增需求"&gt;&lt;a href="#122-%e5%90%8e%e7%bb%ad%e6%96%b0%e5%a2%9e%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;12.2 后续新增需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;顺便把详情页、评论、图片也一起抓了吧。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="123-需求变更识别"&gt;&lt;a href="#123-%e9%9c%80%e6%b1%82%e5%8f%98%e6%9b%b4%e8%af%86%e5%88%ab" class="header-anchor"&gt;&lt;/a&gt;12.3 需求变更识别
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;新增内容&lt;/th&gt;
+					&lt;th&gt;变更类型&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;详情页&lt;/td&gt;
+					&lt;td&gt;重大变更&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;评论&lt;/td&gt;
+					&lt;td&gt;重大变更，可能有风险&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;图片&lt;/td&gt;
+					&lt;td&gt;字段和资源类型变更&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;一起抓&lt;/td&gt;
+					&lt;td&gt;范围扩大&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="124-正确处理"&gt;&lt;a href="#124-%e6%ad%a3%e7%a1%ae%e5%a4%84%e7%90%86" class="header-anchor"&gt;&lt;/a&gt;12.4 正确处理
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;处理结论：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;该变更不能直接加入原任务。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;原任务范围为商品列表前 1 页。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;新增详情页、评论、图片属于重大需求变更。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;需要重新定义任务范围，并重新进入阶段02合规边界判断。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="125-阶段01结论"&gt;&lt;a href="#125-%e9%98%b6%e6%ae%b501%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;12.5 阶段01结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;原任务保持冻结。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;新增需求单独记录为需求变更。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不直接修改原任务为全量复杂任务。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="13-示例十不合格澄清示例"&gt;&lt;a href="#13-%e7%a4%ba%e4%be%8b%e5%8d%81%e4%b8%8d%e5%90%88%e6%a0%bc%e6%be%84%e6%b8%85%e7%a4%ba%e4%be%8b" class="header-anchor"&gt;&lt;/a&gt;13. 示例十：不合格澄清示例
+&lt;/h2&gt;&lt;h2 id="131-原始需求"&gt;&lt;a href="#131-%e5%8e%9f%e5%a7%8b%e9%9c%80%e6%b1%82" class="header-anchor"&gt;&lt;/a&gt;13.1 原始需求
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;帮我把这个网站的数据都爬下来。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="132-错误处理"&gt;&lt;a href="#132-%e9%94%99%e8%af%af%e5%a4%84%e7%90%86" class="header-anchor"&gt;&lt;/a&gt;13.2 错误处理
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标：爬取全部数据
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;字段：全部字段
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;范围：全站
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;输出：Excel
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;任务类型：T2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;结论：可以开始写代码
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="133-错误分析"&gt;&lt;a href="#133-%e9%94%99%e8%af%af%e5%88%86%e6%9e%90" class="header-anchor"&gt;&lt;/a&gt;13.3 错误分析
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;问题&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标 URL 不明确&lt;/td&gt;
+					&lt;td&gt;只说网站，没有页面&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;字段不明确&lt;/td&gt;
+					&lt;td&gt;“全部字段”不可执行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;范围不可控&lt;/td&gt;
+					&lt;td&gt;“全站”风险高、工作量不明&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;输出不完整&lt;/td&gt;
+					&lt;td&gt;Excel 格式要求不清&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;任务类型误判&lt;/td&gt;
+					&lt;td&gt;可能不是 T2&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;当前不做缺失&lt;/td&gt;
+					&lt;td&gt;没有排除项&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;跳过阶段02&lt;/td&gt;
+					&lt;td&gt;直接写代码错误&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="134-正确澄清"&gt;&lt;a href="#134-%e6%ad%a3%e7%a1%ae%e6%be%84%e6%b8%85" class="header-anchor"&gt;&lt;/a&gt;13.4 正确澄清
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;请先确认：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 具体目标页面是哪一个？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 你说的数据包括哪些字段？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 是否只采集列表页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 是否需要详情页？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 先做前几页或前多少条？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 数据用途是什么？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 最终 Excel 需要哪些列？
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. 本次是否不包含登录、评论、图片、全站历史数据？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="135-正确结论"&gt;&lt;a href="#135-%e6%ad%a3%e7%a1%ae%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;13.5 正确结论
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;C级不通过。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;原因：目标 URL、字段、范围、当前不做内容均不明确。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;必须回退阶段01继续澄清。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="14-需求澄清示例对照表"&gt;&lt;a href="#14-%e9%9c%80%e6%b1%82%e6%be%84%e6%b8%85%e7%a4%ba%e4%be%8b%e5%af%b9%e7%85%a7%e8%a1%a8" class="header-anchor"&gt;&lt;/a&gt;14. 需求澄清示例对照表
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;原始需求&lt;/th&gt;
+					&lt;th&gt;主要问题&lt;/th&gt;
+					&lt;th&gt;处理结果&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;我想练习 Books to Scrape&lt;/td&gt;
+					&lt;td&gt;缺少阶段、范围、字段&lt;/td&gt;
+					&lt;td&gt;收缩为首页前 5 条 T1 任务&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;帮我爬商品数据&lt;/td&gt;
+					&lt;td&gt;字段和范围不清&lt;/td&gt;
+					&lt;td&gt;澄清字段、页数、是否详情页&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;抓 Python 招聘信息&lt;/td&gt;
+					&lt;td&gt;网站、城市、字段不清&lt;/td&gt;
+					&lt;td&gt;明确搜索页、字段、前 3 页&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;整理新闻文章&lt;/td&gt;
+					&lt;td&gt;栏目、正文、时间不清&lt;/td&gt;
+					&lt;td&gt;明确列表字段和范围&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;整理政策文件&lt;/td&gt;
+					&lt;td&gt;来源、字段、附件不清&lt;/td&gt;
+					&lt;td&gt;明确列表页文件字段&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;每天看价格变化&lt;/td&gt;
+					&lt;td&gt;周期任务&lt;/td&gt;
+					&lt;td&gt;标记 T4，暂不做调度&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;登录抓会员数据&lt;/td&gt;
+					&lt;td&gt;登录、非公开风险&lt;/td&gt;
+					&lt;td&gt;TX 停止&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AI 建议全站采集&lt;/td&gt;
+					&lt;td&gt;AI 越界&lt;/td&gt;
+					&lt;td&gt;回退到冻结范围&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;顺便加详情页评论&lt;/td&gt;
+					&lt;td&gt;需求变更&lt;/td&gt;
+					&lt;td&gt;重新定义或拆分新任务&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;爬全部数据&lt;/td&gt;
+					&lt;td&gt;范围失控&lt;/td&gt;
+					&lt;td&gt;C级不通过&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="15-需求澄清后的统一输出格式"&gt;&lt;a href="#15-%e9%9c%80%e6%b1%82%e6%be%84%e6%b8%85%e5%90%8e%e7%9a%84%e7%bb%9f%e4%b8%80%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="header-anchor"&gt;&lt;/a&gt;15. 需求澄清后的统一输出格式
+&lt;/h2&gt;&lt;p&gt;无论是哪种示例，最终都应该整理为统一格式：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 澄清后任务定义
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 任务名称：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 需求来源：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标网站：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标 URL：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 页面类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 目标字段：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 字段示例值：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 采集范围：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否详情页：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 数据用途：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 输出格式：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 任务类型：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 当前不做内容：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 风险提示：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 阶段01结论：
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 是否进入阶段02：
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样后续才能进入任务定义卡。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="16-示例使用中的注意事项"&gt;&lt;a href="#16-%e7%a4%ba%e4%be%8b%e4%bd%bf%e7%94%a8%e4%b8%ad%e7%9a%84%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-anchor"&gt;&lt;/a&gt;16. 示例使用中的注意事项
+&lt;/h2&gt;&lt;p&gt;使用这些示例时，要注意：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;示例不是固定答案；&lt;/li&gt;
+&lt;li&gt;每个真实网站都要重新观察和确认；&lt;/li&gt;
+&lt;li&gt;不要复制字段而不看页面；&lt;/li&gt;
+&lt;li&gt;不要把学习任务扩大成交付任务；&lt;/li&gt;
+&lt;li&gt;不要忽略当前不做内容；&lt;/li&gt;
+&lt;li&gt;不要看到“Excel”就直接进入交付；&lt;/li&gt;
+&lt;li&gt;不要看到“每天”就直接设计监控系统；&lt;/li&gt;
+&lt;li&gt;不要看到“登录”还继续普通流程；&lt;/li&gt;
+&lt;li&gt;不要接受 AI 自动扩大范围；&lt;/li&gt;
+&lt;li&gt;澄清后必须写任务定义卡。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="17-与其他文档的关系"&gt;&lt;a href="#17-%e4%b8%8e%e5%85%b6%e4%bb%96%e6%96%87%e6%a1%a3%e7%9a%84%e5%85%b3%e7%b3%bb" class="header-anchor"&gt;&lt;/a&gt;17. 与其他文档的关系
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;文档&lt;/th&gt;
+					&lt;th&gt;关系&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[00_Inbox_临时收集/My Obsidian/垃圾池/020_阶段01_任务定义/000_阶段01_任务定义_MOC]]&lt;/td&gt;
+					&lt;td&gt;本文档由 MOC 统一导航&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[030_客户原始需求如何转成爬虫任务]]&lt;/td&gt;
+					&lt;td&gt;本文档提供需求转换示例&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[031_模糊需求澄清问题清单]]&lt;/td&gt;
+					&lt;td&gt;本文档中的问题来自澄清清单&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[032_需求来源记录方法]]&lt;/td&gt;
+					&lt;td&gt;示例中都需要先判断需求来源&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[033_任务范围冻结说明]]&lt;/td&gt;
+					&lt;td&gt;澄清后需要冻结任务范围&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[034_需求变更识别与处理]]&lt;/td&gt;
+					&lt;td&gt;范围膨胀示例对应需求变更处理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[101_完整爬虫任务定义卡模板]]&lt;/td&gt;
+					&lt;td&gt;澄清结果最终写入任务定义卡&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[160_阶段01提交前检查清单]]&lt;/td&gt;
+					&lt;td&gt;用于检查澄清结果是否完整&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;[[169_阶段01通过标准_A_B_C_D]]&lt;/td&gt;
+					&lt;td&gt;用于判断示例中的阶段结论&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="18-最终总结"&gt;&lt;a href="#18-%e6%9c%80%e7%bb%88%e6%80%bb%e7%bb%93" class="header-anchor"&gt;&lt;/a&gt;18. 最终总结
+&lt;/h2&gt;&lt;p&gt;需求澄清不是额外步骤，而是阶段01的核心动作之一。&lt;/p&gt;
+&lt;p&gt;面对任何模糊需求，都不要直接写代码，也不要直接判断技术路线。&lt;/p&gt;
+&lt;p&gt;正确流程是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;先保留原始需求
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再识别缺失信息
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再提出澄清问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再整理澄清结果
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再冻结任务范围
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再填写任务定义卡
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;再判断是否通过阶段01
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一条模糊需求只有被转化为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确 URL
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确字段
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;真实示例
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确范围
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确用途
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确输出
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确不做
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;明确结论
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;才算完成阶段01需求澄清。&lt;/p&gt;
+&lt;p&gt;需求澄清做得越清楚，后续代码越少返工。&lt;br&gt;
+需求澄清越模糊，后续越容易范围失控、项目争议和训练混乱。&lt;/p&gt;</description></item></channel></rss>
