@@ -958,4 +958,1596 @@
 &lt;li&gt;Chrome DevTools 的 Network 面板是判断数据来源的核心工具，重点看 Doc、Fetch/XHR、Preview、Response、Headers 和 Payload。&lt;/li&gt;
 &lt;li&gt;Elements 面板显示的是渲染结果，不等于服务器原始响应，不能只靠 Elements 写爬虫。&lt;/li&gt;
 &lt;li&gt;遇到真实网站时，要检查服务条款、robots.txt、版权和隐私边界，不要采集越权、付费或个人敏感数据。&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title/><link>http://localhost:1313/posts/%E6%9C%AA%E5%91%BD%E5%90%8D/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/%E6%9C%AA%E5%91%BD%E5%90%8D/</guid><description>&lt;p&gt;下面是把博客里的“计算机网络通讯扫盲”部分借鉴后，按 &lt;strong&gt;2026 年代理/VPN/IP 判断场景&lt;/strong&gt; 重写的“网络基础部分”。&lt;br&gt;
+重点不是学院派网络课，而是让你能判断：&lt;strong&gt;节点为什么慢、DNS 为什么泄露、TUN 为什么会影响全局、IP 为什么会被风控、服务商话术哪里有水分&lt;/strong&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="网络基础面向代理--vpn--ip-判断的系统版"&gt;&lt;a href="#%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80%e9%9d%a2%e5%90%91%e4%bb%a3%e7%90%86--vpn--ip-%e5%88%a4%e6%96%ad%e7%9a%84%e7%b3%bb%e7%bb%9f%e7%89%88" class="header-anchor"&gt;&lt;/a&gt;网络基础：面向代理 / VPN / IP 判断的系统版
+&lt;/h1&gt;&lt;h2 id="0-直接结论"&gt;&lt;a href="#0-%e7%9b%b4%e6%8e%a5%e7%bb%93%e8%ae%ba" class="header-anchor"&gt;&lt;/a&gt;0. 直接结论
+&lt;/h2&gt;&lt;p&gt;网络基础不需要一开始学到企业网络工程师水平。普通用户和中级用户最该掌握的是这几条：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;网络通信是分层的&lt;/strong&gt;：每一层负责不同事情。故障排查时，要判断问题在哪一层。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;IP 只解决“从哪到哪”&lt;/strong&gt;，不代表账号安全，也不代表隐私完整。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;DNS 是访问网站前的第一步&lt;/strong&gt;，DNS 泄露、污染、劫持会直接影响代理/VPN效果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TCP、UDP、QUIC 会影响速度、延迟、丢包表现&lt;/strong&gt;，不是“带宽越大就越快”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;HTTPS/TLS 保护内容，不等于隐藏所有访问痕迹&lt;/strong&gt;。域名、IP、连接时间、流量大小仍可能暴露。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;系统代理、TUN、VPN 虚拟网卡不是一回事&lt;/strong&gt;，它们接管流量的范围不同。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;家宽 IP、原生 IP、独享 IP 都不是万能护身符&lt;/strong&gt;，真正要看出口 IP 质量、使用历史、ASN、共享程度和目标平台规则。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;博客原文的价值在于它先讲“信道、协议、协议栈、OSI 分层”等基础概念，这个框架仍然有用；但它没有覆盖足够多的现代现实问题，比如 DoH/DoT/DoQ、HTTP/3、QUIC、TLS 1.3、IPv6、CGNAT、现代代理客户端 DNS 模式、TUN 模式、CDN 与 Anycast 对节点体验的影响。博客中对“信道、带宽、协议、协议栈、分层”的解释仍可作为基础框架使用。(&lt;a class="link" href="https://cirubla.github.io/2021/03/Computer-Networks-Overview.html" title="计算机网络通讯的【系统性】扫盲——从“基本概念”到“OSI 模型” - 编程随想的博客"
+ target="_blank" rel="noopener"
+ &gt;编程随想&lt;/a&gt;)&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="1-网络通信的最小模型"&gt;&lt;a href="#1-%e7%bd%91%e7%bb%9c%e9%80%9a%e4%bf%a1%e7%9a%84%e6%9c%80%e5%b0%8f%e6%a8%a1%e5%9e%8b" class="header-anchor"&gt;&lt;/a&gt;1. 网络通信的最小模型
+&lt;/h1&gt;&lt;p&gt;你访问一个网站，表面上只是打开浏览器输入网址，实际大致经过这条链路：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;浏览器 / App
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;DNS 查询：把域名解析成 IP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;本机网络栈：选择走直连、系统代理、TUN、VPN
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;传输层：TCP / UDP / QUIC
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;加密层：TLS / HTTPS
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标服务器 / CDN / 代理出口服务器
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;返回数据
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果你用了代理/VPN，中间会多一段：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;你的设备
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;本地代理客户端
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;代理协议加密传输
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;远程节点服务器
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;节点出口 IP 访问目标网站
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所以排查问题时，不要只问“节点坏了吗”。更准确的问题是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 是否解析错？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器有没有走代理？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;系统代理有没有开启？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TUN 有没有接管流量？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;UDP 有没有被支持？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;目标网站是不是屏蔽了出口 IP？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务商出口是不是晚高峰拥堵？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;本地网络是不是丢包？&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="2-分层模型不要死背-osi要用于排障"&gt;&lt;a href="#2-%e5%88%86%e5%b1%82%e6%a8%a1%e5%9e%8b%e4%b8%8d%e8%a6%81%e6%ad%bb%e8%83%8c-osi%e8%a6%81%e7%94%a8%e4%ba%8e%e6%8e%92%e9%9a%9c" class="header-anchor"&gt;&lt;/a&gt;2. 分层模型：不要死背 OSI，要用于排障
+&lt;/h1&gt;&lt;p&gt;博客用 OSI 七层模型讲网络，这是经典方式。OSI 七层包括物理层、数据链路层、网络层、传输层、会话层、表示层、应用层；博客也提醒，一般用户重点理解低层到传输层，有助于理解网络与信息安全问题。(&lt;a class="link" href="https://cirubla.github.io/2021/03/Computer-Networks-Overview.html" title="计算机网络通讯的【系统性】扫盲——从“基本概念”到“OSI 模型” - 编程随想的博客"
+ target="_blank" rel="noopener"
+ &gt;编程随想&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;但对代理/VPN实际使用来说，建议用更实用的 &lt;strong&gt;5 层排障模型&lt;/strong&gt;：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;实用层级&lt;/th&gt;
+					&lt;th&gt;你要理解什么&lt;/th&gt;
+					&lt;th&gt;常见问题&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;物理/接入层&lt;/td&gt;
+					&lt;td&gt;Wi-Fi、网线、4G/5G、宽带&lt;/td&gt;
+					&lt;td&gt;本地没网、信号差、路由器问题&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;IP/路由层&lt;/td&gt;
+					&lt;td&gt;IP 地址、网关、NAT、ASN、路由&lt;/td&gt;
+					&lt;td&gt;某地区节点绕路、IP 被封、路由不稳定&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;传输层&lt;/td&gt;
+					&lt;td&gt;TCP、UDP、QUIC、端口&lt;/td&gt;
+					&lt;td&gt;能 ping 但打不开网页、UDP 不通、游戏/语音异常&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;加密/会话层&lt;/td&gt;
+					&lt;td&gt;TLS、HTTPS、证书、SNI/ECH&lt;/td&gt;
+					&lt;td&gt;证书错误、握手失败、被中间设备干扰&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;应用/代理层&lt;/td&gt;
+					&lt;td&gt;HTTP、DNS、代理协议、规则&lt;/td&gt;
+					&lt;td&gt;订阅失败、规则错、DNS 泄露、App 不走代理&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;现实用途：&lt;br&gt;
+以后看到客户端日志，不要只看“error”。要判断它属于哪层：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;timeout&lt;/code&gt;：可能是路由、端口、节点、目标站问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;dns failed&lt;/code&gt;：优先查 DNS。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;tls handshake failed&lt;/code&gt;：查时间、证书、SNI、节点配置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;connection refused&lt;/code&gt;：可能端口没开、服务端没运行、协议不匹配。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;no route&lt;/code&gt; / &lt;code&gt;network unreachable&lt;/code&gt;：可能本地网络、TUN、路由表问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="3-ip-基础ip-是网络身份不是安全保证"&gt;&lt;a href="#3-ip-%e5%9f%ba%e7%a1%80ip-%e6%98%af%e7%bd%91%e7%bb%9c%e8%ba%ab%e4%bb%bd%e4%b8%8d%e6%98%af%e5%ae%89%e5%85%a8%e4%bf%9d%e8%af%81" class="header-anchor"&gt;&lt;/a&gt;3. IP 基础：IP 是网络身份，不是安全保证
+&lt;/h1&gt;&lt;h2 id="31-ipv4-与-ipv6"&gt;&lt;a href="#31-ipv4-%e4%b8%8e-ipv6" class="header-anchor"&gt;&lt;/a&gt;3.1 IPv4 与 IPv6
+&lt;/h2&gt;&lt;p&gt;IPv4 是传统地址，例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8.8.8.8
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;IPv6 是更长的新地址，例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2400:3200::1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现实里，IPv4 地址紧缺，所以大量家庭宽带、手机网络、低价服务器都会使用 NAT 或 CGNAT。IPv6 的设计方向是更充分的端到端路由，不应继续依赖 NAT 思路；APNIC 在 2025 年的文章里也明确指出，大规模网络应正确部署 IPv6，而不是继续依赖 NAT 作为长期方案。(&lt;a class="link" href="https://blog.apnic.net/2025/05/13/lets-talk-about-cgnat-and-ipv6-again/" title="Let’s talk about CGNAT and IPv6, again | APNIC Blog"
+ target="_blank" rel="noopener"
+ &gt;APNIC Blog&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;对你判断代理/VPN的意义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;IPv4 节点更常见，但 IP 污染、共享、封禁也更常见。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;IPv6 节点不一定更好，因为目标网站、客户端、规则、DNS、服务商配置都要支持。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有些 App 会绕过 IPv4 代理走 IPv6 直连，造成泄露。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;排查时要看：你的真实 IPv4、真实 IPv6、代理出口 IPv4/IPv6 是否一致。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="32-公网-ip私网-ipnatcgnat"&gt;&lt;a href="#32-%e5%85%ac%e7%bd%91-ip%e7%a7%81%e7%bd%91-ipnatcgnat" class="header-anchor"&gt;&lt;/a&gt;3.2 公网 IP、私网 IP、NAT、CGNAT
+&lt;/h2&gt;&lt;p&gt;常见私网 IP：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;192.168.x.x
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;10.x.x.x
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;172.16.x.x - 172.31.x.x
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这些不是公网 IP，外网不能直接访问你。家庭路由器通常会把多台设备的私网 IP 转换成一个公网出口，这就是 NAT。&lt;/p&gt;
+&lt;p&gt;CGNAT 是运营商级 NAT。也就是说，不只是你家路由器做 NAT，运营商也在做一层 NAT。结果是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;你的手机 / 电脑
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;你家路由器 NAT
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;运营商 CGNAT
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;公网
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;你以为自己有公网 IP，实际可能没有。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;BT、远程桌面、NAS、端口映射可能失效。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;游戏、语音、P2P 可能受影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代理服务商说“家宽 IP”，不等于你能拿到完整、干净、可控的公网出口。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="33-asnisp机房家宽"&gt;&lt;a href="#33-asnisp%e6%9c%ba%e6%88%bf%e5%ae%b6%e5%ae%bd" class="header-anchor"&gt;&lt;/a&gt;3.3 ASN、ISP、机房、家宽
+&lt;/h2&gt;&lt;p&gt;判断一个代理 IP，不要只看国家地区，要看：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;指标&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;现实意义&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;国家/地区&lt;/td&gt;
+					&lt;td&gt;IP 数据库识别的位置&lt;/td&gt;
+					&lt;td&gt;可能不准，只能参考&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ASN&lt;/td&gt;
+					&lt;td&gt;IP 属于哪个自治系统&lt;/td&gt;
+					&lt;td&gt;判断是云厂商、运营商、CDN、机房&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ISP&lt;/td&gt;
+					&lt;td&gt;网络运营商&lt;/td&gt;
+					&lt;td&gt;判断是否像真实家庭宽带&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;类型&lt;/td&gt;
+					&lt;td&gt;数据中心/住宅/移动/教育/企业&lt;/td&gt;
+					&lt;td&gt;影响风控、稳定性、价格&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;历史&lt;/td&gt;
+					&lt;td&gt;是否被滥用、黑名单记录&lt;/td&gt;
+					&lt;td&gt;影响账号登录和网站访问&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;关键判断：&lt;br&gt;
+&lt;strong&gt;IP 类型只能说明“出口像什么”，不能保证账号安全。&lt;/strong&gt;&lt;br&gt;
+账号平台还会看设备、浏览器指纹、登录位置变化、手机号、支付方式、行为轨迹。服务商把“住宅 IP”包装成“账号绝对安全”，这是典型营销话术。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="4-dns-基础代理vpn里最容易被忽略的一层"&gt;&lt;a href="#4-dns-%e5%9f%ba%e7%a1%80%e4%bb%a3%e7%90%86vpn%e9%87%8c%e6%9c%80%e5%ae%b9%e6%98%93%e8%a2%ab%e5%bf%bd%e7%95%a5%e7%9a%84%e4%b8%80%e5%b1%82" class="header-anchor"&gt;&lt;/a&gt;4. DNS 基础：代理/VPN里最容易被忽略的一层
+&lt;/h1&gt;&lt;h2 id="41-dns-是什么"&gt;&lt;a href="#41-dns-%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;4.1 DNS 是什么
+&lt;/h2&gt;&lt;p&gt;DNS 的作用是把域名转换成 IP。比如你输入：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;example.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;系统需要先查询它对应的 IP，然后才能连接服务器。&lt;/p&gt;
+&lt;p&gt;常见 DNS 记录：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;记录&lt;/th&gt;
+					&lt;th&gt;作用&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;域名对应 IPv4&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AAAA&lt;/td&gt;
+					&lt;td&gt;域名对应 IPv6&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CNAME&lt;/td&gt;
+					&lt;td&gt;域名别名&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MX&lt;/td&gt;
+					&lt;td&gt;邮件服务器&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;TXT&lt;/td&gt;
+					&lt;td&gt;验证、反垃圾邮件、安全策略&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;NS&lt;/td&gt;
+					&lt;td&gt;域名由哪些 DNS 服务器管理&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Cloudflare 的 DNS 资料也把 DNS 解释为互联网的“电话簿”：把人类可读域名转换成机器可读 IP。(&lt;a class="link" href="https://www.cloudflare.com/learning/dns/dns-over-tls/" title="DNS over TLS vs. DNS over HTTPS | Secure DNS"
+ target="_blank" rel="noopener"
+ &gt;Cloudflare&lt;/a&gt;)&lt;/p&gt;
+&lt;h2 id="42-传统-dns-的问题"&gt;&lt;a href="#42-%e4%bc%a0%e7%bb%9f-dns-%e7%9a%84%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;4.2 传统 DNS 的问题
+&lt;/h2&gt;&lt;p&gt;传统 DNS 通常是明文的，别人可能看到你查询了什么域名。Cloudflare 的资料明确指出，默认 DNS 查询和响应通常以明文发送，即使网站使用 HTTPS，访问前的 DNS 查询也可能暴露。(&lt;a class="link" href="https://www.cloudflare.com/learning/dns/dns-over-tls/" title="DNS over TLS vs. DNS over HTTPS | Secure DNS"
+ target="_blank" rel="noopener"
+ &gt;Cloudflare&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;这对代理/VPN非常关键：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;网页内容走了代理
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;但 DNS 查询走了本地运营商
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;=
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标内容可能看不到，但你查了什么域名可能暴露
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这就是 DNS 泄露。&lt;/p&gt;
+&lt;h2 id="43-dohdotdoq"&gt;&lt;a href="#43-dohdotdoq" class="header-anchor"&gt;&lt;/a&gt;4.3 DoH、DoT、DoQ
+&lt;/h2&gt;&lt;p&gt;现代 DNS 加密主要有三种：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;类型&lt;/th&gt;
+					&lt;th&gt;全称&lt;/th&gt;
+					&lt;th&gt;大致含义&lt;/th&gt;
+					&lt;th&gt;常见特点&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DoH&lt;/td&gt;
+					&lt;td&gt;DNS over HTTPS&lt;/td&gt;
+					&lt;td&gt;DNS 查询封装进 HTTPS&lt;/td&gt;
+					&lt;td&gt;常走 443，像普通 HTTPS 流量&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DoT&lt;/td&gt;
+					&lt;td&gt;DNS over TLS&lt;/td&gt;
+					&lt;td&gt;DNS 查询通过 TLS 加密&lt;/td&gt;
+					&lt;td&gt;常见端口 853&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DoQ&lt;/td&gt;
+					&lt;td&gt;DNS over QUIC&lt;/td&gt;
+					&lt;td&gt;DNS 查询通过 QUIC 加密&lt;/td&gt;
+					&lt;td&gt;低延迟、抗丢包设计更现代&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;RFC 8484 定义了 DoH：DNS 查询和响应被映射到 HTTP exchange，并通过 HTTPS/TLS 提供完整性和机密性。(&lt;a class="link" href="https://www.rfc-editor.org/rfc/rfc8484?utm_source=Securitylab.ru" title="RFC 8484: DNS Queries over HTTPS (DoH) | RFC Editor"
+ target="_blank" rel="noopener"
+ &gt;RFC 编辑器&lt;/a&gt;)&lt;br&gt;
+RFC 7858 定义了 DoT：用 TLS 为 DNS 提供隐私保护，减少监听和路径篡改风险。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc7858?utm_source=chatgpt.com" title="RFC 7858 - Specification for DNS over Transport Layer ..."
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;br&gt;
+RFC 9250 定义了 DoQ：用 QUIC 为 DNS 提供传输机密性，具备类似 DoT 的隐私属性，同时利用 QUIC 降低 TCP 队头阻塞影响。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc9250" title="RFC 9250 - DNS over Dedicated QUIC Connections"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实判断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;DoH/DoT/DoQ 只能保护 &lt;strong&gt;你到 DNS 解析器之间&lt;/strong&gt; 的查询内容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 解析器本身仍可能知道你查了什么。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果代理客户端配置错误，浏览器 DoH 和客户端 DNS 可能打架。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TUN 模式下 DNS 更复杂，必须看客户端是否接管 DNS。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“开了 DoH 就绝对隐私”是错误说法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="44-代理客户端里的-dns-重点"&gt;&lt;a href="#44-%e4%bb%a3%e7%90%86%e5%ae%a2%e6%88%b7%e7%ab%af%e9%87%8c%e7%9a%84-dns-%e9%87%8d%e7%82%b9" class="header-anchor"&gt;&lt;/a&gt;4.4 代理客户端里的 DNS 重点
+&lt;/h2&gt;&lt;p&gt;现代 Clash/sing-box 类客户端通常会涉及：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;项目&lt;/th&gt;
+					&lt;th&gt;意义&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;fake-ip&lt;/td&gt;
+					&lt;td&gt;给域名返回一个虚拟 IP，由客户端内部映射&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;redir-host&lt;/td&gt;
+					&lt;td&gt;返回真实 IP，由规则判断走向&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;nameserver&lt;/td&gt;
+					&lt;td&gt;默认 DNS&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;fallback&lt;/td&gt;
+					&lt;td&gt;备用 DNS&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;proxy DNS&lt;/td&gt;
+					&lt;td&gt;DNS 查询是否走代理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;direct DNS&lt;/td&gt;
+					&lt;td&gt;DNS 查询是否直连&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DNS hijack&lt;/td&gt;
+					&lt;td&gt;TUN 下拦截系统 DNS 查询&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;普通用户不用一开始深挖所有配置，但必须记住：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DNS 解析结果会影响你最终连接到哪里。DNS 没处理好，代理开了也可能泄露或打不开。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;最低成本验证：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;打开代理。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;搜索“DNS leak test”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;看显示的 DNS 服务器是不是本地运营商。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果仍显示本地运营商，说明可能存在 DNS 泄露。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;再切换 TUN、系统代理、规则模式对比。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h1 id="5-tcpudpquic为什么有些节点网页快游戏语音却烂"&gt;&lt;a href="#5-tcpudpquic%e4%b8%ba%e4%bb%80%e4%b9%88%e6%9c%89%e4%ba%9b%e8%8a%82%e7%82%b9%e7%bd%91%e9%a1%b5%e5%bf%ab%e6%b8%b8%e6%88%8f%e8%af%ad%e9%9f%b3%e5%8d%b4%e7%83%82" class="header-anchor"&gt;&lt;/a&gt;5. TCP、UDP、QUIC：为什么有些节点网页快，游戏/语音却烂
+&lt;/h1&gt;&lt;h2 id="51-tcp"&gt;&lt;a href="#51-tcp" class="header-anchor"&gt;&lt;/a&gt;5.1 TCP
+&lt;/h2&gt;&lt;p&gt;TCP 的特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;面向连接；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可靠传输；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;丢包会重传；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;顺序交付；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;适合网页、下载、登录、普通应用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;丢包时延迟明显上升；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;建连和重传有成本；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对实时性要求高的场景可能不如 UDP/QUIC。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="52-udp"&gt;&lt;a href="#52-udp" class="header-anchor"&gt;&lt;/a&gt;5.2 UDP
+&lt;/h2&gt;&lt;p&gt;UDP 的特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不保证可靠；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不保证顺序；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开销小；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;适合游戏、语音、视频、实时通信、部分代理协议。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;容易被网络限制；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部分机场/节点不支持 UDP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;公司/校园/公共 Wi-Fi 可能限制 UDP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;UDP 不通时，某些功能会异常，比如游戏、语音、QUIC、部分 DNS。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="53-quic"&gt;&lt;a href="#53-quic" class="header-anchor"&gt;&lt;/a&gt;5.3 QUIC
+&lt;/h2&gt;&lt;p&gt;QUIC 是现代网络里非常重要的变化。RFC 9000 定义 QUIC 为基于 UDP 的多路复用安全传输协议，提供低延迟连接建立、流控和网络路径迁移等能力。(&lt;a class="link" href="https://datatracker.ietf.org/doc/rfc9000/" title="RFC 9000 - QUIC: A UDP-Based Multiplexed and Secure Transport"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;HTTP/3 就是建立在 QUIC 上。RFC 9114 明确：HTTP/3 是把 HTTP 语义映射到 QUIC 传输协议上，并依赖 QUIC 提供数据机密性、完整性、对端认证、可靠的按流交付等能力。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc9114" title="RFC 9114 - HTTP/3"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;现在很多网站、App、CDN 都可能使用 QUIC/HTTP3。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果你的代理/VPN不支持 UDP，HTTP/3 可能不可用，浏览器会回退到 HTTP/2/TCP。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有些网络会限制 UDP/443，导致 QUIC 表现不稳定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些代理协议如 Hysteria2、TUIC 等依赖 UDP/QUIC 思路，网络环境不支持 UDP 时体验会变差。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;判断方式：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;现象&lt;/th&gt;
+					&lt;th&gt;可能原因&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;网页能打开，视频卡&lt;/td&gt;
+					&lt;td&gt;UDP、CDN、带宽、晚高峰拥堵&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;浏览器可以，游戏不行&lt;/td&gt;
+					&lt;td&gt;UDP 没走代理或节点不支持 UDP&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;某些 App 慢，网页正常&lt;/td&gt;
+					&lt;td&gt;App 使用 QUIC/UDP，被限制或未代理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;切换节点后延迟差异大&lt;/td&gt;
+					&lt;td&gt;路由、运营商、出口拥堵不同&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h1 id="6-httphttpstls内容加密不等于全链路隐身"&gt;&lt;a href="#6-httphttpstls%e5%86%85%e5%ae%b9%e5%8a%a0%e5%af%86%e4%b8%8d%e7%ad%89%e4%ba%8e%e5%85%a8%e9%93%be%e8%b7%af%e9%9a%90%e8%ba%ab" class="header-anchor"&gt;&lt;/a&gt;6. HTTP、HTTPS、TLS：内容加密不等于全链路隐身
+&lt;/h1&gt;&lt;h2 id="61-http-是什么"&gt;&lt;a href="#61-http-%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;6.1 HTTP 是什么
+&lt;/h2&gt;&lt;p&gt;HTTP 是 Web 的基础协议。MDN 对 HTTP 的定义是：它是获取 HTML 等资源的协议，是 Web 数据交换的基础，并且是客户端-服务器协议，请求通常由浏览器发起。(&lt;a class="link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview" title="Overview of HTTP - HTTP | MDN"
+ target="_blank" rel="noopener"
+ &gt;MDN Web Docs&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;通俗说：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;HTTP = 浏览器和网站服务器之间说话的规则
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="62-https-与-tls"&gt;&lt;a href="#62-https-%e4%b8%8e-tls" class="header-anchor"&gt;&lt;/a&gt;6.2 HTTPS 与 TLS
+&lt;/h2&gt;&lt;p&gt;HTTPS 本质上是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;HTTP + TLS 加密
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TLS 1.3 是现代 HTTPS 的核心协议之一。RFC 8446 说明，TLS 1.3 用于让客户端/服务器应用在互联网上通信，并防止窃听、篡改和消息伪造。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc8446" title="RFC 8446 - The Transport Layer Security (TLS) Protocol Version 1.3"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;但要注意：&lt;/p&gt;
+&lt;p&gt;HTTPS 保护的是你和网站之间的通信内容，不等于隐藏所有元数据。&lt;/p&gt;
+&lt;p&gt;可能仍然暴露的信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;你连接了哪个 IP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;连接时间；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流量大小；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;连接频率；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部分情况下的域名信息；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 查询；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代理出口 IP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器指纹；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;登录账号行为。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="63-sni-与-ech"&gt;&lt;a href="#63-sni-%e4%b8%8e-ech" class="header-anchor"&gt;&lt;/a&gt;6.3 SNI 与 ECH
+&lt;/h2&gt;&lt;p&gt;传统 TLS 握手中，SNI 会暴露你要访问的域名。ECH 的目标是加密 ClientHello 中的敏感部分，从而减少中间网络看到具体网站的能力。Mozilla 对 ECH 的解释是：它会加密初始“hello”消息，使中间方更难识别你访问的网站。(&lt;a class="link" href="https://support.mozilla.org/en-US/kb/understand-encrypted-client-hello?utm_source=chatgpt.com" title="Understand Encrypted Client Hello (ECH) | Firefox Help"
+ target="_blank" rel="noopener"
+ &gt;Mozilla 支持&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;但现实判断要保守：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;ECH 不是所有网站都支持。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;客户端、浏览器、DNS、CDN 都要配合。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ECH 不能替代代理/VPN。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ECH 不解决账号风控、浏览器指纹、恶意网站、终端中毒问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以不要把 ECH 理解成“新一代万能隐私工具”。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="7-带宽延迟丢包抖动判断节点质量的四个硬指标"&gt;&lt;a href="#7-%e5%b8%a6%e5%ae%bd%e5%bb%b6%e8%bf%9f%e4%b8%a2%e5%8c%85%e6%8a%96%e5%8a%a8%e5%88%a4%e6%96%ad%e8%8a%82%e7%82%b9%e8%b4%a8%e9%87%8f%e7%9a%84%e5%9b%9b%e4%b8%aa%e7%a1%ac%e6%8c%87%e6%a0%87" class="header-anchor"&gt;&lt;/a&gt;7. 带宽、延迟、丢包、抖动：判断节点质量的四个硬指标
+&lt;/h1&gt;&lt;p&gt;博客里对“带宽”的解释仍然有效：带宽指信道单位时间内最大能传输多少比特信息。(&lt;a class="link" href="https://cirubla.github.io/2021/03/Computer-Networks-Overview.html" title="计算机网络通讯的【系统性】扫盲——从“基本概念”到“OSI 模型” - 编程随想的博客"
+ target="_blank" rel="noopener"
+ &gt;编程随想&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;但现实里，用户常犯一个错误：&lt;br&gt;
+&lt;strong&gt;只看带宽，不看延迟、丢包、抖动。&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;指标&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;对体验的影响&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;带宽&lt;/td&gt;
+					&lt;td&gt;最大传输能力&lt;/td&gt;
+					&lt;td&gt;影响下载、视频清晰度&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;延迟&lt;/td&gt;
+					&lt;td&gt;请求往返时间&lt;/td&gt;
+					&lt;td&gt;影响网页响应、游戏、远程操作&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;丢包&lt;/td&gt;
+					&lt;td&gt;数据包丢失比例&lt;/td&gt;
+					&lt;td&gt;影响卡顿、断流、重传&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;抖动&lt;/td&gt;
+					&lt;td&gt;延迟波动&lt;/td&gt;
+					&lt;td&gt;影响语音、视频、游戏稳定性&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;现实判断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;看视频更吃带宽和丢包。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;打游戏更吃延迟和抖动。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;网页打开速度受 DNS、TCP/TLS握手、CDN、路由影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;节点测速高，不代表实际访问目标站快。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;晚高峰慢，通常是服务商线路超售或出口拥堵。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最低成本测试：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 白天测速一次
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 晚上 8-11 点测速一次
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 测 YouTube / 网页 / 下载 / 延迟
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 对比不同节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 连续观察 3 天
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不要只信服务商后台测速。那通常只能说明你到节点之间的速度，不等于节点到目标网站也快。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="8-路由cdnanycast为什么日本节点不一定快"&gt;&lt;a href="#8-%e8%b7%af%e7%94%b1cdnanycast%e4%b8%ba%e4%bb%80%e4%b9%88%e6%97%a5%e6%9c%ac%e8%8a%82%e7%82%b9%e4%b8%8d%e4%b8%80%e5%ae%9a%e5%bf%ab" class="header-anchor"&gt;&lt;/a&gt;8. 路由、CDN、Anycast：为什么“日本节点”不一定快
+&lt;/h1&gt;&lt;h2 id="81-路由"&gt;&lt;a href="#81-%e8%b7%af%e7%94%b1" class="header-anchor"&gt;&lt;/a&gt;8.1 路由
+&lt;/h2&gt;&lt;p&gt;你访问一个网站，不是直线连接。数据会经过多个运营商、交换节点、国际出口、CDN 节点。&lt;/p&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;物理距离近 ≠ 网络路径短
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一个日本节点可能绕美国，一个香港节点可能晚高峰爆炸，一个美国节点反而因为线路好更稳定。&lt;/p&gt;
+&lt;h2 id="82-cdn"&gt;&lt;a href="#82-cdn" class="header-anchor"&gt;&lt;/a&gt;8.2 CDN
+&lt;/h2&gt;&lt;p&gt;很多网站不是从源站直接给你内容，而是通过 CDN 分发。CDN 会根据你的出口 IP、DNS、地理位置、运营商，把你分配到不同边缘节点。&lt;/p&gt;
+&lt;p&gt;这会导致：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;同一个网站，不同代理节点看到的服务器不同；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;同一个节点，不同 DNS 解析结果也可能不同；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流媒体解锁取决于出口 IP、DNS、CDN、账号地区等多因素；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“这个节点能解锁 Netflix”不代表永久能解锁。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="83-anycast"&gt;&lt;a href="#83-anycast" class="header-anchor"&gt;&lt;/a&gt;8.3 Anycast
+&lt;/h2&gt;&lt;p&gt;Anycast 是多个服务器共享同一个 IP，由路由系统把你导向“看起来最近/最合适”的节点。博客原文也提到单播、组播、广播、选播/Anycast 等通信方式。(&lt;a class="link" href="https://cirubla.github.io/2021/03/Computer-Networks-Overview.html" title="计算机网络通讯的【系统性】扫盲——从“基本概念”到“OSI 模型” - 编程随想的博客"
+ target="_blank" rel="noopener"
+ &gt;编程随想&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;你 ping 某个公共 DNS，不一定是在 ping 同一台机器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不同地区访问同一个 IP，可能到达不同机房。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;节点测试结果会受本地运营商路由影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="9-系统代理tunvpn普通用户最容易混淆的地方"&gt;&lt;a href="#9-%e7%b3%bb%e7%bb%9f%e4%bb%a3%e7%90%86tunvpn%e6%99%ae%e9%80%9a%e7%94%a8%e6%88%b7%e6%9c%80%e5%ae%b9%e6%98%93%e6%b7%b7%e6%b7%86%e7%9a%84%e5%9c%b0%e6%96%b9" class="header-anchor"&gt;&lt;/a&gt;9. 系统代理、TUN、VPN：普通用户最容易混淆的地方
+&lt;/h1&gt;&lt;h2 id="91-系统代理"&gt;&lt;a href="#91-%e7%b3%bb%e7%bb%9f%e4%bb%a3%e7%90%86" class="header-anchor"&gt;&lt;/a&gt;9.1 系统代理
+&lt;/h2&gt;&lt;p&gt;系统代理一般是告诉系统：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;支持系统代理的软件，请把流量交给本地代理端口
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;简单；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器通常有效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对小白友好。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不支持系统代理的软件可能直连；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部分 App 会忽略系统代理；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;UDP 通常处理不好；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 可能仍然走本地。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="92-tun-模式"&gt;&lt;a href="#92-tun-%e6%a8%a1%e5%bc%8f" class="header-anchor"&gt;&lt;/a&gt;9.2 TUN 模式
+&lt;/h2&gt;&lt;p&gt;TUN 模式相当于创建一个虚拟网卡，把更多流量接管到代理客户端里。&lt;/p&gt;
+&lt;p&gt;优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;接管范围更广；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对不支持系统代理的软件更有效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可处理更多全局流量场景。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;更容易影响系统网络；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS、路由、局域网、游戏、银行软件可能出问题；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置错误会导致全局断网；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Windows 下可能受防火墙、驱动、权限影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="93-vpn-模式"&gt;&lt;a href="#93-vpn-%e6%a8%a1%e5%bc%8f" class="header-anchor"&gt;&lt;/a&gt;9.3 VPN 模式
+&lt;/h2&gt;&lt;p&gt;VPN 通常也是通过虚拟网卡接管系统流量。区别是：传统 VPN 更偏系统级隧道，而 Clash/sing-box 这类客户端通常是“代理核心 + 规则路由 + TUN”的组合。&lt;/p&gt;
+&lt;p&gt;普通用户判断标准：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;使用场景&lt;/th&gt;
+					&lt;th&gt;建议&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;只浏览网页&lt;/td&gt;
+					&lt;td&gt;系统代理通常够用&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;某些 App 不走代理&lt;/td&gt;
+					&lt;td&gt;考虑 TUN&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;游戏/语音/全局接管&lt;/td&gt;
+					&lt;td&gt;需要 TUN/VPN，但要看 UDP&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;银行/政务/本地软件&lt;/td&gt;
+					&lt;td&gt;不建议全局乱代理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不懂配置&lt;/td&gt;
+					&lt;td&gt;先不要乱开复杂 DNS/TUN 组合&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h1 id="10-代理vpn里的入口出口规则"&gt;&lt;a href="#10-%e4%bb%a3%e7%90%86vpn%e9%87%8c%e7%9a%84%e5%85%a5%e5%8f%a3%e5%87%ba%e5%8f%a3%e8%a7%84%e5%88%99" class="header-anchor"&gt;&lt;/a&gt;10. 代理/VPN里的“入口、出口、规则”
+&lt;/h1&gt;&lt;p&gt;现代代理客户端可以理解成三件事：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;入口 inbound：本机软件把流量交给客户端的地方
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;规则 route/rules：客户端判断哪些走代理，哪些直连
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;出口 outbound：客户端把流量发到哪里
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;浏览器
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;127.0.0.1:7890 本地代理入口
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;规则判断：google.com 走代理，baidu.com 直连
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;远程节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;节点出口 IP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;↓
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标网站
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这解释了几个常见现象：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;现象&lt;/th&gt;
+					&lt;th&gt;原因&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;开了代理但某软件没效果&lt;/td&gt;
+					&lt;td&gt;软件没有走系统代理，也没被 TUN 接管&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;国内网站变慢&lt;/td&gt;
+					&lt;td&gt;规则把国内网站也代理了&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;国外网站打不开&lt;/td&gt;
+					&lt;td&gt;规则没命中、DNS 错、节点问题&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;测 IP 是代理，但 DNS 是本地&lt;/td&gt;
+					&lt;td&gt;DNS 没被代理接管&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;同一节点不同网站表现不同&lt;/td&gt;
+					&lt;td&gt;目标站/CDN/路由/IP风控不同&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h1 id="11-ip-质量判断不要被营销词带节奏"&gt;&lt;a href="#11-ip-%e8%b4%a8%e9%87%8f%e5%88%a4%e6%96%ad%e4%b8%8d%e8%a6%81%e8%a2%ab%e8%90%a5%e9%94%80%e8%af%8d%e5%b8%a6%e8%8a%82%e5%a5%8f" class="header-anchor"&gt;&lt;/a&gt;11. IP 质量判断：不要被营销词带节奏
+&lt;/h1&gt;&lt;p&gt;服务商常见话术：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;宣传词&lt;/th&gt;
+					&lt;th&gt;实际需要追问&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;原生 IP&lt;/td&gt;
+					&lt;td&gt;哪个 ASN？数据库怎么识别？是否长期稳定？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;家宽 IP&lt;/td&gt;
+					&lt;td&gt;是否真实 ISP 住宅段？是否共享？是否被多人滥用？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;独享 IP&lt;/td&gt;
+					&lt;td&gt;独享出口还是独享账号？是否仍然是机房 IP？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;高速节点&lt;/td&gt;
+					&lt;td&gt;晚高峰怎样？丢包怎样？到目标站怎样？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;流媒体解锁&lt;/td&gt;
+					&lt;td&gt;解锁哪个平台？哪个区？稳定多久？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不限流量&lt;/td&gt;
+					&lt;td&gt;是否限速？是否倍率？是否公平使用政策？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;永久稳定&lt;/td&gt;
+					&lt;td&gt;基本不可信，网络环境和平台规则都会变&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;现实判断：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;IP 质量 = IP 类型 + ASN + 使用历史 + 共享程度 + 目标平台态度 + 用户行为。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;家宽 = 安全
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;原生 = 安全
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;独享 = 安全
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;贵 = 安全
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这些都是过度简化。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="12-常见误区"&gt;&lt;a href="#12-%e5%b8%b8%e8%a7%81%e8%af%af%e5%8c%ba" class="header-anchor"&gt;&lt;/a&gt;12. 常见误区
+&lt;/h1&gt;&lt;h2 id="误区-1能打开网站--安全"&gt;&lt;a href="#%e8%af%af%e5%8c%ba-1%e8%83%bd%e6%89%93%e5%bc%80%e7%bd%91%e7%ab%99--%e5%ae%89%e5%85%a8" class="header-anchor"&gt;&lt;/a&gt;误区 1：能打开网站 = 安全
+&lt;/h2&gt;&lt;p&gt;错误。&lt;br&gt;
+这只能说明连接成功，不能说明隐私安全、账号安全、DNS 不泄露、服务商不记录日志。&lt;/p&gt;
+&lt;h2 id="误区-2https-后就没人知道我访问什么"&gt;&lt;a href="#%e8%af%af%e5%8c%ba-2https-%e5%90%8e%e5%b0%b1%e6%b2%a1%e4%ba%ba%e7%9f%a5%e9%81%93%e6%88%91%e8%ae%bf%e9%97%ae%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;误区 2：HTTPS 后就没人知道我访问什么
+&lt;/h2&gt;&lt;p&gt;不完整。&lt;br&gt;
+HTTPS 保护内容，但 DNS、IP、SNI/ECH支持情况、连接元数据、浏览器指纹仍可能暴露。&lt;/p&gt;
+&lt;h2 id="误区-3tun-开了就是全局安全"&gt;&lt;a href="#%e8%af%af%e5%8c%ba-3tun-%e5%bc%80%e4%ba%86%e5%b0%b1%e6%98%af%e5%85%a8%e5%b1%80%e5%ae%89%e5%85%a8" class="header-anchor"&gt;&lt;/a&gt;误区 3：TUN 开了就是全局安全
+&lt;/h2&gt;&lt;p&gt;错误。&lt;br&gt;
+TUN 只是更强的流量接管方式。配置错了，可能 DNS 泄露、局域网异常、部分流量直连、全局断网。&lt;/p&gt;
+&lt;h2 id="误区-4节点测速快就是节点好"&gt;&lt;a href="#%e8%af%af%e5%8c%ba-4%e8%8a%82%e7%82%b9%e6%b5%8b%e9%80%9f%e5%bf%ab%e5%b0%b1%e6%98%af%e8%8a%82%e7%82%b9%e5%a5%bd" class="header-anchor"&gt;&lt;/a&gt;误区 4：节点测速快就是节点好
+&lt;/h2&gt;&lt;p&gt;错误。&lt;br&gt;
+测速只说明某个测试点到节点的表现。真正要看你访问的目标网站、晚高峰、丢包、路由、出口 IP。&lt;/p&gt;
+&lt;h2 id="误区-5住宅-ip-一定适合账号登录"&gt;&lt;a href="#%e8%af%af%e5%8c%ba-5%e4%bd%8f%e5%ae%85-ip-%e4%b8%80%e5%ae%9a%e9%80%82%e5%90%88%e8%b4%a6%e5%8f%b7%e7%99%bb%e5%bd%95" class="header-anchor"&gt;&lt;/a&gt;误区 5：住宅 IP 一定适合账号登录
+&lt;/h2&gt;&lt;p&gt;错误。&lt;br&gt;
+住宅 IP 只是降低某些平台对“机房 IP”的敏感度，不代表账号行为可信。频繁切换地区、设备异常、行为异常照样可能触发风控。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="13-普通用户最低成本验证清单"&gt;&lt;a href="#13-%e6%99%ae%e9%80%9a%e7%94%a8%e6%88%b7%e6%9c%80%e4%bd%8e%e6%88%90%e6%9c%ac%e9%aa%8c%e8%af%81%e6%b8%85%e5%8d%95" class="header-anchor"&gt;&lt;/a&gt;13. 普通用户最低成本验证清单
+&lt;/h1&gt;&lt;p&gt;你以后判断一个代理/VPN服务，先做这些，不要直接年付。&lt;/p&gt;
+&lt;h2 id="131-基础连通性"&gt;&lt;a href="#131-%e5%9f%ba%e7%a1%80%e8%bf%9e%e9%80%9a%e6%80%a7" class="header-anchor"&gt;&lt;/a&gt;13.1 基础连通性
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 本地网络直连是否正常
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 客户端是否启动
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 订阅是否更新成功
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 节点是否能连接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 浏览器是否能打开常见网站
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="132-ip-检查"&gt;&lt;a href="#132-ip-%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;13.2 IP 检查
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 打开代理前查一次 IP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 打开代理后查一次 IP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 看国家/地区/ASN/ISP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 看 IPv4 和 IPv6 是否都变了
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 看是否出现本地真实 IP
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="133-dns-检查"&gt;&lt;a href="#133-dns-%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;13.3 DNS 检查
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 做 DNS leak test
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 看 DNS 是否显示本地运营商
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 切换系统代理/TUN 对比
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 检查浏览器是否单独启用了 DoH
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 检查客户端 DNS 配置
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="134-速度与稳定性"&gt;&lt;a href="#134-%e9%80%9f%e5%ba%a6%e4%b8%8e%e7%a8%b3%e5%ae%9a%e6%80%a7" class="header-anchor"&gt;&lt;/a&gt;13.4 速度与稳定性
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 白天测一次
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 晚高峰测一次
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 连续测三天
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 测网页、视频、下载、延迟
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不只看客户端测速数字
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="135-风险控制"&gt;&lt;a href="#135-%e9%a3%8e%e9%99%a9%e6%8e%a7%e5%88%b6" class="header-anchor"&gt;&lt;/a&gt;13.5 风险控制
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 不买长期套餐
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 不把主力账号直接放到新节点上测试
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. 不使用免费陌生节点登录重要账号
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. 不把订阅链接发给别人
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. 不在不可信客户端导入订阅
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 不迷信“永久稳定”
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h1 id="14-这一部分最终学习顺序"&gt;&lt;a href="#14-%e8%bf%99%e4%b8%80%e9%83%a8%e5%88%86%e6%9c%80%e7%bb%88%e5%ad%a6%e4%b9%a0%e9%a1%ba%e5%ba%8f" class="header-anchor"&gt;&lt;/a&gt;14. 这一部分最终学习顺序
+&lt;/h1&gt;&lt;p&gt;按这个顺序学，最省时间：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 网络分层：知道问题发生在哪一层
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. IP/NAT/ASN：知道出口 IP 是什么性质
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. DNS：知道域名解析和泄露问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. TCP/UDP/QUIC：知道速度、延迟、丢包为什么不同
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. HTTP/HTTPS/TLS：知道内容加密和元数据暴露边界
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. 路由/CDN/Anycast：知道为什么节点地区不等于实际体验
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 系统代理/TUN/VPN：知道客户端到底接管了哪些流量
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. IP质量与账号风险：知道服务商宣传不能直接信
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h1 id="15-总判断"&gt;&lt;a href="#15-%e6%80%bb%e5%88%a4%e6%96%ad" class="header-anchor"&gt;&lt;/a&gt;15. 总判断
+&lt;/h1&gt;&lt;p&gt;博客里的网络基础部分值得借鉴，因为它把“信道、协议、协议栈、分层模型”讲得比较系统。它的问题不是错，而是&lt;strong&gt;不够贴近 2026 年普通用户使用代理/VPN时真正会遇到的问题&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;更新后的学习重点应该从“背 OSI 七层”转成：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能判断故障在哪一层
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能识别 DNS 泄露
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能理解 TUN 和系统代理区别
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能判断 IP 类型宣传是否有水分
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能区分速度问题、路由问题、出口问题、目标网站限制
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;能不能避免把代理/VPN误解成绝对安全工具
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这才是对现实决策有用的网络基础。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;有。上一版适合作为主干，但还应该补充 &lt;strong&gt;10 个现代网络基础点&lt;/strong&gt;。这些点不一定适合一开始深学，但对代理/VPN/IP 判断很重要。&lt;/p&gt;
+&lt;h1 id="1-必须补充的核心点"&gt;&lt;a href="#1-%e5%bf%85%e9%a1%bb%e8%a1%a5%e5%85%85%e7%9a%84%e6%a0%b8%e5%bf%83%e7%82%b9" class="header-anchor"&gt;&lt;/a&gt;1. 必须补充的核心点
+&lt;/h1&gt;&lt;h2 id="1-mtu--mss很多能连但卡能打开但加载不全的隐藏原因"&gt;&lt;a href="#1-mtu--mss%e5%be%88%e5%a4%9a%e8%83%bd%e8%bf%9e%e4%bd%86%e5%8d%a1%e8%83%bd%e6%89%93%e5%bc%80%e4%bd%86%e5%8a%a0%e8%bd%bd%e4%b8%8d%e5%85%a8%e7%9a%84%e9%9a%90%e8%97%8f%e5%8e%9f%e5%9b%a0" class="header-anchor"&gt;&lt;/a&gt;1. MTU / MSS：很多“能连但卡、能打开但加载不全”的隐藏原因
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;MTU&lt;/strong&gt; 是单个网络包最大能多大。代理、VPN、TUN、WireGuard、QUIC、IPv6 都可能额外加封装头，导致包变大。如果路径中某一段承载不了，就可能出现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;网页能打开，但图片/视频加载异常；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些网站一直转圈；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;VPN/TUN 开启后部分 App 不通；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ping 正常，但 HTTPS 卡住；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;移动网络和 Wi-Fi 表现不一致。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Windows 的 &lt;code&gt;netsh interface&lt;/code&gt; 可以查看和配置网络接口参数，微软文档也把它列为管理网络接口、排查连接问题的命令工具。(&lt;a class="link" href="https://learn.microsoft.com/ja-jp/windows-server/administration/windows-commands/netsh-interface?utm_source=chatgpt.com" title="netsh interface"
+ target="_blank" rel="noopener"
+ &gt;Microsoft Learn&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;br&gt;
+普通用户不要随便改 MTU。只有在“开代理/TUN/VPN 后部分网站卡死、换网络后恢复、换节点不稳定”时，才把 MTU 当作排查项。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="2-ipv6-泄露现在比旧教程时代更重要"&gt;&lt;a href="#2-ipv6-%e6%b3%84%e9%9c%b2%e7%8e%b0%e5%9c%a8%e6%af%94%e6%97%a7%e6%95%99%e7%a8%8b%e6%97%b6%e4%bb%a3%e6%9b%b4%e9%87%8d%e8%a6%81" class="header-anchor"&gt;&lt;/a&gt;2. IPv6 泄露：现在比旧教程时代更重要
+&lt;/h2&gt;&lt;p&gt;旧博客时代 IPv6 普及度没现在高。现在很多宽带、手机网络、系统、浏览器都可能启用 IPv6。问题是：你的 IPv4 走代理了，但 IPv6 可能直连。&lt;/p&gt;
+&lt;p&gt;典型现象：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;查 IPv4：显示代理节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;查 IPv6：显示真实运营商
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这就是泄露风险。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;开代理后同时检查 IPv4 和 IPv6；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果客户端不处理 IPv6，要么正确配置代理客户端，要么临时关闭系统 IPv6；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不要只用一个“查 IP 网站”判断是否安全；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TUN 模式下尤其要确认 IPv6 是否被接管。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="3-浏览器-doh-与代理客户端-dns-可能冲突"&gt;&lt;a href="#3-%e6%b5%8f%e8%a7%88%e5%99%a8-doh-%e4%b8%8e%e4%bb%a3%e7%90%86%e5%ae%a2%e6%88%b7%e7%ab%af-dns-%e5%8f%af%e8%83%bd%e5%86%b2%e7%aa%81" class="header-anchor"&gt;&lt;/a&gt;3. 浏览器 DoH 与代理客户端 DNS 可能冲突
+&lt;/h2&gt;&lt;p&gt;现在 Chrome、Edge、Firefox 都支持“安全 DNS / DoH”。Cloudflare 的文档中也列出 Chrome、Edge 可以在设置中启用 Use secure DNS，并选择 DoH 提供商。(&lt;a class="link" href="https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/encrypted-dns-browsers/?utm_source=chatgpt.com" title="Configure DoH on your browser"
+ target="_blank" rel="noopener"
+ &gt;Cloudflare Docs&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;问题是：&lt;br&gt;
+你代理客户端里设置了一套 DNS，浏览器自己又开了一套 DoH，最后可能出现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器 DNS 不走代理客户端；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;规则分流失效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 泄露检测结果混乱；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些网站解析到错误地区；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流媒体解锁异常。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Google Public DNS 文档也说明 DoH 通过 HTTPS API 提供 DNS 查询能力，而 DoT 是通过 TLS 加密 TCP 连接进行 DNS 解析。(&lt;a class="link" href="https://developers.google.com/speed/public-dns/docs/doh?utm_source=chatgpt.com" title="DNS-over-HTTPS (DoH) | Public DNS"
+ target="_blank" rel="noopener"
+ &gt;Google for Developers&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;如果你用 Clash / sing-box / Clash Verge Rev 这类客户端，优先让客户端统一处理 DNS。浏览器 DoH 不一定要开，尤其是排查阶段应先关闭，避免变量太多。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="4-webrtc-泄露不是所有-ip-风险都来自代理本身"&gt;&lt;a href="#4-webrtc-%e6%b3%84%e9%9c%b2%e4%b8%8d%e6%98%af%e6%89%80%e6%9c%89-ip-%e9%a3%8e%e9%99%a9%e9%83%bd%e6%9d%a5%e8%87%aa%e4%bb%a3%e7%90%86%e6%9c%ac%e8%ba%ab" class="header-anchor"&gt;&lt;/a&gt;4. WebRTC 泄露：不是所有 IP 风险都来自代理本身
+&lt;/h2&gt;&lt;p&gt;WebRTC 用于浏览器实时通信。它的 ICE 机制可能暴露局域网地址、CGNAT 地址或某些网络元数据。IETF 的 mDNS ICE 草案说明，WebRTC 收集 ICE candidates 时可能包含客户端私有 IP 地址，因此引入 mDNS 主机名替代 IP 来减少隐私暴露。(&lt;a class="link" href="https://www.ietf.org/archive/id/draft-ietf-mmusic-mdns-ice-candidates-02.html?utm_source=chatgpt.com" title="Using Multicast DNS to protect privacy when exposing ICE ..."
+ target="_blank" rel="noopener"
+ &gt;IETF&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;这说明一个现实问题：&lt;br&gt;
+&lt;strong&gt;即使你代理开了，浏览器本身也可能通过 WebRTC 暴露额外网络信息。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;但也不要过度恐慌。现代浏览器已经做了很多缓解，不像早期那么容易直接暴露真实公网 IP。真正该做的是验证，而不是玄学焦虑。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;用 WebRTC leak test 检查；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器别乱装未知插件；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;登录重要账号时，不要频繁切换代理地区；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;高风险隐私场景用专门浏览器配置，不要混用日常浏览器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="5-证书信任与中间人风险免费节点尤其要小心"&gt;&lt;a href="#5-%e8%af%81%e4%b9%a6%e4%bf%a1%e4%bb%bb%e4%b8%8e%e4%b8%ad%e9%97%b4%e4%ba%ba%e9%a3%8e%e9%99%a9%e5%85%8d%e8%b4%b9%e8%8a%82%e7%82%b9%e5%b0%a4%e5%85%b6%e8%a6%81%e5%b0%8f%e5%bf%83" class="header-anchor"&gt;&lt;/a&gt;5. 证书信任与中间人风险：免费节点尤其要小心
+&lt;/h2&gt;&lt;p&gt;HTTPS/TLS 保护内容，但前提是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;证书链正常；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;没有安装恶意根证书；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器没有忽略证书警告；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;客户端和系统没有被劫持。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;很多人只关心“节点能不能用”，忽略了：&lt;br&gt;
+如果你用了不可信客户端、来路不明的证书、免费节点、被篡改安装包，风险可能不在网络协议，而在你的设备和信任链。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不要安装陌生人发来的“专用客户端”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不要随便安装根证书；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器提示证书错误，不要强行继续；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下载客户端优先 GitHub Release / 官网；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;订阅链接不要导入到不可信客户端。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="2-进阶但重要的补充点"&gt;&lt;a href="#2-%e8%bf%9b%e9%98%b6%e4%bd%86%e9%87%8d%e8%a6%81%e7%9a%84%e8%a1%a5%e5%85%85%e7%82%b9" class="header-anchor"&gt;&lt;/a&gt;2. 进阶但重要的补充点
+&lt;/h1&gt;&lt;h2 id="6-nat-类型与-udp影响游戏语音p2p部分代理协议"&gt;&lt;a href="#6-nat-%e7%b1%bb%e5%9e%8b%e4%b8%8e-udp%e5%bd%b1%e5%93%8d%e6%b8%b8%e6%88%8f%e8%af%ad%e9%9f%b3p2p%e9%83%a8%e5%88%86%e4%bb%a3%e7%90%86%e5%8d%8f%e8%ae%ae" class="header-anchor"&gt;&lt;/a&gt;6. NAT 类型与 UDP：影响游戏、语音、P2P、部分代理协议
+&lt;/h2&gt;&lt;p&gt;NAT 不只是“能不能上网”。不同 NAT 类型会影响 UDP 打洞、游戏联机、语音通话、P2P、部分代理协议。&lt;/p&gt;
+&lt;p&gt;现实表现：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;现象&lt;/th&gt;
+					&lt;th&gt;可能原因&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;网页正常，游戏联机失败&lt;/td&gt;
+					&lt;td&gt;UDP/NAT 问题&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;语音通话卡顿&lt;/td&gt;
+					&lt;td&gt;UDP 丢包、NAT、QoS&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Hysteria2/TUIC 不稳定&lt;/td&gt;
+					&lt;td&gt;UDP 被限或丢包高&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;WireGuard 连不上&lt;/td&gt;
+					&lt;td&gt;UDP 被阻断或端口被拦&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;QUIC 本身就是基于 UDP 的安全传输协议，IETF RFC 9000 说明 QUIC 提供低延迟连接建立、流控和网络路径迁移。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc9000?utm_source=chatgpt.com" title="RFC 9000 - QUIC: A UDP-Based Multiplexed and Secure ..."
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;br&gt;
+如果你只浏览网页，UDP 不一定重要；如果你用游戏、语音、视频会议、Hysteria2、TUIC、WireGuard，UDP 就很重要。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="7-masque--connect-udp代理技术正在向-http3quic-演进"&gt;&lt;a href="#7-masque--connect-udp%e4%bb%a3%e7%90%86%e6%8a%80%e6%9c%af%e6%ad%a3%e5%9c%a8%e5%90%91-http3quic-%e6%bc%94%e8%bf%9b" class="header-anchor"&gt;&lt;/a&gt;7. MASQUE / CONNECT-UDP：代理技术正在向 HTTP/3/QUIC 演进
+&lt;/h2&gt;&lt;p&gt;这是进阶内容，不适合小白一开始深挖，但有必要知道趋势。&lt;/p&gt;
+&lt;p&gt;IETF RFC 9298 定义了通过 HTTP 代理 UDP 的机制，也就是 CONNECT-UDP，属于 MASQUE 相关技术方向。它允许 HTTP 客户端通过 HTTP 服务器建立 UDP 隧道。(&lt;a class="link" href="https://datatracker.ietf.org/doc/rfc9298/?utm_source=chatgpt.com" title="RFC 9298 - Proxying UDP in HTTP"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实意义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;未来代理/VPN技术会更多借助 HTTP/3、QUIC、MASQUE；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“代理”和“VPN”的边界会越来越模糊；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但普通用户不要被新名词带节奏；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;真正要看：稳定性、客户端成熟度、服务商实现质量、是否适合你的网络环境。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;：&lt;br&gt;
+MASQUE 是技术趋势，不是你现在买服务时的核心判断标准。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="8-odohdns-隐私增强但不是万能"&gt;&lt;a href="#8-odohdns-%e9%9a%90%e7%a7%81%e5%a2%9e%e5%bc%ba%e4%bd%86%e4%b8%8d%e6%98%af%e4%b8%87%e8%83%bd" class="header-anchor"&gt;&lt;/a&gt;8. ODoH：DNS 隐私增强，但不是万能
+&lt;/h2&gt;&lt;p&gt;ODoH 是 Oblivious DNS over HTTPS。RFC 9230 说明，它通过代理加密 DNS over HTTPS 消息，使单一服务器不能同时知道客户端 IP 和 DNS 查询内容。(&lt;a class="link" href="https://datatracker.ietf.org/doc/rfc9230/?utm_source=chatgpt.com" title="RFC 9230 - Oblivious DNS over HTTPS"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;这比普通 DoH 更进一步，但现实中要冷静：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;ODoH 不是所有系统和客户端默认支持；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;它保护的是 DNS 查询隐私，不保护全部网络流量；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 隐私增强不等于账号安全；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解析器、代理、目标网站、浏览器指纹仍是不同风险面。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;：&lt;br&gt;
+ODoH 属于隐私增强技术，不是普通代理用户的第一优先级。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="9-captive-portal公共-wi-fi-登录页会干扰代理vpn"&gt;&lt;a href="#9-captive-portal%e5%85%ac%e5%85%b1-wi-fi-%e7%99%bb%e5%bd%95%e9%a1%b5%e4%bc%9a%e5%b9%b2%e6%89%b0%e4%bb%a3%e7%90%86vpn" class="header-anchor"&gt;&lt;/a&gt;9. Captive Portal：公共 Wi-Fi 登录页会干扰代理/VPN
+&lt;/h2&gt;&lt;p&gt;公共 Wi-Fi 常见“认证页”：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;酒店 Wi-Fi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;商场 Wi-Fi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;工厂宿舍 Wi-Fi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;校园 Wi-Fi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;机场 Wi-Fi
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这类网络可能要求你先打开一个登录页。如果你一上来就开代理/TUN/VPN，可能导致：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;登录页打不开；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 被劫持到认证页面；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HTTPS 报错；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;VPN 连不上；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;以为节点坏了，其实是 Wi-Fi 还没认证。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;连接公共 Wi-Fi 后，先不开代理，打开任意 HTTP 网站触发认证，确认能正常上网后再开代理。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="10-日志阅读能力比盲目重装客户端更重要"&gt;&lt;a href="#10-%e6%97%a5%e5%bf%97%e9%98%85%e8%af%bb%e8%83%bd%e5%8a%9b%e6%af%94%e7%9b%b2%e7%9b%ae%e9%87%8d%e8%a3%85%e5%ae%a2%e6%88%b7%e7%ab%af%e6%9b%b4%e9%87%8d%e8%a6%81" class="header-anchor"&gt;&lt;/a&gt;10. 日志阅读能力：比盲目重装客户端更重要
+&lt;/h2&gt;&lt;p&gt;代理客户端日志里常见关键词要能看懂：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;日志关键词&lt;/th&gt;
+					&lt;th&gt;大致含义&lt;/th&gt;
+					&lt;th&gt;优先检查&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;timeout&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;超时&lt;/td&gt;
+					&lt;td&gt;节点、网络、目标站&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;connection refused&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;对方拒绝连接&lt;/td&gt;
+					&lt;td&gt;端口、服务端、协议&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;no such host&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;DNS 解析失败&lt;/td&gt;
+					&lt;td&gt;DNS 设置&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;tls handshake failed&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;TLS 握手失败&lt;/td&gt;
+					&lt;td&gt;时间、证书、SNI、配置&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;network unreachable&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;网络不可达&lt;/td&gt;
+					&lt;td&gt;本地网络、路由、TUN&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;i/o timeout&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;读写超时&lt;/td&gt;
+					&lt;td&gt;丢包、节点拥堵、目标站&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;403/429&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;被目标站拒绝或限流&lt;/td&gt;
+					&lt;td&gt;IP 质量、访问频率、风控&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;现实建议&lt;/strong&gt;：&lt;br&gt;
+以后排障时先看日志，不要第一反应就是“卸载重装”。重装解决的是少数客户端损坏问题，不解决 DNS、路由、节点、出口 IP、目标站限制。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="3-应该加入最终网络基础文档的新版目录"&gt;&lt;a href="#3-%e5%ba%94%e8%af%a5%e5%8a%a0%e5%85%a5%e6%9c%80%e7%bb%88%e7%bd%91%e7%bb%9c%e5%9f%ba%e7%a1%80%e6%96%87%e6%a1%a3%e7%9a%84%e6%96%b0%e7%89%88%e7%9b%ae%e5%bd%95" class="header-anchor"&gt;&lt;/a&gt;3. 应该加入最终网络基础文档的新版目录
+&lt;/h1&gt;&lt;p&gt;如果要把前面的内容升级成完整章节，我建议目录改成这样：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;1. 网络通信最小模型
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2. 分层模型：从 OSI 到实用排障层
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;3. IP 基础：IPv4、IPv6、公网、私网、NAT、CGNAT
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;4. ASN、ISP、数据中心 IP、住宅 IP、移动 IP
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;5. DNS 基础：A/AAAA/CNAME、递归解析、缓存
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;6. DNS 风险：污染、劫持、泄露
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;7. 加密 DNS：DoH、DoT、DoQ、ODoH
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;8. TCP、UDP、QUIC 与 HTTP/3
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;9. HTTP、HTTPS、TLS、SNI、ECH
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;10. MTU、MSS、分片与黑洞问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;11. 路由、CDN、Anycast 与地区判断误区
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;12. 系统代理、浏览器代理、TUN、VPN 虚拟网卡
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;13. WebRTC、IPv6、DNS 泄露检测
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;14. 代理客户端日志阅读
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;15. IP 质量判断与服务商话术识别
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;16. 普通用户最低成本验证清单
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h1 id="4-哪些不建议现在深挖"&gt;&lt;a href="#4-%e5%93%aa%e4%ba%9b%e4%b8%8d%e5%bb%ba%e8%ae%ae%e7%8e%b0%e5%9c%a8%e6%b7%b1%e6%8c%96" class="header-anchor"&gt;&lt;/a&gt;4. 哪些不建议现在深挖
+&lt;/h1&gt;&lt;p&gt;这些可以知道名字，但暂时不用投入太多：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;内容&lt;/th&gt;
+					&lt;th&gt;为什么暂不深挖&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;BGP 路由策略&lt;/td&gt;
+					&lt;td&gt;太偏运营商层面，普通用户难以控制&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;QUIC 拥塞控制细节&lt;/td&gt;
+					&lt;td&gt;对买节点和排障帮助有限&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MASQUE 协议实现&lt;/td&gt;
+					&lt;td&gt;目前更偏工程/标准层&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DNSSEC 深度配置&lt;/td&gt;
+					&lt;td&gt;普通代理用户不是第一优先级&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;IPv6 路由工程&lt;/td&gt;
+					&lt;td&gt;学习成本高，收益暂时低&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;TLS 握手报文细节&lt;/td&gt;
+					&lt;td&gt;除非做网络安全/协议开发&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;你的目标是判断代理/VPN/IP质量，不是成为网络协议工程师。优先学能直接降低损失、提高排障效率的东西。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="5-最终补充判断"&gt;&lt;a href="#5-%e6%9c%80%e7%bb%88%e8%a1%a5%e5%85%85%e5%88%a4%e6%96%ad" class="header-anchor"&gt;&lt;/a&gt;5. 最终补充判断
+&lt;/h1&gt;&lt;p&gt;必须补进文档的是这 6 个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;MTU/MSS&lt;/strong&gt;：解释“能连但卡死”的隐藏原因；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;IPv6 泄露&lt;/strong&gt;：现代环境比旧教程更重要；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;浏览器 DoH 与客户端 DNS 冲突&lt;/strong&gt;：排障高频问题；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;WebRTC 泄露&lt;/strong&gt;：浏览器层面的额外风险；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;NAT/UDP/QUIC&lt;/strong&gt;：解释游戏、语音、Hysteria2、TUIC、WireGuard问题；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;日志阅读&lt;/strong&gt;：真正提高排障能力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;进阶了解即可的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;MASQUE / CONNECT-UDP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ODoH；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ECH；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;BGP / Anycast 深层路由；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNSSEC。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果要做成正式学习文档，下一步应该不是继续堆知识点，而是把这一章整理成：&lt;strong&gt;概念解释 + 现实用途 + 常见故障 + 如何验证 + 不要被什么话术骗&lt;/strong&gt;。这才适合本项目。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;有，但再往下不是主干知识，而是&lt;strong&gt;补强项&lt;/strong&gt;。这些内容不一定每个都要深学，但适合放进最终文档的“进阶补充 / 排错扩展 / 风险识别”部分。&lt;/p&gt;
+&lt;h1 id="还应补充的-9-个知识点"&gt;&lt;a href="#%e8%bf%98%e5%ba%94%e8%a1%a5%e5%85%85%e7%9a%84-9-%e4%b8%aa%e7%9f%a5%e8%af%86%e7%82%b9" class="header-anchor"&gt;&lt;/a&gt;还应补充的 9 个知识点
+&lt;/h1&gt;&lt;h2 id="1-happy-eyeballs为什么-ipv6ipv4-会自动切换"&gt;&lt;a href="#1-happy-eyeballs%e4%b8%ba%e4%bb%80%e4%b9%88-ipv6ipv4-%e4%bc%9a%e8%87%aa%e5%8a%a8%e5%88%87%e6%8d%a2" class="header-anchor"&gt;&lt;/a&gt;1. Happy Eyeballs：为什么 IPv6/IPv4 会自动切换
+&lt;/h2&gt;&lt;p&gt;现代浏览器和系统通常不会死等 IPv6 或 IPv4，而是会用类似 &lt;strong&gt;Happy Eyeballs&lt;/strong&gt; 的机制，尝试减少用户看到的连接延迟。RFC 8305 说明，它的目标就是减少连接失败或等待造成的可见延迟。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc8305?utm_source=chatgpt.com" title="RFC 8305 - Happy Eyeballs Version 2: Better Connectivity ..."
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;你以为自己只走 IPv4，实际系统可能优先尝试 IPv6；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些网站有时快、有时慢，可能和 IPv4/IPv6选择有关；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代理只处理 IPv4、不处理 IPv6 时，可能出现泄露或连接异常；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查 IP 时必须同时查 IPv4 和 IPv6。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="2-edns-client-subnetdns-也可能暴露大致网络位置"&gt;&lt;a href="#2-edns-client-subnetdns-%e4%b9%9f%e5%8f%af%e8%83%bd%e6%9a%b4%e9%9c%b2%e5%a4%a7%e8%87%b4%e7%bd%91%e7%bb%9c%e4%bd%8d%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;2. EDNS Client Subnet：DNS 也可能暴露大致网络位置
+&lt;/h2&gt;&lt;p&gt;ECS，也就是 &lt;strong&gt;EDNS Client Subnet&lt;/strong&gt;，会在 DNS 查询里携带发起查询网络的部分前缀信息，用于让 CDN 做更准确的调度；RFC 7871 同时也说明它存在已知的运营和隐私缺陷。(&lt;a class="link" href="https://datatracker.ietf.org/doc/html/rfc7871?utm_source=chatgpt.com" title="RFC 7871 - Client Subnet in DNS Queries"
+ target="_blank" rel="noopener"
+ &gt;IETF Datatracker&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;公共 DNS 不一定完全隐藏你的位置；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;CDN 可能根据 DNS 查询来源给你分配不同节点；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流媒体解锁、网站地区识别不只看出口 IP，也可能受 DNS 路径影响；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“换 DNS 就能稳定解锁”是过度简化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="3-dns-缓存改了设置不一定立刻生效"&gt;&lt;a href="#3-dns-%e7%bc%93%e5%ad%98%e6%94%b9%e4%ba%86%e8%ae%be%e7%bd%ae%e4%b8%8d%e4%b8%80%e5%ae%9a%e7%ab%8b%e5%88%bb%e7%94%9f%e6%95%88" class="header-anchor"&gt;&lt;/a&gt;3. DNS 缓存：改了设置不一定立刻生效
+&lt;/h2&gt;&lt;p&gt;系统、浏览器、代理客户端、路由器、公共 DNS、CDN 都可能缓存 DNS 结果。&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;你切换节点后，网站仍然解析到旧 IP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;你改了 DNS，但浏览器还在用旧缓存；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些网站突然打不开，可能不是节点坏，而是缓存了错误解析；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;排查 DNS 时，最好重启浏览器、刷新客户端 DNS、必要时清理系统 DNS 缓存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这一点不用深学原理，但要知道它会制造“我明明改了，为什么没变化”的错觉。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="4-防火墙和杀毒软件很多-tunvpn-问题不是代理配置问题"&gt;&lt;a href="#4-%e9%98%b2%e7%81%ab%e5%a2%99%e5%92%8c%e6%9d%80%e6%af%92%e8%bd%af%e4%bb%b6%e5%be%88%e5%a4%9a-tunvpn-%e9%97%ae%e9%a2%98%e4%b8%8d%e6%98%af%e4%bb%a3%e7%90%86%e9%85%8d%e7%bd%ae%e9%97%ae%e9%a2%98" class="header-anchor"&gt;&lt;/a&gt;4. 防火墙和杀毒软件：很多 TUN/VPN 问题不是代理配置问题
+&lt;/h2&gt;&lt;p&gt;Windows 防火墙会按网络类型、应用、入站/出站规则过滤流量。微软文档说明，Windows 安全中心可以查看和管理防火墙状态，并按域网络、专用网络、公用网络分别设置。(&lt;a class="link" href="https://support.microsoft.com/en-us/windows/firewall-and-network-protection-in-the-windows-security-app-ec0844f7-aebd-0583-67fe-601ecf5d774f?utm_source=chatgpt.com" title="Firewall and Network Protection in the Windows Security App"
+ target="_blank" rel="noopener"
+ &gt;微软支持&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Clash Verge Rev / sing-box / v2rayN 可能被防火墙拦截；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TUN 虚拟网卡可能被安全软件干扰；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更新客户端后路径变了，旧的防火墙放行规则可能失效；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不建议直接关闭防火墙，优先给可信客户端单独放行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="5-系统时间时间错了会导致-tls登录证书异常"&gt;&lt;a href="#5-%e7%b3%bb%e7%bb%9f%e6%97%b6%e9%97%b4%e6%97%b6%e9%97%b4%e9%94%99%e4%ba%86%e4%bc%9a%e5%af%bc%e8%87%b4-tls%e7%99%bb%e5%bd%95%e8%af%81%e4%b9%a6%e5%bc%82%e5%b8%b8" class="header-anchor"&gt;&lt;/a&gt;5. 系统时间：时间错了会导致 TLS、登录、证书异常
+&lt;/h2&gt;&lt;p&gt;Windows 时间服务对安全认证很重要，微软文档明确说明 W32Time 对 Kerberos 认证和基于 AD DS 的认证很关键。(&lt;a class="link" href="https://learn.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-tech-ref?utm_source=chatgpt.com" title="Windows Time Service Technical Reference"
+ target="_blank" rel="noopener"
+ &gt;Microsoft Learn&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;系统时间不准，可能出现 HTTPS 证书错误；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;登录网站、同步订阅、连接节点时可能失败；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;某些客户端日志会出现 TLS 握手异常；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;排查证书类错误时，先看系统时间、时区、日期是否正确。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这类问题很低级，但真实发生时很浪费时间。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="6-hsts浏览器会强制某些网站走-https"&gt;&lt;a href="#6-hsts%e6%b5%8f%e8%a7%88%e5%99%a8%e4%bc%9a%e5%bc%ba%e5%88%b6%e6%9f%90%e4%ba%9b%e7%bd%91%e7%ab%99%e8%b5%b0-https" class="header-anchor"&gt;&lt;/a&gt;6. HSTS：浏览器会强制某些网站走 HTTPS
+&lt;/h2&gt;&lt;p&gt;HSTS 会告诉浏览器，以后访问该域名必须使用 HTTPS；MDN 说明，启用 HSTS 后，浏览器会把后续 HTTP 请求自动升级为 HTTPS，并且不允许用户绕过无效证书错误。(&lt;a class="link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security?utm_source=chatgpt.com" title="Strict-Transport-Security header - HTTP - MDN Web Docs"
+ target="_blank" rel="noopener"
+ &gt;MDN Web Docs&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;某些公共 Wi-Fi 劫持登录页时，HTTPS 网站会报错或打不开；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;证书错误不能随便点“继续访问”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果代理、DNS、公共 Wi-Fi 认证页互相冲突，会出现看似奇怪的连接失败；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HSTS 是安全机制，不是代理问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="7-浏览器状态隔离ip-不是唯一追踪维度"&gt;&lt;a href="#7-%e6%b5%8f%e8%a7%88%e5%99%a8%e7%8a%b6%e6%80%81%e9%9a%94%e7%a6%bbip-%e4%b8%8d%e6%98%af%e5%94%af%e4%b8%80%e8%bf%bd%e8%b8%aa%e7%bb%b4%e5%ba%a6" class="header-anchor"&gt;&lt;/a&gt;7. 浏览器状态隔离：IP 不是唯一追踪维度
+&lt;/h2&gt;&lt;p&gt;Firefox 的 Total Cookie Protection 会把不同网站的 Cookie 分开，减少跨站追踪；Firefox 官方页面说明，它会让每个网站的 Cookie 保持隔离，防止第三方追踪跨站跟随。(&lt;a class="link" href="https://www.firefox.com/en-US/features/total-cookie-protection/?utm_source=chatgpt.com" title="Total Cookie Protection"
+ target="_blank" rel="noopener"
+ &gt;Firefox&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;平台识别你，不只靠 IP；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cookie、LocalStorage、浏览器指纹、登录历史、设备环境都可能参与识别；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;换代理不等于换身份；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;用同一个浏览器、同一套 Cookie、同一个账号频繁切节点，反而更容易异常。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对普通用户的结论：&lt;br&gt;
+&lt;strong&gt;不要把代理/VPN当作账号风控万能解决方案。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="8-浏览器级-ip-保护以后浏览器自带代理会更多"&gt;&lt;a href="#8-%e6%b5%8f%e8%a7%88%e5%99%a8%e7%ba%a7-ip-%e4%bf%9d%e6%8a%a4%e4%bb%a5%e5%90%8e%e6%b5%8f%e8%a7%88%e5%99%a8%e8%87%aa%e5%b8%a6%e4%bb%a3%e7%90%86%e4%bc%9a%e6%9b%b4%e5%a4%9a" class="header-anchor"&gt;&lt;/a&gt;8. 浏览器级 IP 保护：以后“浏览器自带代理”会更多
+&lt;/h2&gt;&lt;p&gt;Google Privacy Sandbox 的 IP Protection 介绍说，它会在无痕模式下通过双跳代理系统匿名化符合条件的流量，用来降低第三方上下文中的 IP 暴露。(&lt;a class="link" href="https://privacysandbox.google.com/protections/ip-protection?utm_source=chatgpt.com" title="IP Protection Overview | Privacy Sandbox - Google"
+ target="_blank" rel="noopener"
+ &gt;Privacy Sandbox&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;未来浏览器可能自己带部分代理/隐私转发能力；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这会让“系统代理、浏览器代理、客户端代理”之间更复杂；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;排查时要看浏览器是否启用了额外隐私代理功能；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这类功能通常不是完整 VPN，不要误解为全局代理。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="9-免费代理风险不是不稳定这么简单"&gt;&lt;a href="#9-%e5%85%8d%e8%b4%b9%e4%bb%a3%e7%90%86%e9%a3%8e%e9%99%a9%e4%b8%8d%e6%98%af%e4%b8%8d%e7%a8%b3%e5%ae%9a%e8%bf%99%e4%b9%88%e7%ae%80%e5%8d%95" class="header-anchor"&gt;&lt;/a&gt;9. 免费代理风险：不是“不稳定”这么简单
+&lt;/h2&gt;&lt;p&gt;2024 年一项对免费代理的长期研究收集并测试了大量免费代理，发现免费代理普遍不稳定，并且存在内容篡改、漏洞主机、恶意行为等风险。研究中只有一部分代理在测试期间至少活跃过，还发现部分代理会操纵内容。(&lt;a class="link" href="https://arxiv.org/abs/2403.02445?utm_source=chatgpt.com" title="Free Proxies Unmasked: A Vulnerability and Longitudinal Analysis of Free Proxy Services"
+ target="_blank" rel="noopener"
+ &gt;arXiv&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;现实判断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;免费代理最大问题不是慢，而是你不知道谁在控制出口；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不要用免费代理登录主力账号；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不要通过免费代理访问支付、邮箱、网盘、工作系统；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;免费节点适合低风险连通性测试，不适合长期使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="应该加入最终文档的位置"&gt;&lt;a href="#%e5%ba%94%e8%af%a5%e5%8a%a0%e5%85%a5%e6%9c%80%e7%bb%88%e6%96%87%e6%a1%a3%e7%9a%84%e4%bd%8d%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;应该加入最终文档的位置
+&lt;/h1&gt;&lt;p&gt;如果做正式版，建议新增一个章节：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;第 17 章：现代网络补充与隐藏故障点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.1 Happy Eyeballs：IPv4/IPv6 自动选择
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.2 EDNS Client Subnet：DNS 与 CDN 地区调度
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.3 DNS 缓存：为什么改设置不立刻生效
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.4 防火墙与安全软件：TUN/VPN 被拦截
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.5 系统时间：TLS 与证书错误
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.6 HSTS：HTTPS 强制升级与公共 Wi-Fi 问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.7 浏览器状态隔离：Cookie、指纹与账号识别
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.8 浏览器级 IP 保护：未来代理边界变化
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;17.9 免费代理风险：不只是慢，而是信任风险
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id="最终取舍"&gt;&lt;a href="#%e6%9c%80%e7%bb%88%e5%8f%96%e8%88%8d" class="header-anchor"&gt;&lt;/a&gt;最终取舍
+&lt;/h1&gt;&lt;p&gt;真正必须放进主文档的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;IPv4/IPv6 自动选择；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS 缓存；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;防火墙/TUN冲突；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;系统时间和证书；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器状态隔离；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;免费代理风险。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以放进进阶附录的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;EDNS Client Subnet；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HSTS；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器级 IP Protection；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更深的 CDN/Anycast 调度机制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;到这里，网络基础部分已经足够完整。继续补会进入网络工程、浏览器隐私工程、协议标准细节，普通代理/VPN使用决策的收益会下降。&lt;/p&gt;</description></item></channel></rss>
