@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Hugo on 我的个人博客</title>
-    <link>http://localhost:1313/tags/hugo/</link>
-    <description>Recent content in Hugo on 我的个人博客</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 12 Jun 2026 12:30:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>我的第一篇文章</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
-      <pubDate>Fri, 12 Jun 2026 12:30:00 +0800</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
-      <description>&lt;h2 id=&#34;这是我的第一篇-hugo-文章&#34;&gt;这是我的第一篇 Hugo 文章&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Hugo on 我的个人博客</title><link>http://localhost:1313/tags/hugo/</link><description>Recent content in Hugo on 我的个人博客</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 12 Jun 2026 12:30:00 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>我的第一篇文章</title><link>http://localhost:1313/posts/my-first-post/</link><pubDate>Fri, 12 Jun 2026 12:30:00 +0800</pubDate><guid>http://localhost:1313/posts/my-first-post/</guid><description>&lt;h2 id="这是我的第一篇-hugo-文章"&gt;这是我的第一篇 Hugo 文章&lt;/h2&gt;
 &lt;p&gt;这是一篇测试文章，用来验证：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Hugo 项目是否创建成功&lt;/li&gt;
@@ -21,8 +6,5 @@
 &lt;li&gt;Markdown 是否能正常显示&lt;/li&gt;
 &lt;li&gt;本地预览是否能打开&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;下一步&#34;&gt;下一步&lt;/h2&gt;
-&lt;p&gt;如果这篇文章能在浏览器里看到，说明本地博客已经跑起来了。&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+&lt;h2 id="下一步"&gt;下一步&lt;/h2&gt;
+&lt;p&gt;如果这篇文章能在浏览器里看到，说明本地博客已经跑起来了。&lt;/p&gt;</description></item></channel></rss>
