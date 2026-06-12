@@ -1,8 +1,8 @@
 \---
 
-title: "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+title: "My New Note"
 
-date: "{{ .Date }}"
+date: "2026-06-12T13:46:02+08:00"
 
 draft: true
 

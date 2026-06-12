@@ -1,10 +1,10 @@
 \---
 
-title: "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+title: "Template Test"
 
-date: "{{ .Date }}"
+date: "2026-06-12T13:46:58+08:00"
 
-draft: true
+draft: false
 
 tags:
 

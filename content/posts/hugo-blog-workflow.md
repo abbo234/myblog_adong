@@ -1,10 +1,10 @@
 \---
 
-title: "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+title: "Hugo Blog Workflow"
 
-date: "{{ .Date }}"
+date: "2026-06-12T13:48:49+08:00"
 
-draft: true
+draft: false
 
 tags:
 
@@ -20,7 +20,7 @@ categories:
 
 \## 前言
 
-
+**我如何用 Hugo + GitHub Pages 搭建个人博客**。
 
 这里写文章背景：为什么要写这篇文章。
 
