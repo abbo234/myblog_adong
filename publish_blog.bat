@@ -22,7 +22,7 @@ git status
 
 echo.
 echo [3/5] 添加所有变更...
-git add .
+git add -A
 
 echo.
 echo [4/5] 创建提交...
