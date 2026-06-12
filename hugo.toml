@@ -1,5 +1,5 @@
 baseURL = 'http://localhost:1313/'
-title = '爬虫与数据处理笔记'
+title = '随记'
 theme = 'hugo-theme-stack'
 defaultContentLanguage = 'zh'
 hasCJKLanguage = true
@@ -14,12 +14,12 @@ hasCJKLanguage = true
 [params]
   mainSections = ['posts']
   rssFullContent = true
-  description = '记录 Python 爬虫、网页数据来源判断、数据清洗、存储、分析与自动化处理。'
+  description = '随手记录学习、工具、技术、生活观察和问题复盘。'
 
 [params.sidebar]
   compact = false
   emoji = '🕷️'
-  subtitle = 'Python 爬虫与数据处理实践记录'
+  subtitle = '随手记录一些笔记、想法和实践过程'
   avatar = ''
 
 [params.article]

@@ -1,1 +1,1293 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>爬虫与数据处理笔记</title><link>http://localhost:1313/</link><description>Recent content on 爬虫与数据处理笔记</description><generator>Hugo -- gohugo.io</generator><language>zh</language><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>随记</title><link>http://localhost:1313/</link><description>Recent content on 随记</description><generator>Hugo -- gohugo.io</generator><language>zh</language><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>http://localhost:1313/posts/v2rayng_%E5%B0%8F%E7%B1%B3%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA_%E5%B0%8F%E7%99%BD%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/v2rayng_%E5%B0%8F%E7%B1%B3%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA_%E5%B0%8F%E7%99%BD%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</guid><description>&lt;h1 id="v2rayng-在小米安卓手机上的小白使用手册"&gt;&lt;a href="#v2rayng-%e5%9c%a8%e5%b0%8f%e7%b1%b3%e5%ae%89%e5%8d%93%e6%89%8b%e6%9c%ba%e4%b8%8a%e7%9a%84%e5%b0%8f%e7%99%bd%e4%bd%bf%e7%94%a8%e6%89%8b%e5%86%8c" class="header-anchor"&gt;&lt;/a&gt;v2rayNG 在小米安卓手机上的小白使用手册
+&lt;/h1&gt;
+ &lt;blockquote&gt;
+ &lt;p&gt;适用对象：小米 / Redmi / POCO 安卓手机用户&lt;br&gt;
+系统范围：HyperOS / MIUI 近年版本&lt;br&gt;
+客户端：v2rayNG&lt;br&gt;
+使用方式：第三方服务商订阅链接导入&lt;br&gt;
+用户水平：小白&lt;br&gt;
+核验日期：2026-06-12&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="0-资料来源与时效性声明"&gt;&lt;a href="#0-%e8%b5%84%e6%96%99%e6%9d%a5%e6%ba%90%e4%b8%8e%e6%97%b6%e6%95%88%e6%80%a7%e5%a3%b0%e6%98%8e" class="header-anchor"&gt;&lt;/a&gt;0. 资料来源与时效性声明
+&lt;/h2&gt;&lt;p&gt;本手册基于以下信息整理：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;v2rayNG 官方 GitHub 仓库：&lt;code&gt;2dust/v2rayNG&lt;/code&gt;。仓库说明显示 v2rayNG 是 Android 端 V2Ray 客户端，支持 Xray core 和 v2fly core。&lt;/li&gt;
+&lt;li&gt;v2rayNG GitHub Releases：当前核验到 Latest 版本为 &lt;code&gt;2.2.3&lt;/code&gt;，发布日期为 2026-06-02。&lt;/li&gt;
+&lt;li&gt;v2rayNG 官方界面字符串：当前版本中存在 &lt;code&gt;Subscription group setting&lt;/code&gt;、&lt;code&gt;Update subscription&lt;/code&gt;、&lt;code&gt;Real delay config&lt;/code&gt;、&lt;code&gt;Tcping config&lt;/code&gt;、&lt;code&gt;Per-app proxy&lt;/code&gt; 等入口。&lt;/li&gt;
+&lt;li&gt;小米官方支持页：未知来源安装权限路径、后台自启动权限、后台权限相关说明。&lt;/li&gt;
+&lt;li&gt;小米 / MIUI 后台机制参考资料：小米系统对后台应用限制较强，锁后台、自启动、电池不限制对 VPN 类应用稳定性有影响。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;重要说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;本手册不推荐任何服务商。&lt;/li&gt;
+&lt;li&gt;本手册不要求你提供完整订阅链接、二维码、账号密码、付款信息或后台完整截图。&lt;/li&gt;
+&lt;li&gt;小米手机型号很多，HyperOS / MIUI 菜单文字可能略有差异。找不到路径时，优先在系统设置顶部搜索关键词：&lt;code&gt;安装未知应用&lt;/code&gt;、&lt;code&gt;后台自启动&lt;/code&gt;、&lt;code&gt;电池&lt;/code&gt;、&lt;code&gt;通知&lt;/code&gt;、&lt;code&gt;VPN&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;如果 GitHub Release 和第三方下载页版本不一致，优先以 GitHub Release 为准。&lt;/li&gt;
+&lt;li&gt;如果你用的是非常旧的小米手机，APK 架构选择可能不同；现代小米 / Redmi / POCO 手机一般优先选择 &lt;code&gt;arm64-v8a&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="01-合规与安全边界"&gt;&lt;a href="#01-%e5%90%88%e8%a7%84%e4%b8%8e%e5%ae%89%e5%85%a8%e8%be%b9%e7%95%8c" class="header-anchor"&gt;&lt;/a&gt;0.1 合规与安全边界
+&lt;/h2&gt;&lt;p&gt;本手册只说明在合法、合规、正当用途下如何安装和使用 v2rayNG，例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人隐私保护&lt;/li&gt;
+&lt;li&gt;远程办公&lt;/li&gt;
+&lt;li&gt;自有服务访问&lt;/li&gt;
+&lt;li&gt;学术研究&lt;/li&gt;
+&lt;li&gt;开发测试&lt;/li&gt;
+&lt;li&gt;网络故障排查&lt;/li&gt;
+&lt;li&gt;合法跨境网络访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本手册不提供：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;非法节点购买建议&lt;/li&gt;
+&lt;li&gt;黑灰产服务商推荐&lt;/li&gt;
+&lt;li&gt;绕过平台风控、封禁、付费墙、账号限制的方法&lt;/li&gt;
+&lt;li&gt;批量注册、薅羊毛、盗号、攻击、诈骗、恶意爬取的方法&lt;/li&gt;
+&lt;li&gt;服务商后台账号、订阅 token、付款信息处理建议&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;订阅链接通常包含身份 token。不要把完整订阅链接发给别人，也不要发给 AI。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="第一部分先照着做"&gt;&lt;a href="#%e7%ac%ac%e4%b8%80%e9%83%a8%e5%88%86%e5%85%88%e7%85%a7%e7%9d%80%e5%81%9a" class="header-anchor"&gt;&lt;/a&gt;第一部分：先照着做
+&lt;/h1&gt;&lt;p&gt;这一部分先让手机能用，不讲复杂原理。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-准备工作"&gt;&lt;a href="#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-anchor"&gt;&lt;/a&gt;1. 准备工作
+&lt;/h2&gt;&lt;p&gt;你需要准备：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一台小米 / Redmi / POCO 安卓手机&lt;/li&gt;
+&lt;li&gt;可正常联网的 Wi-Fi 或移动流量&lt;/li&gt;
+&lt;li&gt;手机浏览器&lt;/li&gt;
+&lt;li&gt;文件管理器&lt;/li&gt;
+&lt;li&gt;v2rayNG APK 安装包&lt;/li&gt;
+&lt;li&gt;第三方服务商提供的订阅链接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你不需要准备：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务器&lt;/li&gt;
+&lt;li&gt;代码&lt;/li&gt;
+&lt;li&gt;复杂配置文件&lt;/li&gt;
+&lt;li&gt;自建节点知识&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;安全提醒：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不要把完整订阅链接发给别人。&lt;/li&gt;
+&lt;li&gt;不要把订阅二维码截图发给别人。&lt;/li&gt;
+&lt;li&gt;不要把订阅链接发给 AI。&lt;/li&gt;
+&lt;li&gt;不要把服务商后台完整截图发群。&lt;/li&gt;
+&lt;li&gt;排错时只发打码后的错误提示。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="2-下载-v2rayng"&gt;&lt;a href="#2-%e4%b8%8b%e8%bd%bd-v2rayng" class="header-anchor"&gt;&lt;/a&gt;2. 下载 v2rayNG
+&lt;/h2&gt;&lt;h3 id="21-你要点哪里"&gt;&lt;a href="#21-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;2.1 你要点哪里
+&lt;/h3&gt;&lt;p&gt;优先从 v2rayNG 官方 GitHub Release 下载。&lt;/p&gt;
+&lt;p&gt;操作思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开浏览器。&lt;/li&gt;
+&lt;li&gt;进入 v2rayNG 官方 GitHub 仓库。&lt;/li&gt;
+&lt;li&gt;找到 &lt;code&gt;Releases&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;进入标记为 &lt;code&gt;Latest&lt;/code&gt; 的版本。&lt;/li&gt;
+&lt;li&gt;找到 &lt;code&gt;Assets&lt;/code&gt; 下载区。&lt;/li&gt;
+&lt;li&gt;下载适合手机的 APK。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="22-你要下载哪个文件"&gt;&lt;a href="#22-%e4%bd%a0%e8%a6%81%e4%b8%8b%e8%bd%bd%e5%93%aa%e4%b8%aa%e6%96%87%e4%bb%b6" class="header-anchor"&gt;&lt;/a&gt;2.2 你要下载哪个文件
+&lt;/h3&gt;&lt;p&gt;现代小米 / Redmi / POCO 安卓手机，一般优先找文件名同时包含：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.apk&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;arm64-v8a&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例如文件名可能类似：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;v2rayNG_版本号_arm64-v8a.apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意：不要死记具体文件名。版本号会变，文件名也可能变化。重点看两个关键词：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;arm64-v8a + .apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="23-为什么选-arm64-v8a"&gt;&lt;a href="#23-%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89-arm64-v8a" class="header-anchor"&gt;&lt;/a&gt;2.3 为什么选 arm64-v8a
+&lt;/h3&gt;&lt;p&gt;你不用深入理解这个词。&lt;/p&gt;
+&lt;p&gt;只要记住：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;现代安卓手机大多是 ARM 64 位架构。&lt;/li&gt;
+&lt;li&gt;小米 / Redmi / POCO 近年机型通常优先选 &lt;code&gt;arm64-v8a&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;x86&lt;/code&gt;、&lt;code&gt;x86_64&lt;/code&gt; 通常更偏模拟器或特殊设备。&lt;/li&gt;
+&lt;li&gt;如果你不确定，且 Release 页面提供 &lt;code&gt;universal&lt;/code&gt; 版本，也可以选 &lt;code&gt;universal&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="24-成功标志"&gt;&lt;a href="#24-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;2.4 成功标志
+&lt;/h3&gt;&lt;p&gt;下载完成后，你能在以下位置看到 APK：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;浏览器下载列表&lt;/li&gt;
+&lt;li&gt;通知栏下载完成提示&lt;/li&gt;
+&lt;li&gt;文件管理器 → 下载 / Download&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="25-失败先检查"&gt;&lt;a href="#25-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;2.5 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;是不是从 GitHub Release 下载，不是从群文件、网盘、未知网站下载。&lt;/li&gt;
+&lt;li&gt;文件名里是否有 &lt;code&gt;.apk&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;现代小米手机是否优先选择了 &lt;code&gt;arm64-v8a&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;浏览器是否拦截了 APK 下载。&lt;/li&gt;
+&lt;li&gt;手机存储空间是否足够。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不建议安装服务商发来的未知修改版 APK。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="3-在小米手机上安装-apk"&gt;&lt;a href="#3-%e5%9c%a8%e5%b0%8f%e7%b1%b3%e6%89%8b%e6%9c%ba%e4%b8%8a%e5%ae%89%e8%a3%85-apk" class="header-anchor"&gt;&lt;/a&gt;3. 在小米手机上安装 APK
+&lt;/h2&gt;&lt;h3 id="31-你要点哪里"&gt;&lt;a href="#31-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;3.1 你要点哪里
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 &lt;strong&gt;文件管理器&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;进入 &lt;strong&gt;下载 / Download&lt;/strong&gt; 文件夹。&lt;/li&gt;
+&lt;li&gt;找到刚下载的 v2rayNG APK。&lt;/li&gt;
+&lt;li&gt;点击 APK。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;安装&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="32-如果提示禁止安装未知来源应用"&gt;&lt;a href="#32-%e5%a6%82%e6%9e%9c%e6%8f%90%e7%a4%ba%e7%a6%81%e6%ad%a2%e5%ae%89%e8%a3%85%e6%9c%aa%e7%9f%a5%e6%9d%a5%e6%ba%90%e5%ba%94%e7%94%a8" class="header-anchor"&gt;&lt;/a&gt;3.2 如果提示禁止安装未知来源应用
+&lt;/h3&gt;&lt;p&gt;小米官方给出的常见路径之一是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 更多设置 → 隐私 → 特殊应用权限 → 安装未知应用
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有些系统版本也可能是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 隐私保护 → 特殊权限 → 安装未知应用
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;你要做的是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;找到你刚才用来打开 APK 的应用。
+&lt;ul&gt;
+&lt;li&gt;如果你从浏览器下载并打开，就授权浏览器。&lt;/li&gt;
+&lt;li&gt;如果你从文件管理器打开，就授权文件管理器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;打开 &lt;strong&gt;允许来自此来源&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;返回 APK 安装页面。&lt;/li&gt;
+&lt;li&gt;再次点击安装。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="33-你要填什么"&gt;&lt;a href="#33-%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;3.3 你要填什么
+&lt;/h3&gt;&lt;p&gt;不需要填账号密码。&lt;/p&gt;
+&lt;p&gt;只需要给当前安装来源一个临时安装权限。&lt;/p&gt;
+&lt;h3 id="34-成功标志"&gt;&lt;a href="#34-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;3.4 成功标志
+&lt;/h3&gt;&lt;p&gt;安装完成后，桌面或应用列表里出现：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;v2rayNG
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="35-失败先检查"&gt;&lt;a href="#35-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;3.5 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;是否授权了正确的应用：浏览器或文件管理器。&lt;/li&gt;
+&lt;li&gt;APK 是否下载完整。&lt;/li&gt;
+&lt;li&gt;是否下载了错误架构的 APK。&lt;/li&gt;
+&lt;li&gt;手机是否开启了更严格的安全拦截。&lt;/li&gt;
+&lt;li&gt;存储空间是否不足。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;安装完成后，建议关闭“允许安装未知应用”。&lt;/p&gt;
+&lt;p&gt;路径仍然是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 更多设置 / 隐私保护 → 特殊应用权限 → 安装未知应用
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样可以降低以后误装恶意 APK 的风险。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="4-首次打开-v2rayng-与-vpn-权限"&gt;&lt;a href="#4-%e9%a6%96%e6%ac%a1%e6%89%93%e5%bc%80-v2rayng-%e4%b8%8e-vpn-%e6%9d%83%e9%99%90" class="header-anchor"&gt;&lt;/a&gt;4. 首次打开 v2rayNG 与 VPN 权限
+&lt;/h2&gt;&lt;h3 id="41-你要点哪里"&gt;&lt;a href="#41-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;4.1 你要点哪里
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;先不要乱改设置。&lt;/li&gt;
+&lt;li&gt;等导入订阅、选择节点后，再点击连接按钮。&lt;/li&gt;
+&lt;li&gt;第一次连接时，手机可能弹出：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;VPN 连接请求
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;你需要点击：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;确定 / 允许
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-这个-vpn-权限是什么意思"&gt;&lt;a href="#42-%e8%bf%99%e4%b8%aa-vpn-%e6%9d%83%e9%99%90%e6%98%af%e4%bb%80%e4%b9%88%e6%84%8f%e6%80%9d" class="header-anchor"&gt;&lt;/a&gt;4.2 这个 VPN 权限是什么意思
+&lt;/h3&gt;&lt;p&gt;这不是让你重新买一个 VPN。&lt;/p&gt;
+&lt;p&gt;这是 Android 系统在问：&lt;/p&gt;
+
+ &lt;blockquote&gt;
+ &lt;p&gt;是否允许 v2rayNG 接管手机网络连接？&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;p&gt;不允许的话，v2rayNG 无法正常工作。&lt;/p&gt;
+&lt;h3 id="43-成功标志"&gt;&lt;a href="#43-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;4.3 成功标志
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;v2rayNG 显示正在连接或已连接。&lt;/li&gt;
+&lt;li&gt;手机状态栏出现 VPN 图标。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="44-失败先检查"&gt;&lt;a href="#44-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;4.4 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;是否点了拒绝。&lt;/li&gt;
+&lt;li&gt;是否已有其他 VPN 软件正在运行。&lt;/li&gt;
+&lt;li&gt;小米安全中心是否拦截。&lt;/li&gt;
+&lt;li&gt;是否没有选择节点就直接点连接。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：状态栏出现 VPN 图标，只代表手机网络流量正在被某个 VPN 类应用接管，不代表服务商一定可信。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="5-导入第三方订阅链接"&gt;&lt;a href="#5-%e5%af%bc%e5%85%a5%e7%ac%ac%e4%b8%89%e6%96%b9%e8%ae%a2%e9%98%85%e9%93%be%e6%8e%a5" class="header-anchor"&gt;&lt;/a&gt;5. 导入第三方订阅链接
+&lt;/h2&gt;&lt;p&gt;这一节是核心。&lt;/p&gt;
+&lt;p&gt;当前 v2rayNG 版本中，稳定路径建议走：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;订阅分组设置 → 添加订阅分组 → 保存 → 回主界面更新订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不要只在主界面找 &lt;code&gt;+&lt;/code&gt;。有些版本或界面布局里，主界面可能没有明显的 &lt;code&gt;+&lt;/code&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="51-先复制服务商订阅链接"&gt;&lt;a href="#51-%e5%85%88%e5%a4%8d%e5%88%b6%e6%9c%8d%e5%8a%a1%e5%95%86%e8%ae%a2%e9%98%85%e9%93%be%e6%8e%a5" class="header-anchor"&gt;&lt;/a&gt;5.1 先复制服务商订阅链接
+&lt;/h3&gt;&lt;h4 id="你要点哪里"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;你要点哪里
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;打开服务商后台。&lt;/li&gt;
+&lt;li&gt;找到类似这些入口：
+&lt;ul&gt;
+&lt;li&gt;订阅链接&lt;/li&gt;
+&lt;li&gt;一键导入&lt;/li&gt;
+&lt;li&gt;v2rayNG 订阅&lt;/li&gt;
+&lt;li&gt;V2Ray 订阅&lt;/li&gt;
+&lt;li&gt;通用订阅&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;复制订阅链接。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="你要填什么"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;你要填什么
+&lt;/h4&gt;&lt;p&gt;这一步不用填内容，只复制链接。&lt;/p&gt;
+&lt;h4 id="成功标志"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;p&gt;手机提示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;已复制
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或者你确认剪贴板里已经有订阅链接。&lt;/p&gt;
+&lt;h4 id="失败先检查"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;不要复制网页登录地址。&lt;/li&gt;
+&lt;li&gt;不要复制 Clash 专用订阅，除非服务商明确说 v2rayNG 可用。&lt;/li&gt;
+&lt;li&gt;不要复制单个节点链接当成订阅。&lt;/li&gt;
+&lt;li&gt;不要把完整订阅链接发给别人。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id="52-进入订阅分组设置"&gt;&lt;a href="#52-%e8%bf%9b%e5%85%a5%e8%ae%a2%e9%98%85%e5%88%86%e7%bb%84%e8%ae%be%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;5.2 进入订阅分组设置
+&lt;/h3&gt;&lt;h4 id="你要点哪里-1"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c-1" class="header-anchor"&gt;&lt;/a&gt;你要点哪里
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;找到菜单入口。
+&lt;ul&gt;
+&lt;li&gt;可能是右上角三个点。&lt;/li&gt;
+&lt;li&gt;可能是左上角菜单。&lt;/li&gt;
+&lt;li&gt;可能在设置页面里。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;找到：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;订阅分组设置
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果界面是英文，找：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Subscription group setting
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="你要填什么-1"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88-1" class="header-anchor"&gt;&lt;/a&gt;你要填什么
+&lt;/h4&gt;&lt;p&gt;还没填，先进入页面。&lt;/p&gt;
+&lt;h4 id="成功标志-1"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97-1" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;p&gt;你进入一个管理订阅分组的页面。&lt;/p&gt;
+&lt;p&gt;页面里通常可以添加、编辑或删除订阅分组。&lt;/p&gt;
+&lt;h4 id="失败先检查-1"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5-1" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;你是否打开的是 v2rayNG，不是其他客户端。&lt;/li&gt;
+&lt;li&gt;是否进入了设置菜单。&lt;/li&gt;
+&lt;li&gt;是否界面语言是英文，需要找 &lt;code&gt;Subscription group setting&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id="53-添加订阅分组"&gt;&lt;a href="#53-%e6%b7%bb%e5%8a%a0%e8%ae%a2%e9%98%85%e5%88%86%e7%bb%84" class="header-anchor"&gt;&lt;/a&gt;5.3 添加订阅分组
+&lt;/h3&gt;&lt;h4 id="你要点哪里-2"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c-2" class="header-anchor"&gt;&lt;/a&gt;你要点哪里
+&lt;/h4&gt;&lt;p&gt;在订阅分组设置里，点击：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;添加 / 新增 / Add
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不同版本按钮位置可能不同。&lt;/p&gt;
+&lt;h4 id="你要填什么-2"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88-2" class="header-anchor"&gt;&lt;/a&gt;你要填什么
+&lt;/h4&gt;&lt;p&gt;通常填两项：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;备注 / 名称 / remarks&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以填：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我的订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;常用节点
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;&lt;strong&gt;订阅地址 / URL / Optional URL&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;粘贴服务商给你的完整订阅链接。&lt;/p&gt;
+&lt;p&gt;其他高级选项默认不动。&lt;/p&gt;
+&lt;h4 id="成功标志-2"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97-2" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;p&gt;订阅分组设置页面里出现你刚添加的分组。&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;我的订阅
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;常用节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;服务商订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="失败先检查-2"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5-2" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;是否把链接粘贴到了 URL / 订阅地址位置。&lt;/li&gt;
+&lt;li&gt;是否忘记填写备注。&lt;/li&gt;
+&lt;li&gt;是否忘记点击保存。&lt;/li&gt;
+&lt;li&gt;订阅链接是否复制完整。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id="54-回主界面更新订阅"&gt;&lt;a href="#54-%e5%9b%9e%e4%b8%bb%e7%95%8c%e9%9d%a2%e6%9b%b4%e6%96%b0%e8%ae%a2%e9%98%85" class="header-anchor"&gt;&lt;/a&gt;5.4 回主界面更新订阅
+&lt;/h3&gt;&lt;p&gt;只添加订阅分组还不够。&lt;/p&gt;
+&lt;p&gt;你必须回主界面更新订阅，节点才会出现。&lt;/p&gt;
+&lt;h4 id="你要点哪里-3"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c-3" class="header-anchor"&gt;&lt;/a&gt;你要点哪里
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;保存订阅分组。&lt;/li&gt;
+&lt;li&gt;返回 v2rayNG 主界面。&lt;/li&gt;
+&lt;li&gt;打开菜单。&lt;/li&gt;
+&lt;li&gt;点击：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;更新订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果界面是英文，找：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Update subscription
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="你要填什么-3"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88-3" class="header-anchor"&gt;&lt;/a&gt;你要填什么
+&lt;/h4&gt;&lt;p&gt;不用填内容。&lt;/p&gt;
+&lt;h4 id="成功标志-3"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97-3" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;p&gt;主界面出现节点列表。&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;香港节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;日本节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;新加坡节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;美国节点
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;自动选择
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;具体名字由服务商决定。&lt;/p&gt;
+&lt;h4 id="失败先检查-3"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5-3" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;手机普通网络是否能用。&lt;/li&gt;
+&lt;li&gt;是否添加了订阅分组但忘记更新订阅。&lt;/li&gt;
+&lt;li&gt;订阅链接是否过期。&lt;/li&gt;
+&lt;li&gt;服务商后台套餐是否有效。&lt;/li&gt;
+&lt;li&gt;是否复制成网页登录地址。&lt;/li&gt;
+&lt;li&gt;服务商是否正在维护。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="6-扫码导入和剪贴板导入"&gt;&lt;a href="#6-%e6%89%ab%e7%a0%81%e5%af%bc%e5%85%a5%e5%92%8c%e5%89%aa%e8%b4%b4%e6%9d%bf%e5%af%bc%e5%85%a5" class="header-anchor"&gt;&lt;/a&gt;6. 扫码导入和剪贴板导入
+&lt;/h2&gt;&lt;h3 id="61-扫码导入"&gt;&lt;a href="#61-%e6%89%ab%e7%a0%81%e5%af%bc%e5%85%a5" class="header-anchor"&gt;&lt;/a&gt;6.1 扫码导入
+&lt;/h3&gt;&lt;p&gt;适合情况：服务商后台给你的是二维码。&lt;/p&gt;
+&lt;h4 id="你要点哪里-4"&gt;&lt;a href="#%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c-4" class="header-anchor"&gt;&lt;/a&gt;你要点哪里
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;找到导入入口。&lt;/li&gt;
+&lt;li&gt;选择：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;扫描二维码导入
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;英文可能是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Import from QRcode
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;对准服务商后台二维码。&lt;/li&gt;
+&lt;li&gt;导入后保存。&lt;/li&gt;
+&lt;li&gt;回主界面更新订阅或查看节点。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="成功标志-4"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97-4" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;p&gt;主界面出现节点，或者订阅分组里出现配置。&lt;/p&gt;
+&lt;h4 id="失败先检查-4"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5-4" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;摄像头权限是否允许。&lt;/li&gt;
+&lt;li&gt;二维码是否完整显示。&lt;/li&gt;
+&lt;li&gt;二维码是否是 v2rayNG 支持的格式。&lt;/li&gt;
+&lt;li&gt;是否把二维码截图泄露给别人。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不要把订阅二维码发给 AI 或群友。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="62-从剪贴板导入"&gt;&lt;a href="#62-%e4%bb%8e%e5%89%aa%e8%b4%b4%e6%9d%bf%e5%af%bc%e5%85%a5" class="header-anchor"&gt;&lt;/a&gt;6.2 从剪贴板导入
+&lt;/h3&gt;&lt;p&gt;适合情况：你已经复制了链接。&lt;/p&gt;
+&lt;h4 id="推荐路径"&gt;&lt;a href="#%e6%8e%a8%e8%8d%90%e8%b7%af%e5%be%84" class="header-anchor"&gt;&lt;/a&gt;推荐路径
+&lt;/h4&gt;&lt;p&gt;优先使用：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;订阅分组设置 → 添加订阅地址 → 保存 → 回主界面更新订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果当前版本提供：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;从剪贴板导入
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;英文可能是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Import from Clipboard
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也可以尝试。&lt;/p&gt;
+&lt;h4 id="成功标志-5"&gt;&lt;a href="#%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97-5" class="header-anchor"&gt;&lt;/a&gt;成功标志
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;节点出现在主界面；或&lt;/li&gt;
+&lt;li&gt;订阅分组被成功添加；或&lt;/li&gt;
+&lt;li&gt;更新订阅后出现节点列表。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="失败先检查-5"&gt;&lt;a href="#%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5-5" class="header-anchor"&gt;&lt;/a&gt;失败先检查
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;剪贴板里是否是完整订阅链接。&lt;/li&gt;
+&lt;li&gt;是否是服务商支持 v2rayNG 的订阅。&lt;/li&gt;
+&lt;li&gt;是否导入后没有更新订阅。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="7-更新订阅"&gt;&lt;a href="#7-%e6%9b%b4%e6%96%b0%e8%ae%a2%e9%98%85" class="header-anchor"&gt;&lt;/a&gt;7. 更新订阅
+&lt;/h2&gt;&lt;h3 id="71-为什么要更新订阅"&gt;&lt;a href="#71-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e6%9b%b4%e6%96%b0%e8%ae%a2%e9%98%85" class="header-anchor"&gt;&lt;/a&gt;7.1 为什么要更新订阅
+&lt;/h3&gt;&lt;p&gt;订阅链接只是一个入口。&lt;/p&gt;
+&lt;p&gt;更新订阅后，v2rayNG 才会去服务商那里拉取最新节点。&lt;/p&gt;
+&lt;h3 id="72-什么时候需要更新"&gt;&lt;a href="#72-%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e9%9c%80%e8%a6%81%e6%9b%b4%e6%96%b0" class="header-anchor"&gt;&lt;/a&gt;7.2 什么时候需要更新
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;第一次添加订阅后&lt;/li&gt;
+&lt;li&gt;节点突然全部超时&lt;/li&gt;
+&lt;li&gt;服务商通知线路调整&lt;/li&gt;
+&lt;li&gt;套餐刚续费&lt;/li&gt;
+&lt;li&gt;长时间没打开 v2rayNG&lt;/li&gt;
+&lt;li&gt;换手机后重新导入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="73-你要点哪里"&gt;&lt;a href="#73-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;7.3 你要点哪里
+&lt;/h3&gt;&lt;p&gt;回到 v2rayNG 主界面，打开菜单，选择：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;更新订阅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;英文界面找：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Update subscription
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="74-成功标志"&gt;&lt;a href="#74-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;7.4 成功标志
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;节点列表刷新。&lt;/li&gt;
+&lt;li&gt;节点数量变多或恢复正常。&lt;/li&gt;
+&lt;li&gt;没有明显报错。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="75-失败先检查"&gt;&lt;a href="#75-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;7.5 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;手机普通网络能不能打开网页。&lt;/li&gt;
+&lt;li&gt;服务商套餐是否过期。&lt;/li&gt;
+&lt;li&gt;订阅链接是否复制错。&lt;/li&gt;
+&lt;li&gt;服务商是否在维护。&lt;/li&gt;
+&lt;li&gt;是否使用了错误格式的订阅。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="8-选择节点与测速"&gt;&lt;a href="#8-%e9%80%89%e6%8b%a9%e8%8a%82%e7%82%b9%e4%b8%8e%e6%b5%8b%e9%80%9f" class="header-anchor"&gt;&lt;/a&gt;8. 选择节点与测速
+&lt;/h2&gt;&lt;h3 id="81-你要点哪里"&gt;&lt;a href="#81-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;8.1 你要点哪里
+&lt;/h3&gt;&lt;p&gt;在主界面点一个节点。&lt;/p&gt;
+&lt;p&gt;然后打开菜单，找类似：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;测试全部配置真连接
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;测试延迟
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Tcping
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Real delay config
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不同版本文字可能略有不同。&lt;/p&gt;
+&lt;h3 id="82-成功标志"&gt;&lt;a href="#82-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;8.2 成功标志
+&lt;/h3&gt;&lt;p&gt;节点旁边出现延迟数字。&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;80 ms
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;150 ms
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;300 ms
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="83-怎么选节点"&gt;&lt;a href="#83-%e6%80%8e%e4%b9%88%e9%80%89%e8%8a%82%e7%82%b9" class="header-anchor"&gt;&lt;/a&gt;8.3 怎么选节点
+&lt;/h3&gt;&lt;p&gt;普通用户按这个顺序选：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;延迟较低。&lt;/li&gt;
+&lt;li&gt;倍率正常。&lt;/li&gt;
+&lt;li&gt;稳定。&lt;/li&gt;
+&lt;li&gt;地区符合需求。&lt;/li&gt;
+&lt;li&gt;不要迷信高价节点一定快。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="84-注意"&gt;&lt;a href="#84-%e6%b3%a8%e6%84%8f" class="header-anchor"&gt;&lt;/a&gt;8.4 注意
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;延迟低不等于下载速度一定快。&lt;/li&gt;
+&lt;li&gt;倍率高可能更耗流量。&lt;/li&gt;
+&lt;li&gt;某个地区节点不可用，不代表全部节点都坏了。&lt;/li&gt;
+&lt;li&gt;节点名好看不代表线路稳定。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="9-启动连接"&gt;&lt;a href="#9-%e5%90%af%e5%8a%a8%e8%bf%9e%e6%8e%a5" class="header-anchor"&gt;&lt;/a&gt;9. 启动连接
+&lt;/h2&gt;&lt;h3 id="91-你要点哪里"&gt;&lt;a href="#91-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;9.1 你要点哪里
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;在节点列表里点选一个节点。&lt;/li&gt;
+&lt;li&gt;点击 v2rayNG 的连接按钮。&lt;/li&gt;
+&lt;li&gt;第一次连接时，系统弹出 VPN 请求，点击允许。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="92-你要填什么"&gt;&lt;a href="#92-%e4%bd%a0%e8%a6%81%e5%a1%ab%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;9.2 你要填什么
+&lt;/h3&gt;&lt;p&gt;不用填内容。&lt;/p&gt;
+&lt;h3 id="93-成功标志"&gt;&lt;a href="#93-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;9.3 成功标志
+&lt;/h3&gt;&lt;p&gt;至少满足以下几项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;v2rayNG 显示已连接。&lt;/li&gt;
+&lt;li&gt;状态栏出现 VPN 图标。&lt;/li&gt;
+&lt;li&gt;当前节点延迟正常。&lt;/li&gt;
+&lt;li&gt;浏览器能打开目标网站。&lt;/li&gt;
+&lt;li&gt;IP 检测结果显示出口地区变化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="94-失败先检查"&gt;&lt;a href="#94-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;9.4 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;是否选中了节点。&lt;/li&gt;
+&lt;li&gt;是否允许 VPN 权限。&lt;/li&gt;
+&lt;li&gt;是否有其他 VPN 软件占用。&lt;/li&gt;
+&lt;li&gt;节点是否超时。&lt;/li&gt;
+&lt;li&gt;订阅是否过期。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="10-验证是否连接成功"&gt;&lt;a href="#10-%e9%aa%8c%e8%af%81%e6%98%af%e5%90%a6%e8%bf%9e%e6%8e%a5%e6%88%90%e5%8a%9f" class="header-anchor"&gt;&lt;/a&gt;10. 验证是否连接成功
+&lt;/h2&gt;&lt;p&gt;不要只凭“网页能不能打开”判断。&lt;/p&gt;
+&lt;p&gt;按这个顺序检查：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;v2rayNG 是否显示已连接。&lt;/li&gt;
+&lt;li&gt;状态栏是否有 VPN 图标。&lt;/li&gt;
+&lt;li&gt;当前节点是否有延迟。&lt;/li&gt;
+&lt;li&gt;浏览器是否能访问目标网站。&lt;/li&gt;
+&lt;li&gt;IP 检测网站显示的出口地区是否变化。&lt;/li&gt;
+&lt;li&gt;其他 App 是否能联网。&lt;/li&gt;
+&lt;li&gt;日志是否有明显错误。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可能误判的情况：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;浏览器缓存导致网页看起来能打开。&lt;/li&gt;
+&lt;li&gt;DNS 异常导致部分网站打不开。&lt;/li&gt;
+&lt;li&gt;分应用代理设置错，导致只有部分 App 走代理。&lt;/li&gt;
+&lt;li&gt;节点地区不符合目标网站要求。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="11-断开连接与恢复普通网络"&gt;&lt;a href="#11-%e6%96%ad%e5%bc%80%e8%bf%9e%e6%8e%a5%e4%b8%8e%e6%81%a2%e5%a4%8d%e6%99%ae%e9%80%9a%e7%bd%91%e7%bb%9c" class="header-anchor"&gt;&lt;/a&gt;11. 断开连接与恢复普通网络
+&lt;/h2&gt;&lt;h3 id="111-你要点哪里"&gt;&lt;a href="#111-%e4%bd%a0%e8%a6%81%e7%82%b9%e5%93%aa%e9%87%8c" class="header-anchor"&gt;&lt;/a&gt;11.1 你要点哪里
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;点击连接按钮，让它断开。&lt;/li&gt;
+&lt;li&gt;观察状态栏 VPN 图标是否消失。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="112-成功标志"&gt;&lt;a href="#112-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;11.2 成功标志
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;v2rayNG 显示未连接。&lt;/li&gt;
+&lt;li&gt;状态栏 VPN 图标消失。&lt;/li&gt;
+&lt;li&gt;手机恢复普通网络。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="113-断开后仍不能上网先检查"&gt;&lt;a href="#113-%e6%96%ad%e5%bc%80%e5%90%8e%e4%bb%8d%e4%b8%8d%e8%83%bd%e4%b8%8a%e7%bd%91%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;11.3 断开后仍不能上网，先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;开关飞行模式一次。&lt;/li&gt;
+&lt;li&gt;切换 Wi-Fi / 移动流量。&lt;/li&gt;
+&lt;li&gt;检查是否还有其他 VPN 软件在运行。&lt;/li&gt;
+&lt;li&gt;重启手机。&lt;/li&gt;
+&lt;li&gt;仍不行，再考虑重置网络设置。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不用时建议断开连接。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="第二部分小米--hyperos--miui-专项设置"&gt;&lt;a href="#%e7%ac%ac%e4%ba%8c%e9%83%a8%e5%88%86%e5%b0%8f%e7%b1%b3--hyperos--miui-%e4%b8%93%e9%a1%b9%e8%ae%be%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;第二部分：小米 / HyperOS / MIUI 专项设置
+&lt;/h1&gt;&lt;p&gt;小米系统对后台和省电控制比较强。v2rayNG 如果锁屏后断开，优先查这里。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="12-允许安装未知应用"&gt;&lt;a href="#12-%e5%85%81%e8%ae%b8%e5%ae%89%e8%a3%85%e6%9c%aa%e7%9f%a5%e5%ba%94%e7%94%a8" class="header-anchor"&gt;&lt;/a&gt;12. 允许安装未知应用
+&lt;/h2&gt;&lt;h3 id="121-什么时候需要"&gt;&lt;a href="#121-%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e9%9c%80%e8%a6%81" class="header-anchor"&gt;&lt;/a&gt;12.1 什么时候需要
+&lt;/h3&gt;&lt;p&gt;你从 GitHub 下载 APK 后，第一次安装时可能需要。&lt;/p&gt;
+&lt;h3 id="122-路径"&gt;&lt;a href="#122-%e8%b7%af%e5%be%84" class="header-anchor"&gt;&lt;/a&gt;12.2 路径
+&lt;/h3&gt;&lt;p&gt;常见路径一：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 更多设置 → 隐私 → 特殊应用权限 → 安装未知应用
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;常见路径二：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 隐私保护 → 特殊权限 → 安装未知应用
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="123-操作"&gt;&lt;a href="#123-%e6%93%8d%e4%bd%9c" class="header-anchor"&gt;&lt;/a&gt;12.3 操作
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;找到浏览器或文件管理器。&lt;/li&gt;
+&lt;li&gt;打开“允许来自此来源”。&lt;/li&gt;
+&lt;li&gt;安装 v2rayNG。&lt;/li&gt;
+&lt;li&gt;安装完成后建议关闭该权限。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="124-失败先检查"&gt;&lt;a href="#124-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;12.4 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;是否授权的是打开 APK 的那个应用。&lt;/li&gt;
+&lt;li&gt;是否安装完成后被安全扫描拦截。&lt;/li&gt;
+&lt;li&gt;是否下载了损坏 APK。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="13-后台自启动"&gt;&lt;a href="#13-%e5%90%8e%e5%8f%b0%e8%87%aa%e5%90%af%e5%8a%a8" class="header-anchor"&gt;&lt;/a&gt;13. 后台自启动
+&lt;/h2&gt;&lt;h3 id="131-什么时候需要"&gt;&lt;a href="#131-%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e9%9c%80%e8%a6%81" class="header-anchor"&gt;&lt;/a&gt;13.1 什么时候需要
+&lt;/h3&gt;&lt;p&gt;如果你希望 v2rayNG 更稳定，或者锁屏后不要轻易断开，可以打开后台自启动。&lt;/p&gt;
+&lt;h3 id="132-路径"&gt;&lt;a href="#132-%e8%b7%af%e5%be%84" class="header-anchor"&gt;&lt;/a&gt;13.2 路径
+&lt;/h3&gt;&lt;p&gt;小米官方支持页给出的常见路径：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 权限 → 后台自启动
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也可能显示为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 权限管理 → 自启动
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="133-操作"&gt;&lt;a href="#133-%e6%93%8d%e4%bd%9c" class="header-anchor"&gt;&lt;/a&gt;13.3 操作
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开设置。&lt;/li&gt;
+&lt;li&gt;进入应用。&lt;/li&gt;
+&lt;li&gt;找到权限。&lt;/li&gt;
+&lt;li&gt;找到后台自启动。&lt;/li&gt;
+&lt;li&gt;找到 v2rayNG。&lt;/li&gt;
+&lt;li&gt;打开允许。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="134-成功标志"&gt;&lt;a href="#134-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;13.4 成功标志
+&lt;/h3&gt;&lt;p&gt;v2rayNG 后面的开关处于开启状态。&lt;/p&gt;
+&lt;h3 id="135-代价"&gt;&lt;a href="#135-%e4%bb%a3%e4%bb%b7" class="header-anchor"&gt;&lt;/a&gt;13.5 代价
+&lt;/h3&gt;&lt;p&gt;可能略微增加耗电。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="14-电池设置设为不限制"&gt;&lt;a href="#14-%e7%94%b5%e6%b1%a0%e8%ae%be%e7%bd%ae%e8%ae%be%e4%b8%ba%e4%b8%8d%e9%99%90%e5%88%b6" class="header-anchor"&gt;&lt;/a&gt;14. 电池设置：设为不限制
+&lt;/h2&gt;&lt;h3 id="141-为什么要设置"&gt;&lt;a href="#141-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e8%ae%be%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;14.1 为什么要设置
+&lt;/h3&gt;&lt;p&gt;小米系统可能为了省电清理后台应用。&lt;/p&gt;
+&lt;p&gt;v2rayNG 被清理后，VPN 可能断开。&lt;/p&gt;
+&lt;h3 id="142-路径"&gt;&lt;a href="#142-%e8%b7%af%e5%be%84" class="header-anchor"&gt;&lt;/a&gt;14.2 路径
+&lt;/h3&gt;&lt;p&gt;常见路径：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 应用管理 → v2rayNG → 省电策略 / 电池
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也可能是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 电池 → 应用电池管理 → v2rayNG
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="143-建议选择"&gt;&lt;a href="#143-%e5%bb%ba%e8%ae%ae%e9%80%89%e6%8b%a9" class="header-anchor"&gt;&lt;/a&gt;14.3 建议选择
+&lt;/h3&gt;&lt;p&gt;选择类似：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;无限制
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不限制
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;允许后台运行
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;关闭电池优化
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不要选择：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;限制后台活动
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;省电限制
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;智能限制但频繁断开
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="144-成功标志"&gt;&lt;a href="#144-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;14.4 成功标志
+&lt;/h3&gt;&lt;p&gt;v2rayNG 的电池策略显示为“不限制”或类似状态。&lt;/p&gt;
+&lt;h3 id="145-代价"&gt;&lt;a href="#145-%e4%bb%a3%e4%bb%b7" class="header-anchor"&gt;&lt;/a&gt;14.5 代价
+&lt;/h3&gt;&lt;p&gt;可能更耗电。&lt;/p&gt;
+&lt;p&gt;现实判断：如果你只是偶尔使用，不一定要一直开不限制；如果你需要锁屏不断线，就需要检查这一项。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="15-最近任务锁定"&gt;&lt;a href="#15-%e6%9c%80%e8%bf%91%e4%bb%bb%e5%8a%a1%e9%94%81%e5%ae%9a" class="header-anchor"&gt;&lt;/a&gt;15. 最近任务锁定
+&lt;/h2&gt;&lt;h3 id="151-为什么要锁定"&gt;&lt;a href="#151-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e9%94%81%e5%ae%9a" class="header-anchor"&gt;&lt;/a&gt;15.1 为什么要锁定
+&lt;/h3&gt;&lt;p&gt;小米系统清理后台时，最近任务里被锁定的 App 更不容易被清掉。&lt;/p&gt;
+&lt;h3 id="152-操作"&gt;&lt;a href="#152-%e6%93%8d%e4%bd%9c" class="header-anchor"&gt;&lt;/a&gt;15.2 操作
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;回到桌面。&lt;/li&gt;
+&lt;li&gt;打开最近任务界面。&lt;/li&gt;
+&lt;li&gt;找到 v2rayNG 卡片。&lt;/li&gt;
+&lt;li&gt;长按卡片，或点卡片附近的菜单。&lt;/li&gt;
+&lt;li&gt;选择：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;锁定
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或点击小锁图标。&lt;/p&gt;
+&lt;h3 id="153-成功标志"&gt;&lt;a href="#153-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;15.3 成功标志
+&lt;/h3&gt;&lt;p&gt;v2rayNG 卡片旁边出现小锁图标。&lt;/p&gt;
+&lt;h3 id="154-失败先检查"&gt;&lt;a href="#154-%e5%a4%b1%e8%b4%a5%e5%85%88%e6%a3%80%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;15.4 失败先检查
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;当前系统版本是否隐藏了这个入口。&lt;/li&gt;
+&lt;li&gt;是否需要长按卡片才出现菜单。&lt;/li&gt;
+&lt;li&gt;是否被极致省电模式影响。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="16-通知权限"&gt;&lt;a href="#16-%e9%80%9a%e7%9f%a5%e6%9d%83%e9%99%90" class="header-anchor"&gt;&lt;/a&gt;16. 通知权限
+&lt;/h2&gt;&lt;h3 id="161-建议"&gt;&lt;a href="#161-%e5%bb%ba%e8%ae%ae" class="header-anchor"&gt;&lt;/a&gt;16.1 建议
+&lt;/h3&gt;&lt;p&gt;建议允许 v2rayNG 通知。&lt;/p&gt;
+&lt;p&gt;原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;你能看到连接状态。&lt;/li&gt;
+&lt;li&gt;系统更容易识别它正在运行。&lt;/li&gt;
+&lt;li&gt;断开时更容易发现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="162-路径"&gt;&lt;a href="#162-%e8%b7%af%e5%be%84" class="header-anchor"&gt;&lt;/a&gt;16.2 路径
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 通知与状态栏 → 应用通知 → v2rayNG → 允许通知
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 应用管理 → v2rayNG → 通知管理
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="163-成功标志"&gt;&lt;a href="#163-%e6%88%90%e5%8a%9f%e6%a0%87%e5%bf%97" class="header-anchor"&gt;&lt;/a&gt;16.3 成功标志
+&lt;/h3&gt;&lt;p&gt;v2rayNG 通知权限开启。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="17-锁屏后断开怎么办"&gt;&lt;a href="#17-%e9%94%81%e5%b1%8f%e5%90%8e%e6%96%ad%e5%bc%80%e6%80%8e%e4%b9%88%e5%8a%9e" class="header-anchor"&gt;&lt;/a&gt;17. 锁屏后断开怎么办
+&lt;/h2&gt;&lt;p&gt;按这个顺序查：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;v2rayNG 是否仍在后台运行。&lt;/li&gt;
+&lt;li&gt;是否开启后台自启动。&lt;/li&gt;
+&lt;li&gt;电池策略是否设为不限制。&lt;/li&gt;
+&lt;li&gt;最近任务是否锁定 v2rayNG。&lt;/li&gt;
+&lt;li&gt;通知权限是否允许。&lt;/li&gt;
+&lt;li&gt;是否开了省电模式 / 超级省电模式。&lt;/li&gt;
+&lt;li&gt;是否 Wi-Fi 和移动流量切换导致断开。&lt;/li&gt;
+&lt;li&gt;节点是否本身不稳定。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不要一上来重装。&lt;/p&gt;
+&lt;p&gt;重装可能导致配置丢失，问题反而更复杂。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="第三部分看不懂时再看概念"&gt;&lt;a href="#%e7%ac%ac%e4%b8%89%e9%83%a8%e5%88%86%e7%9c%8b%e4%b8%8d%e6%87%82%e6%97%b6%e5%86%8d%e7%9c%8b%e6%a6%82%e5%bf%b5" class="header-anchor"&gt;&lt;/a&gt;第三部分：看不懂时再看概念
+&lt;/h1&gt;&lt;hr&gt;
+&lt;h2 id="18-v2rayng-是什么"&gt;&lt;a href="#18-v2rayng-%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;18. v2rayNG 是什么
+&lt;/h2&gt;&lt;p&gt;v2rayNG 是安卓手机上的代理客户端。&lt;/p&gt;
+&lt;p&gt;它负责：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;读取订阅配置&lt;/li&gt;
+&lt;li&gt;显示节点&lt;/li&gt;
+&lt;li&gt;建立连接&lt;/li&gt;
+&lt;li&gt;接管手机网络流量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它不负责：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;出售节点&lt;/li&gt;
+&lt;li&gt;提供套餐&lt;/li&gt;
+&lt;li&gt;保证服务商可靠&lt;/li&gt;
+&lt;li&gt;帮你充值续费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一句话：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;v2rayNG 是工具，节点和订阅由服务商提供。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;开源客户端可信，不等于服务商可信。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="19-订阅链接是什么"&gt;&lt;a href="#19-%e8%ae%a2%e9%98%85%e9%93%be%e6%8e%a5%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;19. 订阅链接是什么
+&lt;/h2&gt;&lt;p&gt;订阅链接是服务商给你的配置地址。&lt;/p&gt;
+&lt;p&gt;里面通常包含：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点列表&lt;/li&gt;
+&lt;li&gt;套餐身份信息&lt;/li&gt;
+&lt;li&gt;token&lt;/li&gt;
+&lt;li&gt;更新地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;泄露后，别人可能盗用你的套餐和流量。&lt;/p&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不要公开订阅链接。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不要公开订阅二维码。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不要把完整订阅链接发给 AI。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="20-订阅链接和单个节点链接的区别"&gt;&lt;a href="#20-%e8%ae%a2%e9%98%85%e9%93%be%e6%8e%a5%e5%92%8c%e5%8d%95%e4%b8%aa%e8%8a%82%e7%82%b9%e9%93%be%e6%8e%a5%e7%9a%84%e5%8c%ba%e5%88%ab" class="header-anchor"&gt;&lt;/a&gt;20. 订阅链接和单个节点链接的区别
+&lt;/h2&gt;&lt;h3 id="201-订阅链接"&gt;&lt;a href="#201-%e8%ae%a2%e9%98%85%e9%93%be%e6%8e%a5" class="header-anchor"&gt;&lt;/a&gt;20.1 订阅链接
+&lt;/h3&gt;&lt;p&gt;特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;包含一组节点。&lt;/li&gt;
+&lt;li&gt;可以更新。&lt;/li&gt;
+&lt;li&gt;服务商换节点后，你更新订阅就能拿到新节点。&lt;/li&gt;
+&lt;li&gt;推荐小白优先使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="202-单个节点链接"&gt;&lt;a href="#202-%e5%8d%95%e4%b8%aa%e8%8a%82%e7%82%b9%e9%93%be%e6%8e%a5" class="header-anchor"&gt;&lt;/a&gt;20.2 单个节点链接
+&lt;/h3&gt;&lt;p&gt;特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只导入一个节点。&lt;/li&gt;
+&lt;li&gt;节点坏了就不能自动换。&lt;/li&gt;
+&lt;li&gt;不适合长期维护。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;小白优先找：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;v2rayNG 订阅
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;V2Ray 订阅
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;通用订阅
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;订阅链接
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;不要优先复制单个节点。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="21-节点是什么"&gt;&lt;a href="#21-%e8%8a%82%e7%82%b9%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;21. 节点是什么
+&lt;/h2&gt;&lt;p&gt;节点可以理解成网络出口服务器。&lt;/p&gt;
+&lt;p&gt;不同节点可能不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地区&lt;/li&gt;
+&lt;li&gt;延迟&lt;/li&gt;
+&lt;li&gt;速度&lt;/li&gt;
+&lt;li&gt;倍率&lt;/li&gt;
+&lt;li&gt;稳定性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;节点慢或超时，不一定是 v2rayNG 坏了，也可能是服务商线路问题。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="22-vpn-权限是什么"&gt;&lt;a href="#22-vpn-%e6%9d%83%e9%99%90%e6%98%af%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;22. VPN 权限是什么
+&lt;/h2&gt;&lt;p&gt;Android 的 VPN 权限表示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;允许这个 App 接管手机网络连接。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这是一种系统权限。&lt;/p&gt;
+&lt;p&gt;它不代表：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务商一定可信&lt;/li&gt;
+&lt;li&gt;线路一定安全&lt;/li&gt;
+&lt;li&gt;所有 App 一定都走代理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不用时建议断开。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="23-路由模式--代理模式"&gt;&lt;a href="#23-%e8%b7%af%e7%94%b1%e6%a8%a1%e5%bc%8f--%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f" class="header-anchor"&gt;&lt;/a&gt;23. 路由模式 / 代理模式
+&lt;/h2&gt;&lt;p&gt;你可能看到这些模式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全局代理&lt;/li&gt;
+&lt;li&gt;绕过局域网和大陆地址&lt;/li&gt;
+&lt;li&gt;规则分流&lt;/li&gt;
+&lt;li&gt;直连&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;小白建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;默认不要乱改。&lt;/li&gt;
+&lt;li&gt;日常使用优先规则 / 分流类模式。&lt;/li&gt;
+&lt;li&gt;排错时可以短时间试全局代理。&lt;/li&gt;
+&lt;li&gt;用完及时断开。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不要一上来改复杂路由。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="24-分应用代理"&gt;&lt;a href="#24-%e5%88%86%e5%ba%94%e7%94%a8%e4%bb%a3%e7%90%86" class="header-anchor"&gt;&lt;/a&gt;24. 分应用代理
+&lt;/h2&gt;&lt;p&gt;分应用代理就是：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;只让某些 App 走代理，其他 App 不走代理。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;普通用户默认不要开启。&lt;/p&gt;
+&lt;p&gt;只有在这些情况才考虑：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;浏览器要走代理，其他 App 不走。&lt;/li&gt;
+&lt;li&gt;某个 App 必须走代理。&lt;/li&gt;
+&lt;li&gt;某些国内 App 不想走代理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果设置错，可能出现：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;浏览器能用，但其他 App 不能用。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="25-dns-设置"&gt;&lt;a href="#25-dns-%e8%ae%be%e7%bd%ae" class="header-anchor"&gt;&lt;/a&gt;25. DNS 设置
+&lt;/h2&gt;&lt;p&gt;DNS 可以理解成：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;把网站名字翻译成服务器地址。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;DNS 异常可能导致：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;v2rayNG 显示已连接，但网页打不开。&lt;/li&gt;
+&lt;li&gt;只有部分网站打不开。&lt;/li&gt;
+&lt;li&gt;某些 App 网络异常。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;小白不要一上来改 DNS。&lt;/p&gt;
+&lt;p&gt;排错顺序应该是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;换节点。&lt;/li&gt;
+&lt;li&gt;更新订阅。&lt;/li&gt;
+&lt;li&gt;切换 Wi-Fi / 移动流量。&lt;/li&gt;
+&lt;li&gt;检查分应用代理。&lt;/li&gt;
+&lt;li&gt;最后才考虑 DNS。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h1 id="第四部分常见故障排查"&gt;&lt;a href="#%e7%ac%ac%e5%9b%9b%e9%83%a8%e5%88%86%e5%b8%b8%e8%a7%81%e6%95%85%e9%9a%9c%e6%8e%92%e6%9f%a5" class="header-anchor"&gt;&lt;/a&gt;第四部分：常见故障排查
+&lt;/h1&gt;&lt;p&gt;排错原则：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;先查简单原因，再查复杂原因。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;先查手机网络，再查订阅，再查节点，再查设置，再考虑服务商问题。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不要一上来改 DNS、路由、高级设置。
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;不要一上来重装。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="26-apk-无法安装"&gt;&lt;a href="#26-apk-%e6%97%a0%e6%b3%95%e5%ae%89%e8%a3%85" class="header-anchor"&gt;&lt;/a&gt;26. APK 无法安装
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 点 APK 后无法安装。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;未允许安装未知应用。&lt;/li&gt;
+&lt;li&gt;APK 下载损坏。&lt;/li&gt;
+&lt;li&gt;下载了错误版本。&lt;/li&gt;
+&lt;li&gt;小米安全扫描拦截。&lt;/li&gt;
+&lt;li&gt;存储空间不足。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;是否授权浏览器或文件管理器安装未知应用。&lt;/li&gt;
+&lt;li&gt;是否从 GitHub Release 下载。&lt;/li&gt;
+&lt;li&gt;文件名是否包含 &lt;code&gt;.apk&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;现代手机是否优先选 &lt;code&gt;arm64-v8a&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;存储空间是否足够。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;重新下载 APK，授权安装来源，再安装。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;桌面出现 v2rayNG 图标。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="27-安装后打不开"&gt;&lt;a href="#27-%e5%ae%89%e8%a3%85%e5%90%8e%e6%89%93%e4%b8%8d%e5%bc%80" class="header-anchor"&gt;&lt;/a&gt;27. 安装后打不开
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 打开 v2rayNG 闪退或没反应。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;APK 损坏。&lt;/li&gt;
+&lt;li&gt;版本不兼容。&lt;/li&gt;
+&lt;li&gt;手机系统限制。&lt;/li&gt;
+&lt;li&gt;安装包来源异常。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;是否从官方 GitHub Release 下载。&lt;/li&gt;
+&lt;li&gt;是否选错架构。&lt;/li&gt;
+&lt;li&gt;是否安装了未知修改版。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;卸载后重新从官方 Release 下载合适 APK。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;能进入 v2rayNG 主界面。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="28-找不到订阅入口"&gt;&lt;a href="#28-%e6%89%be%e4%b8%8d%e5%88%b0%e8%ae%a2%e9%98%85%e5%85%a5%e5%8f%a3" class="header-anchor"&gt;&lt;/a&gt;28. 找不到订阅入口
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 主界面找不到 &lt;code&gt;+&lt;/code&gt;，不知道在哪里导入订阅。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当前版本界面变化。&lt;/li&gt;
+&lt;li&gt;主路径不是 &lt;code&gt;+&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;需要进订阅分组设置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;检查步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG 菜单。&lt;/li&gt;
+&lt;li&gt;找 &lt;code&gt;订阅分组设置&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;英文界面找 &lt;code&gt;Subscription group setting&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;进入后添加订阅地址。&lt;/li&gt;
+&lt;li&gt;保存后回主界面更新订阅。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;更新订阅后主界面出现节点列表。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="29-订阅导入失败"&gt;&lt;a href="#29-%e8%ae%a2%e9%98%85%e5%af%bc%e5%85%a5%e5%a4%b1%e8%b4%a5" class="header-anchor"&gt;&lt;/a&gt;29. 订阅导入失败
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 添加订阅后没有节点。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;链接没复制完整。&lt;/li&gt;
+&lt;li&gt;复制成网页登录地址。&lt;/li&gt;
+&lt;li&gt;服务商套餐过期。&lt;/li&gt;
+&lt;li&gt;订阅不是 v2rayNG 支持格式。&lt;/li&gt;
+&lt;li&gt;添加后忘记更新订阅。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;检查步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;重新复制订阅链接。&lt;/li&gt;
+&lt;li&gt;确认是 v2rayNG / V2Ray / 通用订阅。&lt;/li&gt;
+&lt;li&gt;确认订阅分组已保存。&lt;/li&gt;
+&lt;li&gt;回主界面更新订阅。&lt;/li&gt;
+&lt;li&gt;查看服务商后台套餐状态。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;联系服务商时提供：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打码后的错误提示&lt;/li&gt;
+&lt;li&gt;手机型号&lt;/li&gt;
+&lt;li&gt;系统版本&lt;/li&gt;
+&lt;li&gt;v2rayNG 版本&lt;/li&gt;
+&lt;li&gt;不要提供完整订阅链接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="30-更新订阅失败"&gt;&lt;a href="#30-%e6%9b%b4%e6%96%b0%e8%ae%a2%e9%98%85%e5%a4%b1%e8%b4%a5" class="header-anchor"&gt;&lt;/a&gt;30. 更新订阅失败
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 点更新订阅后报错。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手机普通网络异常。&lt;/li&gt;
+&lt;li&gt;订阅过期。&lt;/li&gt;
+&lt;li&gt;服务商后台故障。&lt;/li&gt;
+&lt;li&gt;订阅地址被复制错。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器能不能打开普通网页。&lt;/li&gt;
+&lt;li&gt;服务商后台能不能登录。&lt;/li&gt;
+&lt;li&gt;套餐是否有效。&lt;/li&gt;
+&lt;li&gt;订阅链接是否完整。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;重新复制订阅链接，重新添加订阅分组，再更新订阅。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;节点列表正常出现。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="31-节点全部超时"&gt;&lt;a href="#31-%e8%8a%82%e7%82%b9%e5%85%a8%e9%83%a8%e8%b6%85%e6%97%b6" class="header-anchor"&gt;&lt;/a&gt;31. 节点全部超时
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 所有节点测速都是超时。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手机网络异常。&lt;/li&gt;
+&lt;li&gt;订阅过期。&lt;/li&gt;
+&lt;li&gt;服务商线路故障。&lt;/li&gt;
+&lt;li&gt;没有更新订阅。&lt;/li&gt;
+&lt;li&gt;当前网络环境限制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;检查步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先断开 v2rayNG，用普通网络打开网页。&lt;/li&gt;
+&lt;li&gt;更新订阅。&lt;/li&gt;
+&lt;li&gt;切换 Wi-Fi / 移动流量。&lt;/li&gt;
+&lt;li&gt;查看服务商公告。&lt;/li&gt;
+&lt;li&gt;联系服务商。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;不要先改：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DNS&lt;/li&gt;
+&lt;li&gt;路由规则&lt;/li&gt;
+&lt;li&gt;TUN&lt;/li&gt;
+&lt;li&gt;高级参数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="32-点击连接后没反应"&gt;&lt;a href="#32-%e7%82%b9%e5%87%bb%e8%bf%9e%e6%8e%a5%e5%90%8e%e6%b2%a1%e5%8f%8d%e5%ba%94" class="header-anchor"&gt;&lt;/a&gt;32. 点击连接后没反应
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象：&lt;/strong&gt; 点连接按钮没有变化。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没选节点。&lt;/li&gt;
+&lt;li&gt;没允许 VPN 权限。&lt;/li&gt;
+&lt;li&gt;其他 VPN 正在运行。&lt;/li&gt;
+&lt;li&gt;v2rayNG 被系统限制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;是否选中了节点。&lt;/li&gt;
+&lt;li&gt;是否允许 VPN 请求。&lt;/li&gt;
+&lt;li&gt;是否关闭其他 VPN 软件。&lt;/li&gt;
+&lt;li&gt;是否开启后台权限。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;状态栏出现 VPN 图标。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="33-显示已连接但打不开网页"&gt;&lt;a href="#33-%e6%98%be%e7%a4%ba%e5%b7%b2%e8%bf%9e%e6%8e%a5%e4%bd%86%e6%89%93%e4%b8%8d%e5%bc%80%e7%bd%91%e9%a1%b5" class="header-anchor"&gt;&lt;/a&gt;33. 显示已连接但打不开网页
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点不可用。&lt;/li&gt;
+&lt;li&gt;DNS 异常。&lt;/li&gt;
+&lt;li&gt;路由规则异常。&lt;/li&gt;
+&lt;li&gt;分应用代理设置错。&lt;/li&gt;
+&lt;li&gt;浏览器缓存。&lt;/li&gt;
+&lt;li&gt;服务商线路问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;检查步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;换一个节点。&lt;/li&gt;
+&lt;li&gt;断开后重新连接。&lt;/li&gt;
+&lt;li&gt;切换 Wi-Fi / 移动流量。&lt;/li&gt;
+&lt;li&gt;检查是否开启分应用代理。&lt;/li&gt;
+&lt;li&gt;更新订阅。&lt;/li&gt;
+&lt;li&gt;再考虑 DNS 或路由。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;成功标志：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;浏览器能打开目标网站，IP 检测地区发生变化。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="34-浏览器能用其他-app-不能用"&gt;&lt;a href="#34-%e6%b5%8f%e8%a7%88%e5%99%a8%e8%83%bd%e7%94%a8%e5%85%b6%e4%bb%96-app-%e4%b8%8d%e8%83%bd%e7%94%a8" class="header-anchor"&gt;&lt;/a&gt;34. 浏览器能用，其他 App 不能用
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分应用代理排除了某些 App。&lt;/li&gt;
+&lt;li&gt;App 自身网络权限关闭。&lt;/li&gt;
+&lt;li&gt;路由模式导致部分流量直连。&lt;/li&gt;
+&lt;li&gt;DNS 异常。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;是否开启分应用代理。&lt;/li&gt;
+&lt;li&gt;目标 App 是否被排除。&lt;/li&gt;
+&lt;li&gt;小米系统是否禁止该 App 使用网络。&lt;/li&gt;
+&lt;li&gt;该 App 是否本身服务异常。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;先关闭分应用代理，再测试。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="35-锁屏后断开"&gt;&lt;a href="#35-%e9%94%81%e5%b1%8f%e5%90%8e%e6%96%ad%e5%bc%80" class="header-anchor"&gt;&lt;/a&gt;35. 锁屏后断开
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;优先检查小米系统设置：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;后台自启动是否开启。&lt;/li&gt;
+&lt;li&gt;电池策略是否“不限制”。&lt;/li&gt;
+&lt;li&gt;最近任务是否锁定 v2rayNG。&lt;/li&gt;
+&lt;li&gt;通知权限是否允许。&lt;/li&gt;
+&lt;li&gt;是否开启超级省电模式。&lt;/li&gt;
+&lt;li&gt;Wi-Fi 是否锁屏断开。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;不要一上来重装。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="36-切换-wi-fi--移动网络后断开"&gt;&lt;a href="#36-%e5%88%87%e6%8d%a2-wi-fi--%e7%a7%bb%e5%8a%a8%e7%bd%91%e7%bb%9c%e5%90%8e%e6%96%ad%e5%bc%80" class="header-anchor"&gt;&lt;/a&gt;36. 切换 Wi-Fi / 移动网络后断开
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;可能原因：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;网络切换导致 VPN 重连。&lt;/li&gt;
+&lt;li&gt;当前节点不稳定。&lt;/li&gt;
+&lt;li&gt;系统后台限制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;先检查：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;等 10-20 秒看是否自动恢复。&lt;/li&gt;
+&lt;li&gt;手动断开再连接。&lt;/li&gt;
+&lt;li&gt;换节点。&lt;/li&gt;
+&lt;li&gt;检查后台和电池设置。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="37-服务商订阅过期或流量用完"&gt;&lt;a href="#37-%e6%9c%8d%e5%8a%a1%e5%95%86%e8%ae%a2%e9%98%85%e8%bf%87%e6%9c%9f%e6%88%96%e6%b5%81%e9%87%8f%e7%94%a8%e5%ae%8c" class="header-anchor"&gt;&lt;/a&gt;37. 服务商订阅过期或流量用完
+&lt;/h2&gt;&lt;p&gt;可能表现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点全部超时。&lt;/li&gt;
+&lt;li&gt;更新订阅失败。&lt;/li&gt;
+&lt;li&gt;节点列表为空。&lt;/li&gt;
+&lt;li&gt;服务商后台显示到期。&lt;/li&gt;
+&lt;li&gt;流量剩余为 0。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你要去服务商后台看：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;到期时间&lt;/li&gt;
+&lt;li&gt;剩余流量&lt;/li&gt;
+&lt;li&gt;套餐状态&lt;/li&gt;
+&lt;li&gt;公告维护信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不要把后台完整截图发给别人。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="38-旧配置或旧服务商节点不兼容"&gt;&lt;a href="#38-%e6%97%a7%e9%85%8d%e7%bd%ae%e6%88%96%e6%97%a7%e6%9c%8d%e5%8a%a1%e5%95%86%e8%8a%82%e7%82%b9%e4%b8%8d%e5%85%bc%e5%ae%b9" class="header-anchor"&gt;&lt;/a&gt;38. 旧配置或旧服务商节点不兼容
+&lt;/h2&gt;&lt;p&gt;v2rayNG 2.2.3 Release 提醒：2026-08-01 后会禁用 &lt;code&gt;allowInsecure&lt;/code&gt; 相关旧做法。&lt;/p&gt;
+&lt;p&gt;这对小白的含义是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;未来某些旧节点突然不能用，不一定是手机坏了。&lt;/li&gt;
+&lt;li&gt;也不一定是 v2rayNG 坏了。&lt;/li&gt;
+&lt;li&gt;可能是服务商配置太旧。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你不要自己乱改高级参数。&lt;/p&gt;
+&lt;p&gt;正确做法：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;联系服务商，让对方提供兼容新版 v2rayNG 的订阅配置。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h1 id="第五部分安全提醒"&gt;&lt;a href="#%e7%ac%ac%e4%ba%94%e9%83%a8%e5%88%86%e5%ae%89%e5%85%a8%e6%8f%90%e9%86%92" class="header-anchor"&gt;&lt;/a&gt;第五部分：安全提醒
+&lt;/h1&gt;&lt;hr&gt;
+&lt;h2 id="39-开源客户端不等于服务商可信"&gt;&lt;a href="#39-%e5%bc%80%e6%ba%90%e5%ae%a2%e6%88%b7%e7%ab%af%e4%b8%8d%e7%ad%89%e4%ba%8e%e6%9c%8d%e5%8a%a1%e5%95%86%e5%8f%af%e4%bf%a1" class="header-anchor"&gt;&lt;/a&gt;39. 开源客户端不等于服务商可信
+&lt;/h2&gt;&lt;p&gt;v2rayNG 可以是开源客户端。&lt;/p&gt;
+&lt;p&gt;但服务商控制的是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点&lt;/li&gt;
+&lt;li&gt;订阅&lt;/li&gt;
+&lt;li&gt;账号&lt;/li&gt;
+&lt;li&gt;流量出口&lt;/li&gt;
+&lt;li&gt;售后&lt;/li&gt;
+&lt;li&gt;日志策略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;客户端可信 ≠ 服务商可信
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="40-服务商可能掌握什么"&gt;&lt;a href="#40-%e6%9c%8d%e5%8a%a1%e5%95%86%e5%8f%af%e8%83%bd%e6%8e%8c%e6%8f%a1%e4%bb%80%e4%b9%88" class="header-anchor"&gt;&lt;/a&gt;40. 服务商可能掌握什么
+&lt;/h2&gt;&lt;h3 id="通常可以掌握"&gt;&lt;a href="#%e9%80%9a%e5%b8%b8%e5%8f%af%e4%bb%a5%e6%8e%8c%e6%8f%a1" class="header-anchor"&gt;&lt;/a&gt;通常可以掌握
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;订阅账号&lt;/li&gt;
+&lt;li&gt;套餐状态&lt;/li&gt;
+&lt;li&gt;流量使用量&lt;/li&gt;
+&lt;li&gt;订阅是否过期&lt;/li&gt;
+&lt;li&gt;节点使用情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="可能掌握"&gt;&lt;a href="#%e5%8f%af%e8%83%bd%e6%8e%8c%e6%8f%a1" class="header-anchor"&gt;&lt;/a&gt;可能掌握
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;连接时间&lt;/li&gt;
+&lt;li&gt;出口节点&lt;/li&gt;
+&lt;li&gt;部分连接统计&lt;/li&gt;
+&lt;li&gt;部分 DNS 行为&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="取决于服务商策略"&gt;&lt;a href="#%e5%8f%96%e5%86%b3%e4%ba%8e%e6%9c%8d%e5%8a%a1%e5%95%86%e7%ad%96%e7%95%a5" class="header-anchor"&gt;&lt;/a&gt;取决于服务商策略
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;是否记录域名&lt;/li&gt;
+&lt;li&gt;是否记录连接目标&lt;/li&gt;
+&lt;li&gt;日志保存多久&lt;/li&gt;
+&lt;li&gt;是否共享数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不要夸大恐慌，也不要天真相信。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="41-不建议使用的服务商特征"&gt;&lt;a href="#41-%e4%b8%8d%e5%bb%ba%e8%ae%ae%e4%bd%bf%e7%94%a8%e7%9a%84%e6%9c%8d%e5%8a%a1%e5%95%86%e7%89%b9%e5%be%81" class="header-anchor"&gt;&lt;/a&gt;41. 不建议使用的服务商特征
+&lt;/h2&gt;&lt;p&gt;看到这些信号要谨慎：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;价格低到不合理&lt;/li&gt;
+&lt;li&gt;只在群聊售卖&lt;/li&gt;
+&lt;li&gt;没有稳定官网&lt;/li&gt;
+&lt;li&gt;频繁更换域名&lt;/li&gt;
+&lt;li&gt;强制安装未知客户端&lt;/li&gt;
+&lt;li&gt;不说明退款规则&lt;/li&gt;
+&lt;li&gt;不说明流量倍率&lt;/li&gt;
+&lt;li&gt;节点经常不可用&lt;/li&gt;
+&lt;li&gt;客服只催续费&lt;/li&gt;
+&lt;li&gt;要求不必要个人信息&lt;/li&gt;
+&lt;li&gt;付款方式异常&lt;/li&gt;
+&lt;li&gt;只给你不明 APK，不给官方客户端下载方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现实判断：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;越不透明，用户承担的失败风险越高。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="42-排错时哪些信息能发哪些不能发"&gt;&lt;a href="#42-%e6%8e%92%e9%94%99%e6%97%b6%e5%93%aa%e4%ba%9b%e4%bf%a1%e6%81%af%e8%83%bd%e5%8f%91%e5%93%aa%e4%ba%9b%e4%b8%8d%e8%83%bd%e5%8f%91" class="header-anchor"&gt;&lt;/a&gt;42. 排错时哪些信息能发，哪些不能发
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;信息类型&lt;/th&gt;
+					&lt;th style="text-align: right"&gt;能不能发给 AI / 群友 / 客服&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;完整订阅链接&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;不能&lt;/td&gt;
+					&lt;td&gt;可能包含 token&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;订阅二维码&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;不能&lt;/td&gt;
+					&lt;td&gt;等同于订阅链接&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;服务商后台完整截图&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;不建议&lt;/td&gt;
+					&lt;td&gt;可能泄露账号、套餐、token&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;打码后的错误提示&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;可以&lt;/td&gt;
+					&lt;td&gt;保留错误文字，遮住链接和账号&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;手机型号&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;可以&lt;/td&gt;
+					&lt;td&gt;例如 Redmi / Xiaomi / POCO 型号&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;系统版本&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;可以&lt;/td&gt;
+					&lt;td&gt;例如 HyperOS / MIUI 版本&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;v2rayNG 版本号&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;可以&lt;/td&gt;
+					&lt;td&gt;用于判断兼容性&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;节点名称&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;谨慎&lt;/td&gt;
+					&lt;td&gt;最好打码服务商特征&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;日志全文&lt;/td&gt;
+					&lt;td style="text-align: right"&gt;谨慎&lt;/td&gt;
+					&lt;td&gt;先检查是否含 token、IP、账号&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="43-更稳妥的使用习惯"&gt;&lt;a href="#43-%e6%9b%b4%e7%a8%b3%e5%a6%a5%e7%9a%84%e4%bd%bf%e7%94%a8%e4%b9%a0%e6%83%af" class="header-anchor"&gt;&lt;/a&gt;43. 更稳妥的使用习惯
+&lt;/h2&gt;&lt;p&gt;建议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优先从官方 GitHub Release 下载 v2rayNG。&lt;/li&gt;
+&lt;li&gt;不安装服务商提供的未知修改版 APK。&lt;/li&gt;
+&lt;li&gt;不公开订阅链接。&lt;/li&gt;
+&lt;li&gt;不公开订阅二维码。&lt;/li&gt;
+&lt;li&gt;不在不可信代理环境下处理高敏感事务。&lt;/li&gt;
+&lt;li&gt;服务异常时先停止续费。&lt;/li&gt;
+&lt;li&gt;保留付款和沟通记录。&lt;/li&gt;
+&lt;li&gt;出现异常扣费、失联、无法退款，及时止损。&lt;/li&gt;
+&lt;li&gt;不用时主动断开连接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id="第六部分卸载与恢复网络"&gt;&lt;a href="#%e7%ac%ac%e5%85%ad%e9%83%a8%e5%88%86%e5%8d%b8%e8%bd%bd%e4%b8%8e%e6%81%a2%e5%a4%8d%e7%bd%91%e7%bb%9c" class="header-anchor"&gt;&lt;/a&gt;第六部分：卸载与恢复网络
+&lt;/h1&gt;&lt;hr&gt;
+&lt;h2 id="44-如何卸载-v2rayng"&gt;&lt;a href="#44-%e5%a6%82%e4%bd%95%e5%8d%b8%e8%bd%bd-v2rayng" class="header-anchor"&gt;&lt;/a&gt;44. 如何卸载 v2rayNG
+&lt;/h2&gt;&lt;h3 id="441-操作顺序"&gt;&lt;a href="#441-%e6%93%8d%e4%bd%9c%e9%a1%ba%e5%ba%8f" class="header-anchor"&gt;&lt;/a&gt;44.1 操作顺序
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;先断开连接。&lt;/li&gt;
+&lt;li&gt;确认状态栏 VPN 图标消失。&lt;/li&gt;
+&lt;li&gt;回到桌面。&lt;/li&gt;
+&lt;li&gt;长按 v2rayNG 图标。&lt;/li&gt;
+&lt;li&gt;点击卸载。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="442-卸载后不能上网怎么办"&gt;&lt;a href="#442-%e5%8d%b8%e8%bd%bd%e5%90%8e%e4%b8%8d%e8%83%bd%e4%b8%8a%e7%bd%91%e6%80%8e%e4%b9%88%e5%8a%9e" class="header-anchor"&gt;&lt;/a&gt;44.2 卸载后不能上网怎么办
+&lt;/h3&gt;&lt;p&gt;按顺序做：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开飞行模式，等 5 秒，再关闭。&lt;/li&gt;
+&lt;li&gt;切换 Wi-Fi / 移动流量。&lt;/li&gt;
+&lt;li&gt;检查是否还有其他 VPN 软件在运行。&lt;/li&gt;
+&lt;li&gt;重启手机。&lt;/li&gt;
+&lt;li&gt;必要时重置网络设置。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="443-清理数据前注意"&gt;&lt;a href="#443-%e6%b8%85%e7%90%86%e6%95%b0%e6%8d%ae%e5%89%8d%e6%b3%a8%e6%84%8f" class="header-anchor"&gt;&lt;/a&gt;44.3 清理数据前注意
+&lt;/h3&gt;&lt;p&gt;清理 v2rayNG 数据会导致配置丢失。&lt;/p&gt;
+&lt;p&gt;如果你还要继续使用，需要重新导入订阅。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id="第七部分小白速查版"&gt;&lt;a href="#%e7%ac%ac%e4%b8%83%e9%83%a8%e5%88%86%e5%b0%8f%e7%99%bd%e9%80%9f%e6%9f%a5%e7%89%88" class="header-anchor"&gt;&lt;/a&gt;第七部分：小白速查版
+&lt;/h1&gt;&lt;p&gt;最短流程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开 v2rayNG 官方 GitHub Release。&lt;/li&gt;
+&lt;li&gt;下载 &lt;code&gt;.apk&lt;/code&gt; 文件。&lt;/li&gt;
+&lt;li&gt;现代小米手机优先选 &lt;code&gt;arm64-v8a&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;用文件管理器打开 APK。&lt;/li&gt;
+&lt;li&gt;如果提示禁止安装，去小米设置里允许安装未知应用。&lt;/li&gt;
+&lt;li&gt;安装完成后打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;从服务商后台复制 v2rayNG / V2Ray / 通用订阅链接。&lt;/li&gt;
+&lt;li&gt;打开 v2rayNG。&lt;/li&gt;
+&lt;li&gt;进入 &lt;strong&gt;订阅分组设置&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;添加订阅分组。&lt;/li&gt;
+&lt;li&gt;名称随便写，例如“我的订阅”。&lt;/li&gt;
+&lt;li&gt;URL 粘贴订阅链接。&lt;/li&gt;
+&lt;li&gt;保存。&lt;/li&gt;
+&lt;li&gt;回主界面。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;更新订阅&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;看到节点列表。&lt;/li&gt;
+&lt;li&gt;选择一个延迟较低的节点。&lt;/li&gt;
+&lt;li&gt;点击连接。&lt;/li&gt;
+&lt;li&gt;首次弹出 VPN 请求时点允许。&lt;/li&gt;
+&lt;li&gt;看状态栏是否出现 VPN 图标。&lt;/li&gt;
+&lt;li&gt;浏览器测试是否能访问目标网站。&lt;/li&gt;
+&lt;li&gt;如果锁屏断开，检查小米后台自启动、电池不限制、最近任务锁定、通知权限。&lt;/li&gt;
+&lt;li&gt;不用时断开连接。&lt;/li&gt;
+&lt;li&gt;不要泄露订阅链接。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h1 id="附录中英文界面对照"&gt;&lt;a href="#%e9%99%84%e5%bd%95%e4%b8%ad%e8%8b%b1%e6%96%87%e7%95%8c%e9%9d%a2%e5%af%b9%e7%85%a7" class="header-anchor"&gt;&lt;/a&gt;附录：中英文界面对照
+&lt;/h1&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;中文含义&lt;/th&gt;
+					&lt;th&gt;英文界面可能显示&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;订阅分组设置&lt;/td&gt;
+					&lt;td&gt;Subscription group setting&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;更新订阅&lt;/td&gt;
+					&lt;td&gt;Update subscription&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;备注&lt;/td&gt;
+					&lt;td&gt;remarks&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;订阅地址&lt;/td&gt;
+					&lt;td&gt;URL / Optional URL&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;从剪贴板导入&lt;/td&gt;
+					&lt;td&gt;Import from Clipboard&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;扫描二维码导入&lt;/td&gt;
+					&lt;td&gt;Import from QRcode&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;真连接测试&lt;/td&gt;
+					&lt;td&gt;Real delay config&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;TCP 延迟测试&lt;/td&gt;
+					&lt;td&gt;Tcping config&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;分应用代理&lt;/td&gt;
+					&lt;td&gt;Per-app proxy&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;日志&lt;/td&gt;
+					&lt;td&gt;Logcat&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h1 id="参考资料"&gt;&lt;a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" class="header-anchor"&gt;&lt;/a&gt;参考资料
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;v2rayNG 官方 GitHub 仓库：&lt;code&gt;https://github.com/2dust/v2rayNG&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;v2rayNG 最新 Release：&lt;code&gt;https://github.com/2dust/v2rayNG/releases/latest&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;v2rayNG 界面字符串：&lt;code&gt;https://github.com/2dust/v2rayNG/blob/master/V2rayNG/app/src/main/res/values/strings.xml&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小米未知来源安装权限说明：&lt;code&gt;https://www.mi.com/global/support/faq/details/KA-06974/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小米安装未知 App 说明：&lt;code&gt;https://www.mi.com/global/support/article/KA-33144/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小米后台自启动说明：&lt;code&gt;https://www.mi.com/global/support/faq/details/KA-507611/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小米后台权限参考说明：&lt;code&gt;https://www.mi.com/global/support/faq/details/KA-517222/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Xiaomi 后台限制参考：&lt;code&gt;https://dontkillmyapp.com/xiaomi&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;文件版本：v1.0&lt;br&gt;
+整理日期：2026-06-12&lt;/p&gt;</description></item></channel></rss>
