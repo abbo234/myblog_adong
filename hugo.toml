@@ -1,25 +1,64 @@
 baseURL = 'http://localhost:1313/'
-languageCode = 'zh-cn'
-title = '我的个人博客'
-theme = 'PaperMod'
+title = '爬虫与数据处理笔记'
+theme = 'hugo-theme-stack'
+defaultContentLanguage = 'zh'
+hasCJKLanguage = true
+
+[pagination]
+  pagerSize = 10
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
 
 [params]
-  defaultTheme = 'auto'
-  ShowReadingTime = true
-  ShowCodeCopyButtons = true
-  ShowToc = true
+  mainSections = ['posts']
+  rssFullContent = true
+  description = '记录 Python 爬虫、网页数据来源判断、数据清洗、存储、分析与自动化处理。'
+
+[params.sidebar]
+  compact = false
+  emoji = '🕷️'
+  subtitle = 'Python 爬虫与数据处理实践记录'
+  avatar = ''
+
+[params.article]
+  headingAnchor = true
+  math = false
+  toc = true
+  readingTime = true
+
+[params.article.list]
+  showTags = true
+
+[params.colorScheme]
+  toggle = true
+  default = 'auto'
+
+[params.footer]
+  since = 2026
+  customText = ''
+
+[params.widgets]
+  homepage = [
+    {type = 'categories'},
+    {type = 'tag-cloud'}
+  ]
+  page = [
+    {type = 'toc'}
+  ]
 
 [menu]
   [[menu.main]]
-    identifier = 'posts'
-    name = '文章'
-    url = '/posts/'
+    identifier = 'home'
+    name = '首页'
+    url = '/'
     weight = 10
 
   [[menu.main]]
-    identifier = 'archives'
-    name = '归档'
-    url = '/archives/'
+    identifier = 'categories'
+    name = '分类'
+    url = '/categories/'
     weight = 20
 
   [[menu.main]]
